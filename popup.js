@@ -1,1 +1,0 @@
-console.info("XXX Sending message to change background");

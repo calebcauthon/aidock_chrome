@@ -2,15 +2,13 @@
   "manifest_version": 3,
   "name": "Simple Background Changer",
   "version": "1.0",
-  "description": "Changes the background color of web pages to light blue.",
-  "action": {
-    "default_popup": "popup.html"
-  },
+  "description": "Changes the background color of web pages to light blue and adds an input overlay.",
   "permissions": ["activeTab"],
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["popup.js"]
+      "js": ["content.js"],
+      "css": ["content.css"]
     }
   ]
 }
