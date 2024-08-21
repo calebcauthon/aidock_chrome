@@ -1,11 +1,12 @@
 #extension-overlay {
   position: fixed;
-  bottom: 0;
+  top: 0;
   left: 0;
   width: 100%;
   background-color: rgba(0, 0, 0, 0.8);
   padding: 10px;
   box-sizing: border-box;
+  z-index: 10000; /* Ensure it is on top of everything */
 }
 
 #extension-overlay input {
@@ -32,6 +33,10 @@
   overflow: auto;
   z-index: 9999;
   transition: opacity 0.3s ease-in-out; /* Added this line */
+}
+
+#instructions-overlay input {
+  color: black;
 }
 
 .instructions-content {
