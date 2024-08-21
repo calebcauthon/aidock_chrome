@@ -13,13 +13,18 @@ input.addEventListener('keypress', function(event) {
   if (event.key === 'Enter') {
     const question = input.value.trim();
     if (question) {
+      // Show loading overlay immediately
+      const loadingOverlay = createInstructionsOverlay('Loading...', question);
+      
       sendQuestionToBackend(question)
         .then(answer => {
-          createInstructionsOverlay(answer, question);
+          // Update the existing overlay with the answer
+          updateInstructionsOverlay(loadingOverlay, answer, question);
         })
         .catch(error => {
           console.error('Error:', error);
-          // Handle error (e.g., show an error message to the user)
+          // Update the overlay with an error message
+          updateInstructionsOverlay(loadingOverlay, 'An error occurred. Please try again.', question);
         });
       input.value = ''; // Clear the input after sending the question
     }
@@ -59,37 +64,53 @@ function createInstructionsOverlay(content, question) {
   // Add event listener to close button
   const closeBtn = instructionsOverlay.querySelector('.close-btn');
   closeBtn.addEventListener('click', function() {
-    document.body.removeChild(instructionsOverlay);
+    fadeOutAndRemove(instructionsOverlay);
   });
 
-  // Make the overlay draggable
+  // Make the overlay draggable and resizable
   makeDraggable(instructionsOverlay);
-
-  // Make the overlay resizable
   makeResizable(instructionsOverlay);
 
-  // Update the event listener for the continue-chat-input
-  const chatInput = instructionsOverlay.querySelector('.continue-chat-input');
+  return instructionsOverlay;
+}
+
+function updateInstructionsOverlay(overlay, content, question) {
+  const instructionsBody = overlay.querySelector('.instructions-body');
+  instructionsBody.innerHTML = `<p>${content}</p>`;
+  
+  // Update the chat input event listener
+  const chatInput = overlay.querySelector('.continue-chat-input');
   chatInput.addEventListener('keypress', function(event) {
     if (event.key === 'Enter') {
       const followUpQuestion = chatInput.value.trim();
       if (followUpQuestion) {
+        // Show loading message
+        instructionsBody.innerHTML += `<p><strong>Q: ${followUpQuestion}</strong></p><p>Loading...</p>`;
+        instructionsBody.scrollTop = instructionsBody.scrollHeight;
+        
         sendQuestionToBackend(followUpQuestion)
           .then(answer => {
             // Update the existing overlay with the new answer
-            const instructionsBody = instructionsOverlay.querySelector('.instructions-body');
-            instructionsBody.innerHTML += `<p><strong>Q: ${followUpQuestion}</strong></p><p>${answer}</p>`;
-            // Scroll to the bottom of the instructions body
+            const loadingParagraph = instructionsBody.lastElementChild;
+            loadingParagraph.textContent = answer;
             instructionsBody.scrollTop = instructionsBody.scrollHeight;
           })
           .catch(error => {
             console.error('Error:', error);
-            // Handle error (e.g., show an error message to the user)
+            const loadingParagraph = instructionsBody.lastElementChild;
+            loadingParagraph.textContent = 'An error occurred. Please try again.';
           });
         chatInput.value = ''; // Clear the input after sending the question
       }
     }
   });
+}
+
+function fadeOutAndRemove(element) {
+  element.style.opacity = '0';
+  setTimeout(() => {
+    document.body.removeChild(element);
+  }, 300); // Adjust this value to match your CSS transition duration
 }
 
 function setRandomPosition(element) {
