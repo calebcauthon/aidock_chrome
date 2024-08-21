@@ -8,12 +8,19 @@ input.placeholder = 'Ask away';
 overlay.appendChild(input);
 document.body.appendChild(overlay);
 
-// Add event listener for Enter key press
+// Update the event listener for the main input
 input.addEventListener('keypress', function(event) {
   if (event.key === 'Enter') {
     const question = input.value.trim();
     if (question) {
-      sendQuestionToBackend(question);
+      sendQuestionToBackend(question)
+        .then(answer => {
+          createInstructionsOverlay(answer, question);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          // Handle error (e.g., show an error message to the user)
+        });
       input.value = ''; // Clear the input after sending the question
     }
   }
@@ -30,6 +37,9 @@ function createInstructionsOverlay(content, question) {
       <span class="close-btn">&times;</span>
       <div class="instructions-body">
         <p>${content}</p>
+      </div>
+      <div class="chat-input">
+        <input type="text" placeholder="Ask away" class="continue-chat-input">
       </div>
       <div class="resize-handle"></div>
     </div>
@@ -57,6 +67,29 @@ function createInstructionsOverlay(content, question) {
 
   // Make the overlay resizable
   makeResizable(instructionsOverlay);
+
+  // Update the event listener for the continue-chat-input
+  const chatInput = instructionsOverlay.querySelector('.continue-chat-input');
+  chatInput.addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+      const followUpQuestion = chatInput.value.trim();
+      if (followUpQuestion) {
+        sendQuestionToBackend(followUpQuestion)
+          .then(answer => {
+            // Update the existing overlay with the new answer
+            const instructionsBody = instructionsOverlay.querySelector('.instructions-body');
+            instructionsBody.innerHTML += `<p><strong>Q: ${followUpQuestion}</strong></p><p>${answer}</p>`;
+            // Scroll to the bottom of the instructions body
+            instructionsBody.scrollTop = instructionsBody.scrollHeight;
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            // Handle error (e.g., show an error message to the user)
+          });
+        chatInput.value = ''; // Clear the input after sending the question
+      }
+    }
+  });
 }
 
 function setRandomPosition(element) {

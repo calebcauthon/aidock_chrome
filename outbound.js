@@ -14,24 +14,18 @@ function sendQuestionToBackend(question) {
     scrollPosition: scrollPosition
   };
 
-  fetch('http://localhost:5000/ask', {
+  return fetch('http://localhost:5000/ask', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(data)
   })
-    .then(response => response.json())
-    .then(data => {
-      if (data.answer) {
-        createInstructionsOverlay(data.answer, question);
-      } else if (data.error) {
-        console.error('Error:', data.error);
-        // Handle error (e.g., show an error message to the user)
-      }
-    })
-    .catch(error => {
-      console.error('Fetch error:', error);
-      // Handle network errors
-    });
+  .then(response => response.json())
+  .then(data => {
+    if (data.error) {
+      throw new Error(data.error);
+    }
+    return data.answer;
+  });
 }
