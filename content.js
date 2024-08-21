@@ -21,10 +21,13 @@ function createInstructionsOverlay() {
   
   instructionsOverlay.innerHTML = `
     <div class="instructions-content">
+      <div class="handle">Instructions</div>
       <span class="close-btn">&times;</span>
-      <h2>Instructions</h2>
-      <p>This is a sample instruction.</p>
-      <p>You can add more details here.</p>
+      <div class="instructions-body">
+        <p>This is a sample instruction.</p>
+        <p>You can add more details here.</p>
+      </div>
+      <div class="resize-handle"></div>
     </div>
   `;
   
@@ -35,4 +38,76 @@ function createInstructionsOverlay() {
   closeBtn.addEventListener('click', function() {
     document.body.removeChild(instructionsOverlay);
   });
+
+  // Make the overlay draggable
+  makeDraggable(instructionsOverlay);
+
+  // Make the overlay resizable
+  makeResizable(instructionsOverlay);
+}
+
+function makeDraggable(element) {
+  const handle = element.querySelector('.handle');
+  let isDragging = false;
+  let startX, startY, startLeft, startTop;
+
+  handle.addEventListener('mousedown', startDragging);
+
+  function startDragging(e) {
+    isDragging = true;
+    startX = e.clientX;
+    startY = e.clientY;
+    startLeft = element.offsetLeft;
+    startTop = element.offsetTop;
+    document.addEventListener('mousemove', drag);
+    document.addEventListener('mouseup', stopDragging);
+  }
+
+  function drag(e) {
+    if (isDragging) {
+      const deltaX = e.clientX - startX;
+      const deltaY = e.clientY - startY;
+      element.style.left = startLeft + deltaX + 'px';
+      element.style.top = startTop + deltaY + 'px';
+    }
+  }
+
+  function stopDragging() {
+    isDragging = false;
+    document.removeEventListener('mousemove', drag);
+    document.removeEventListener('mouseup', stopDragging);
+  }
+}
+
+function makeResizable(element) {
+  const resizeHandle = element.querySelector('.resize-handle');
+  let isResizing = false;
+  let startX, startY, startWidth, startHeight;
+
+  resizeHandle.addEventListener('mousedown', startResizing);
+
+  function startResizing(e) {
+    isResizing = true;
+    startX = e.clientX;
+    startY = e.clientY;
+    startWidth = element.offsetWidth;
+    startHeight = element.offsetHeight;
+    document.addEventListener('mousemove', resize);
+    document.addEventListener('mouseup', stopResizing);
+  }
+
+  function resize(e) {
+    if (isResizing) {
+      const deltaX = e.clientX - startX;
+      const deltaY = e.clientY - startY;
+      element.style.width = startWidth + deltaX + 'px';
+      element.style.height = startHeight + deltaY + 'px';
+    }
+  }
+
+  function stopResizing() {
+    isResizing = false;
+    document.removeEventListener('mousemove', resize);
+    document.removeEventListener('mouseup', stopResizing);
+  }
 }
