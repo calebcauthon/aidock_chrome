@@ -58,7 +58,7 @@
 
 .instructions-body {
   flex-grow: 1;
-  padding: 10px;
+  padding: 25px;
   overflow-y: auto;
 }
 
