@@ -29,6 +29,7 @@
   box-sizing: border-box;
   resize: both;
   overflow: auto;
+  z-index: 9999; /* Add this line */
 }
 
 .instructions-content {
