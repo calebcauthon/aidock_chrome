@@ -19,44 +19,6 @@ input.addEventListener('keypress', function(event) {
   }
 });
 
-function sendQuestionToBackend(question) {
-  const url = window.location.href;
-  const pageTitle = document.title;
-  const selectedText = window.getSelection().toString();
-  const activeElement = document.activeElement.tagName.toLowerCase();
-  const scrollPosition = window.scrollY;
-
-  const data = {
-    question: question,
-    url: url,
-    pageTitle: pageTitle,
-    selectedText: selectedText,
-    activeElement: activeElement,
-    scrollPosition: scrollPosition
-  };
-
-  fetch('http://localhost:5000/ask', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data)
-  })
-    .then(response => response.json())
-    .then(data => {
-      if (data.answer) {
-        createInstructionsOverlay(data.answer, question);
-      } else if (data.error) {
-        console.error('Error:', data.error);
-        // Handle error (e.g., show an error message to the user)
-      }
-    })
-    .catch(error => {
-      console.error('Fetch error:', error);
-      // Handle network errors
-    });
-}
-
 function createInstructionsOverlay(content, question) {
   const instructionsOverlay = document.createElement('div');
   instructionsOverlay.id = 'instructions-overlay';
