@@ -14,6 +14,7 @@ input.addEventListener('keypress', function(event) {
     const question = input.value.trim();
     if (question) {
       sendQuestionToBackend(question);
+      input.value = ''; // Clear the input after sending the question
     }
   }
 });
