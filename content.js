@@ -11,11 +11,31 @@ document.body.appendChild(overlay);
 // Add event listener for Enter key press
 input.addEventListener('keypress', function(event) {
   if (event.key === 'Enter') {
-    createInstructionsOverlay();
+    const question = input.value.trim();
+    if (question) {
+      sendQuestionToBackend(question);
+    }
   }
 });
 
-function createInstructionsOverlay() {
+function sendQuestionToBackend(question) {
+  fetch(`http://localhost:5000/ask?question=${encodeURIComponent(question)}`)
+    .then(response => response.json())
+    .then(data => {
+      if (data.answer) {
+        createInstructionsOverlay(data.answer);
+      } else if (data.error) {
+        console.error('Error:', data.error);
+        // Handle error (e.g., show an error message to the user)
+      }
+    })
+    .catch(error => {
+      console.error('Fetch error:', error);
+      // Handle network errors
+    });
+}
+
+function createInstructionsOverlay(content) {
   const instructionsOverlay = document.createElement('div');
   instructionsOverlay.id = 'instructions-overlay';
   instructionsOverlay.style.opacity = '0';
@@ -25,8 +45,7 @@ function createInstructionsOverlay() {
       <div class="handle">Instructions</div>
       <span class="close-btn">&times;</span>
       <div class="instructions-body">
-        <p>This is a sample instruction.</p>
-        <p>You can add more details here.</p>
+        <p>${content}</p>
       </div>
       <div class="resize-handle"></div>
     </div>
