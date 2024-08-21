@@ -19,11 +19,32 @@ input.addEventListener('keypress', function(event) {
 });
 
 function sendQuestionToBackend(question) {
-  fetch(`http://localhost:5000/ask?question=${encodeURIComponent(question)}`)
+  const url = window.location.href;
+  const pageTitle = document.title;
+  const selectedText = window.getSelection().toString();
+  const activeElement = document.activeElement.tagName.toLowerCase();
+  const scrollPosition = window.scrollY;
+
+  const data = {
+    question: question,
+    url: url,
+    pageTitle: pageTitle,
+    selectedText: selectedText,
+    activeElement: activeElement,
+    scrollPosition: scrollPosition
+  };
+
+  fetch('http://localhost:5000/ask', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data)
+  })
     .then(response => response.json())
     .then(data => {
       if (data.answer) {
-        createInstructionsOverlay(data.answer);
+        createInstructionsOverlay(data.answer, question);
       } else if (data.error) {
         console.error('Error:', data.error);
         // Handle error (e.g., show an error message to the user)
@@ -35,14 +56,14 @@ function sendQuestionToBackend(question) {
     });
 }
 
-function createInstructionsOverlay(content) {
+function createInstructionsOverlay(content, question) {
   const instructionsOverlay = document.createElement('div');
   instructionsOverlay.id = 'instructions-overlay';
   instructionsOverlay.style.opacity = '0';
   
   instructionsOverlay.innerHTML = `
     <div class="instructions-content">
-      <div class="handle">Instructions</div>
+      <div class="handle">${question}</div>
       <span class="close-btn">&times;</span>
       <div class="instructions-body">
         <p>${content}</p>
@@ -79,8 +100,11 @@ function setRandomPosition(element) {
   const maxX = window.innerWidth - element.offsetWidth;
   const maxY = window.innerHeight - element.offsetHeight;
   
+  const minY = window.innerHeight * 0.1;
+  const maxYAdjusted = window.innerHeight * 0.9 - element.offsetHeight;
+  
   const randomX = Math.floor(Math.random() * maxX);
-  const randomY = Math.floor(Math.random() * maxY);
+  const randomY = Math.floor(Math.random() * (maxYAdjusted - minY) + minY);
   
   element.style.left = randomX + 'px';
   element.style.top = randomY + 'px';
