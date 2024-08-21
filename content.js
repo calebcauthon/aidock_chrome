@@ -34,6 +34,9 @@ function createInstructionsOverlay() {
   
   document.body.appendChild(instructionsOverlay);
   
+  // Set random position
+  setRandomPosition(instructionsOverlay);
+  
   // Trigger reflow to ensure the opacity transition works
   instructionsOverlay.offsetHeight;
   
@@ -51,6 +54,17 @@ function createInstructionsOverlay() {
 
   // Make the overlay resizable
   makeResizable(instructionsOverlay);
+}
+
+function setRandomPosition(element) {
+  const maxX = window.innerWidth - element.offsetWidth;
+  const maxY = window.innerHeight - element.offsetHeight;
+  
+  const randomX = Math.floor(Math.random() * maxX);
+  const randomY = Math.floor(Math.random() * maxY);
+  
+  element.style.left = randomX + 'px';
+  element.style.top = randomY + 'px';
 }
 
 function makeDraggable(element) {
