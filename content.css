@@ -29,7 +29,8 @@
   box-sizing: border-box;
   resize: both;
   overflow: auto;
-  z-index: 9999; /* Add this line */
+  z-index: 9999;
+  transition: opacity 0.3s ease-in-out; /* Added this line */
 }
 
 .instructions-content {

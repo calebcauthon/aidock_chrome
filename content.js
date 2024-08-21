@@ -18,6 +18,7 @@ input.addEventListener('keypress', function(event) {
 function createInstructionsOverlay() {
   const instructionsOverlay = document.createElement('div');
   instructionsOverlay.id = 'instructions-overlay';
+  instructionsOverlay.style.opacity = '0';
   
   instructionsOverlay.innerHTML = `
     <div class="instructions-content">
@@ -32,6 +33,12 @@ function createInstructionsOverlay() {
   `;
   
   document.body.appendChild(instructionsOverlay);
+  
+  // Trigger reflow to ensure the opacity transition works
+  instructionsOverlay.offsetHeight;
+  
+  // Set opacity to 1 to start the fade-in effect
+  instructionsOverlay.style.opacity = '1';
   
   // Add event listener to close button
   const closeBtn = instructionsOverlay.querySelector('.close-btn');
