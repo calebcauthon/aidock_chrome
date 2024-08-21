@@ -98,14 +98,14 @@ function createInstructionsOverlay(content, question) {
 }
 
 function setRandomPosition(element) {
-  const maxX = window.innerWidth - element.offsetWidth;
-  const maxY = window.innerHeight - element.offsetHeight;
+  const minX = window.innerWidth * 0.1;
+  const maxX = window.innerWidth * 0.9 - element.offsetWidth;
   
   const minY = window.innerHeight * 0.1;
-  const maxYAdjusted = window.innerHeight * 0.9 - element.offsetHeight;
+  const maxY = window.innerHeight * 0.9 - element.offsetHeight;
   
-  const randomX = Math.floor(Math.random() * maxX);
-  const randomY = Math.floor(Math.random() * (maxYAdjusted - minY) + minY);
+  const randomX = Math.floor(Math.random() * (maxX - minX) + minX);
+  const randomY = Math.floor(Math.random() * (maxY - minY) + minY);
   
   element.style.left = randomX + 'px';
   element.style.top = randomY + 'px';
