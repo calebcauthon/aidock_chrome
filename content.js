@@ -57,3 +57,27 @@ function fadeOutAndRemove(element) {
 if (typeof makeDraggable === 'undefined' || typeof makeResizable === 'undefined') {
   console.error('makeDraggable or makeResizable functions are not defined. Make sure draggable-resizable.js is loaded before content.js');
 }
+
+function updateInstructionsOverlay(overlay, content, question) {
+  const instructionsBody = overlay.querySelector('.instructions-body');
+  const chatInput = overlay.querySelector('.chat-input');
+  const minimizeBtn = overlay.querySelector('.minimize-btn');
+
+  instructionsBody.innerHTML = `<h2>Question: ${question}</h2><p>${content}</p>`;
+
+  let isMinimized = false;
+
+  minimizeBtn.addEventListener('click', () => {
+    isMinimized = !isMinimized;
+    instructionsBody.classList.toggle('minimized', isMinimized);
+    chatInput.classList.toggle('minimized', isMinimized);
+    minimizeBtn.textContent = isMinimized ? '+' : '-';
+
+    // Adjust overlay height
+    if (isMinimized) {
+      overlay.style.height = '40px'; // Height of the handle
+    } else {
+      overlay.style.height = ''; // Reset to default (CSS will handle it)
+    }
+  });
+}

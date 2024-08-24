@@ -33,7 +33,7 @@
   box-sizing: border-box;
   overflow: hidden;
   z-index: 9999;
-  transition: opacity 0.3s ease-in-out; /* Added this line */
+  transition: opacity 0.3s ease-in-out, height 0.3s ease-in-out; /* Added this line */
   display: flex;
   flex-direction: column;
 }
@@ -76,11 +76,14 @@
   flex-grow: 1;
   padding: 25px;
   overflow-y: auto;
-  max-height: calc(var(--overlay-max-height) - 40px - 20px - 50px - 10px); /* Handle: 20px, padding: 25px * 2 */
+  max-height: calc(var(--overlay-max-height) - 40px);
+  transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out;
 }
 
 .instructions-body.minimized {
-  display: none;
+  max-height: 0;
+  padding: 0 25px;
+  overflow: hidden;
 }
 
 #instructions-overlay h2 {
@@ -102,6 +105,14 @@
   cursor: se-resize;
 }
 
+.chat-input {
+  transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out;
+  max-height: 50px;
+  padding: 10px;
+}
+
 .chat-input.minimized {
-  display: none;
+  max-height: 0;
+  padding: 0 10px;
+  overflow: hidden;
 }
