@@ -128,3 +128,31 @@
   overflow: hidden;
   opacity: 0;
 }
+
+#headquarters {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 250px;
+  z-index: 10000;
+  transition: height 0.3s ease-in-out;
+}
+
+#headquarters .instructions-body {
+  max-height: calc(var(--overlay-max-height) - 40px);
+}
+
+#headquarters #question-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+#headquarters #question-list li {
+  cursor: pointer;
+  padding: 5px 0;
+}
+
+#headquarters #question-list li:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}

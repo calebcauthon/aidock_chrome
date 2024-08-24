@@ -17,25 +17,21 @@ function createInstructionsOverlay(content, question) {
     </div>
   `;
   
-  // Remove the existing positioning logic and add the new overlay to the document
   document.body.appendChild(instructionsOverlay);
   
-  // Reposition all overlays, including the new one
   repositionOverlays();
   
-  // Trigger reflow to ensure the opacity transition works
   instructionsOverlay.offsetHeight;
   
-  // Set opacity to 1 to start the fade-in effect
   instructionsOverlay.style.opacity = '1';
   
-  // Add event listener to close button
+  // Fix: Use instructionsOverlay instead of overlay
   const closeBtn = instructionsOverlay.querySelector('.close-btn');
   closeBtn.addEventListener('click', function() {
-    fadeOutAndRemove(instructionsOverlay);
+    instructionsOverlay.style.display = 'none';
+    repositionOverlays();
   });
 
-  // Add event listener to minimize button
   const minimizeBtn = instructionsOverlay.querySelector('.minimize-btn');
   minimizeBtn.addEventListener('click', function() {
     const instructionsBody = instructionsOverlay.querySelector('.instructions-body');
@@ -44,7 +40,6 @@ function createInstructionsOverlay(content, question) {
     instructionsBody.classList.toggle('minimized');
     chatInput.classList.toggle('minimized');
     
-    // Toggle emoji
     this.textContent = instructionsBody.classList.contains('minimized') ? '🔼' : '🔽';
   });
 
@@ -87,6 +82,8 @@ function updateInstructionsOverlay(overlay, content, question) {
       }
     }
   });
+
+  return overlay; // Return the updated overlay
 }
 
 function toggleMinimize(overlay, instructionsBody, chatInput, minimizeBtn, isMinimized) {
@@ -98,4 +95,55 @@ function toggleMinimize(overlay, instructionsBody, chatInput, minimizeBtn, isMin
   setTimeout(() => {
     overlay.style.height = !isMinimized ? '40px' : '';
   }, !isMinimized ? 300 : 0);
+}
+
+function createHeadquarters() {
+  const headquarters = document.createElement('div');
+  headquarters.id = 'headquarters';
+  headquarters.className = 'instructions-overlay';
+  
+  headquarters.innerHTML = `
+    <div class="instructions-content">
+      <div class="handle">Headquarters</div>
+      <span class="minimize-btn">🔽</span>
+      <div class="instructions-body">
+        <ul id="question-list"></ul>
+      </div>
+    </div>
+  `;
+  
+  document.body.appendChild(headquarters);
+  
+  const minimizeBtn = headquarters.querySelector('.minimize-btn');
+  minimizeBtn.addEventListener('click', () => toggleMinimize(headquarters));
+  
+  return headquarters;
+}
+
+function addEntryToHeadquarters(question, overlay) {
+  const questionList = headquarters.querySelector('#question-list');
+  const listItem = document.createElement('li');
+  listItem.textContent = question;
+  listItem.addEventListener('click', () => {
+    showOverlay(overlay);
+  });
+  questionList.appendChild(listItem);
+}
+
+function showOverlay(overlay) {
+  overlay.style.display = 'flex';
+  repositionOverlays();
+}
+
+function toggleMinimize(overlay) {
+  const instructionsBody = overlay.querySelector('.instructions-body');
+  const minimizeBtn = overlay.querySelector('.minimize-btn');
+  
+  overlay.classList.toggle('minimized');
+  instructionsBody.classList.toggle('minimized');
+  minimizeBtn.textContent = overlay.classList.contains('minimized') ? '🔼' : '🔽';
+  
+  if (overlay.id === 'headquarters') {
+    overlay.style.height = overlay.classList.contains('minimized') ? '40px' : '';
+  }
 }
