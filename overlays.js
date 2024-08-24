@@ -66,7 +66,7 @@ function updateInstructionsOverlay(overlay, content, question) {
       const followUpQuestion = chatInput.value.trim();
       if (followUpQuestion) {
         // Get the conversation ID from the overlay's data attribute
-        const conversationId = overlay.getAttribute('data-conversation-id');
+        const conversationId = parseInt(overlay.getAttribute('data-conversation-id'));
         const conversation = conversationManager.getConversation(conversationId);
         
         conversation.addMessage('question', followUpQuestion);
