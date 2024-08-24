@@ -103,17 +103,6 @@
   margin-bottom: 5px;
 }
 
-.resize-handle {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: auto;
-  width: 10px;
-  height: 10px;
-  background-color: #fff;
-  cursor: sw-resize;
-}
-
 .chat-input {
   transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out, opacity 0.3s ease-in-out;
   max-height: 50px;

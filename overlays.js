@@ -14,7 +14,6 @@ function createInstructionsOverlay(content, question) {
       <div class="chat-input">
         <input type="text" placeholder="Ask away" class="continue-chat-input">
       </div>
-      <div class="resize-handle"></div>
     </div>
   `;
   
@@ -44,9 +43,6 @@ function createInstructionsOverlay(content, question) {
     // Toggle emoji
     this.textContent = instructionsBody.classList.contains('minimized') ? '🔼' : '🔽';
   });
-
-  // Make the overlay resizable (only vertically)
-  makeResizable(instructionsOverlay, { directions: ['top'] });
 
   return instructionsOverlay;
 }
