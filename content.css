@@ -1,5 +1,17 @@
 :root {
   --overlay-max-height: 60vh;
+  --primary-bg-color: #c73664 !important;
+  --secondary-bg-color: #64c7c7;
+  --input-bg-color: #f0f0f0;
+  --input-text-color: #333;
+  --input-focus-bg-color: #ffffff;
+  --text-color: white;
+  --handle-bg-color: #c73664 !important;
+  --list-item-odd-bg-color: rgba(255, 255, 255, 0.05);
+  --list-item-even-bg-color: rgba(255, 255, 255, 0.1);
+  --list-item-hover-bg-color: rgba(255, 255, 255, 0.2);
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --shadow-color-strong: rgba(0, 0, 0, 0.5);
 }
 
 #extension-overlay {
@@ -8,7 +20,7 @@
   left: auto;
   right: 0;
   width: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: var(--primary-bg-color);
   padding: 10px;
   box-sizing: border-box;
   z-index: 10000; /* Ensure it is on top of everything */
@@ -19,20 +31,20 @@
   width: 90%;
   padding: 12px 15px;
   border: none;
-  background-color: #f0f0f0;
-  color: #333;
+  background-color: var(--input-bg-color);
+  color: var(--input-text-color);
   font-family: 'Roboto', Arial, sans-serif;
   font-size: 16px;
   border-radius: 8px;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 5px var(--shadow-color);
 }
 
 #extension-overlay input:focus,
 #instructions-overlay input:focus {
   outline: none;
-  background-color: #ffffff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  background-color: var(--input-focus-bg-color);
+  box-shadow: 0 4px 8px var(--shadow-color);
 }
 
 #instructions-overlay {
@@ -40,8 +52,8 @@
   bottom: 0;
   right: 0; /* Remove 'left: auto' */
   width: 400px;
-  background-color: rgba(0, 0, 0, 0.6);
-  color: white;
+  background-color: var(--secondary-bg-color);
+  color: var(--text-color);
   padding: 0;
   box-sizing: border-box;
   overflow: hidden;
@@ -52,7 +64,7 @@
   height: var(--overlay-max-height);
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 10px var(--shadow-color-strong);
 }
 
 #instructions-overlay.minimized {
@@ -68,7 +80,7 @@
 .handle {
   height: 20px;
   padding: 10px;
-  background-color: #444;
+  background-color: var(--handle-bg-color);
   cursor: move;
   user-select: none;
   flex-shrink: 0; /* Prevent handle from shrinking */
@@ -91,8 +103,8 @@
 }
 
 .instructions-body {
-  background-color: rgba(0, 0, 0, 0.8);
-  color: white;
+  background-color: var(--primary-bg-color);
+  color: var(--text-color);
   flex-grow: 1;
   padding: 25px;
   overflow-y: auto;
@@ -158,18 +170,18 @@
 }
 
 #headquarters #question-list li:nth-child(odd) {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: var(--list-item-odd-bg-color);
 }
 
 #headquarters #question-list li:nth-child(even) {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: var(--list-item-even-bg-color);
 }
 
 #headquarters #question-list li:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: var(--list-item-hover-bg-color);
 }
 
 #headquarters .handle {
-  background-color: rgba(0, 0, 0, 0.6);
-  color: white;
+  background-color: var(--secondary-bg-color);
+  color: var(--text-color);
 }
