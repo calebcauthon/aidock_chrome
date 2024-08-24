@@ -91,6 +91,8 @@
 }
 
 .instructions-body {
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
   flex-grow: 1;
   padding: 25px;
   overflow-y: auto;
@@ -140,6 +142,7 @@
 
 #headquarters .instructions-body {
   max-height: calc(var(--overlay-max-height) - 40px);
+  padding: 0; /* Remove padding to allow full-width list items */
 }
 
 #headquarters #question-list {
@@ -150,9 +153,23 @@
 
 #headquarters #question-list li {
   cursor: pointer;
-  padding: 5px 0;
+  padding: 10px 15px;
+  transition: background-color 0.2s ease;
+}
+
+#headquarters #question-list li:nth-child(odd) {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+#headquarters #question-list li:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 #headquarters #question-list li:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+#headquarters .handle {
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
 }
