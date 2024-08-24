@@ -23,7 +23,7 @@ class Conversations {
   }
 
   createConversation(initialQuestion) {
-    const id = this.conversations.length + 1;
+    const id = this.conversations.length + 1 + Math.random().toString(36).substring(2, 7);
     const conversation = new Conversation(id, initialQuestion);
     this.conversations.push(conversation);
     return conversation;

@@ -1,7 +1,8 @@
-function createInstructionsOverlay(content, question) {
+function createInstructionsOverlay(content, question, conversationId) {
   const instructionsOverlay = document.createElement('div');
   instructionsOverlay.id = 'instructions-overlay';
   instructionsOverlay.style.opacity = '0';
+  instructionsOverlay.setAttribute('data-conversation-id', conversationId);
   
   instructionsOverlay.innerHTML = `
     <div class="instructions-content">
@@ -64,8 +65,8 @@ function updateInstructionsOverlay(overlay, content, question) {
     if (event.key === 'Enter') {
       const followUpQuestion = chatInput.value.trim();
       if (followUpQuestion) {
-        // Get the conversation ID from the overlay (you'll need to add this when creating the overlay)
-        const conversationId = parseInt(overlay.dataset.conversationId);
+        // Get the conversation ID from the overlay's data attribute
+        const conversationId = overlay.getAttribute('data-conversation-id');
         const conversation = conversationManager.getConversation(conversationId);
         
         conversation.addMessage('question', followUpQuestion);
