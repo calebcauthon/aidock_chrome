@@ -9,6 +9,7 @@ overlay.appendChild(input);
 document.body.appendChild(overlay);
 
 let headquarters;
+const conversationManager = new Conversations();
 
 // Update the event listener for the main input
 input.addEventListener('keypress', function(event) {
@@ -19,11 +20,17 @@ input.addEventListener('keypress', function(event) {
         headquarters = createHeadquarters();
       }
       
+      // Create a new conversation
+      const conversation = conversationManager.createConversation(question);
+      
       // Show loading overlay immediately
       const loadingOverlay = createInstructionsOverlay('Loading...', question);
       
       sendQuestionToBackend(question)
         .then(answer => {
+          // Add answer to the conversation
+          conversation.addMessage('answer', answer);
+          
           // Update the existing overlay with the answer
           const updatedOverlay = updateInstructionsOverlay(loadingOverlay, answer, question);
           // Add entry to headquarters

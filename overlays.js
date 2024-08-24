@@ -64,11 +64,19 @@ function updateInstructionsOverlay(overlay, content, question) {
     if (event.key === 'Enter') {
       const followUpQuestion = chatInput.value.trim();
       if (followUpQuestion) {
+        // Get the conversation ID from the overlay (you'll need to add this when creating the overlay)
+        const conversationId = parseInt(overlay.dataset.conversationId);
+        const conversation = conversationManager.getConversation(conversationId);
+        
+        conversation.addMessage('question', followUpQuestion);
+        
         instructionsBody.innerHTML += `<p><strong>Q: ${followUpQuestion}</strong></p><p>Loading...</p>`;
         instructionsBody.scrollTop = instructionsBody.scrollHeight;
         
         sendQuestionToBackend(followUpQuestion)
           .then(answer => {
+            conversation.addMessage('answer', answer);
+            
             const loadingParagraph = instructionsBody.lastElementChild;
             loadingParagraph.textContent = answer;
             instructionsBody.scrollTop = instructionsBody.scrollHeight;
