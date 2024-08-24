@@ -54,7 +54,7 @@ function updateInstructionsOverlay(overlay, content, question) {
       const followUpQuestion = chatInput.value.trim();
       if (followUpQuestion) {
         // Get the conversation ID from the overlay's data attribute
-        const conversationId = parseInt(overlay.getAttribute('data-conversation-id'));
+        const conversationId = overlay.getAttribute('data-conversation-id');
         const conversation = conversationManager.getConversation(conversationId);
         
         conversation.addMessage('question', followUpQuestion);
@@ -81,17 +81,6 @@ function updateInstructionsOverlay(overlay, content, question) {
   });
 
   return overlay; // Return the updated overlay
-}
-
-function toggleMinimize(overlay, instructionsBody, chatInput, minimizeBtn, isMinimized) {
-  overlay.classList.toggle('minimized', !isMinimized);
-  instructionsBody.classList.toggle('minimized', !isMinimized);
-  chatInput.parentElement.classList.toggle('minimized', !isMinimized);
-  minimizeBtn.textContent = !isMinimized ? '🔼' : '🔽';
-
-  setTimeout(() => {
-    overlay.style.height = !isMinimized ? '40px' : '';
-  }, !isMinimized ? 300 : 0);
 }
 
 function createHeadquarters() {
