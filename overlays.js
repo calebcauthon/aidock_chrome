@@ -6,6 +6,7 @@ function createInstructionsOverlay(content, question) {
   instructionsOverlay.innerHTML = `
     <div class="instructions-content">
       <div class="handle">${question}</div>
+      <span class="minimize-btn">🔽</span>
       <span class="close-btn">&times;</span>
       <div class="instructions-body">
         <p>${content}</p>
@@ -29,6 +30,19 @@ function createInstructionsOverlay(content, question) {
   const closeBtn = instructionsOverlay.querySelector('.close-btn');
   closeBtn.addEventListener('click', function() {
     fadeOutAndRemove(instructionsOverlay);
+  });
+
+  // Add event listener to minimize button
+  const minimizeBtn = instructionsOverlay.querySelector('.minimize-btn');
+  minimizeBtn.addEventListener('click', function() {
+    const instructionsBody = instructionsOverlay.querySelector('.instructions-body');
+    const chatInput = instructionsOverlay.querySelector('.chat-input');
+    
+    instructionsBody.classList.toggle('minimized');
+    chatInput.classList.toggle('minimized');
+    
+    // Toggle emoji
+    this.textContent = instructionsBody.classList.contains('minimized') ? '🔼' : '🔽';
   });
 
   // Make the overlay resizable (only vertically)

@@ -57,12 +57,19 @@
   flex-shrink: 0; /* Prevent handle from shrinking */
 }
 
-.close-btn {
+.close-btn, .minimize-btn {
   position: absolute;
   top: 5px;
-  right: 10px;
   cursor: pointer;
   font-size: 20px;
+}
+
+.close-btn {
+  right: 10px;
+}
+
+.minimize-btn {
+  right: 40px;
 }
 
 .instructions-body {
@@ -70,6 +77,10 @@
   padding: 25px;
   overflow-y: auto;
   max-height: calc(var(--overlay-max-height) - 40px - 20px - 50px - 10px); /* Handle: 20px, padding: 25px * 2 */
+}
+
+.instructions-body.minimized {
+  display: none;
 }
 
 #instructions-overlay h2 {
@@ -89,4 +100,8 @@
   height: 10px;
   background-color: #fff;
   cursor: se-resize;
+}
+
+.chat-input.minimized {
+  display: none;
 }
