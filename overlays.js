@@ -19,9 +19,6 @@ function createInstructionsOverlay(content, question) {
   
   document.body.appendChild(instructionsOverlay);
   
-  // Set random position
-  setRandomPosition(instructionsOverlay);
-  
   // Trigger reflow to ensure the opacity transition works
   instructionsOverlay.offsetHeight;
   
@@ -34,9 +31,8 @@ function createInstructionsOverlay(content, question) {
     fadeOutAndRemove(instructionsOverlay);
   });
 
-  // Make the overlay draggable and resizable
-  makeDraggable(instructionsOverlay);
-  makeResizable(instructionsOverlay);
+  // Make the overlay resizable (only vertically)
+  makeResizable(instructionsOverlay, { directions: ['top'] });
 
   return instructionsOverlay;
 }

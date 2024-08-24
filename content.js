@@ -38,19 +38,20 @@ function fadeOutAndRemove(element) {
   }, 300); // Adjust this value to match your CSS transition duration
 }
 
-function setRandomPosition(element) {
-  const minX = window.innerWidth * 0.1;
-  const maxX = window.innerWidth * 0.9 - element.offsetWidth;
+// Remove or comment out the setRandomPosition function
+// function setRandomPosition(element) {
+//   const minX = window.innerWidth * 0.1;
+//   const maxX = window.innerWidth * 0.9 - element.offsetWidth;
   
-  const minY = window.innerHeight * 0.1;
-  const maxY = window.innerHeight * 0.9 - element.offsetHeight;
+//   const minY = window.innerHeight * 0.1;
+//   const maxY = window.innerHeight * 0.9 - element.offsetHeight;
   
-  const randomX = Math.floor(Math.random() * (maxX - minX) + minX);
-  const randomY = Math.floor(Math.random() * (maxY - minY) + minY);
+//   const randomX = Math.floor(Math.random() * (maxX - minX) + minX);
+//   const randomY = Math.floor(Math.random() * (maxY - minY) + minY);
   
-  element.style.left = randomX + 'px';
-  element.style.top = randomY + 'px';
-}
+//   element.style.left = randomX + 'px';
+//   element.style.top = randomY + 'px';
+// }
 
 // This will ensure that makeDraggable and makeResizable are available
 if (typeof makeDraggable === 'undefined' || typeof makeResizable === 'undefined') {
