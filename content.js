@@ -35,7 +35,18 @@ function fadeOutAndRemove(element) {
   element.style.opacity = '0';
   setTimeout(() => {
     document.body.removeChild(element);
+    repositionOverlays();
   }, 300); // Adjust this value to match your CSS transition duration
+}
+
+function repositionOverlays() {
+  const overlays = document.querySelectorAll('#instructions-overlay');
+  let rightPosition = 0;
+  
+  overlays.forEach((overlay, index) => {
+    overlay.style.right = `${rightPosition}px`;
+    rightPosition += overlay.offsetWidth;
+  });
 }
 
 function updateInstructionsOverlay(overlay, content, question) {

@@ -17,17 +17,11 @@ function createInstructionsOverlay(content, question) {
     </div>
   `;
   
-  // Check for existing overlays and adjust position
-  const existingOverlays = document.querySelectorAll('#instructions-overlay');
-  if (existingOverlays.length > 0) {
-    const lastOverlay = existingOverlays[existingOverlays.length - 1];
-    const leftPosition = parseInt(lastOverlay.style.right || '0') + lastOverlay.offsetWidth;
-    instructionsOverlay.style.right = `${leftPosition}px`;
-  } else {
-    instructionsOverlay.style.right = '0';
-  }
-  
+  // Remove the existing positioning logic and add the new overlay to the document
   document.body.appendChild(instructionsOverlay);
+  
+  // Reposition all overlays, including the new one
+  repositionOverlays();
   
   // Trigger reflow to ensure the opacity transition works
   instructionsOverlay.offsetHeight;
