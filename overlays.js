@@ -104,7 +104,7 @@ function createHeadquarters() {
   
   headquarters.innerHTML = `
     <div class="instructions-content">
-      <div class="handle">Headquarters</div>
+      <div class="handle">Past Inquiries</div>
       <span class="minimize-btn">🔽</span>
       <div class="instructions-body">
         <ul id="question-list"></ul>
