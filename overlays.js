@@ -4,19 +4,7 @@ function createInstructionsOverlay(content, question, conversationId) {
   instructionsOverlay.style.opacity = '0';
   instructionsOverlay.setAttribute('data-conversation-id', conversationId);
   
-  instructionsOverlay.innerHTML = `
-    <div class="instructions-content">
-      <div class="handle">${question}</div>
-      <span class="minimize-btn">🔽</span>
-      <span class="close-btn">&times;</span>
-      <div class="instructions-body">
-        <p>${content}</p>
-      </div>
-      <div class="chat-input">
-        <input type="text" placeholder="Ask away" class="continue-chat-input">
-      </div>
-    </div>
-  `;
+  instructionsOverlay.innerHTML = instructionsOverlayTemplate(question, content);
   
   document.body.appendChild(instructionsOverlay);
   
@@ -111,15 +99,7 @@ function createHeadquarters() {
   headquarters.id = 'headquarters';
   headquarters.className = 'instructions-overlay';
   
-  headquarters.innerHTML = `
-    <div class="instructions-content">
-      <div class="handle">Past Inquiries</div>
-      <span class="minimize-btn">🔽</span>
-      <div class="instructions-body">
-        <ul id="question-list" class="question-list"></ul>
-      </div>
-    </div>
-  `;
+  headquarters.innerHTML = headquartersTemplate();
   
   document.body.appendChild(headquarters);
   
@@ -135,13 +115,7 @@ function addEntryToHeadquarters(question, answer, overlay) {
   const timestamp = new Date().toLocaleTimeString();
   const truncatedAnswer = answer.substring(0, 20) + (answer.length > 20 ? '...' : '');
   
-  listItem.innerHTML = `
-    <div class="entry-header">
-      <span class="entry-timestamp">${timestamp}</span>
-      <span class="entry-question">${question}</span>
-    </div>
-    <div class="entry-preview">${truncatedAnswer}</div>
-  `;
+  listItem.innerHTML = headquartersEntryTemplate(timestamp, question, truncatedAnswer);
   
   listItem.addEventListener('click', () => {
     showOverlay(overlay);
