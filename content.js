@@ -38,29 +38,9 @@ function fadeOutAndRemove(element) {
   }, 300); // Adjust this value to match your CSS transition duration
 }
 
-// Remove or comment out the setRandomPosition function
-// function setRandomPosition(element) {
-//   const minX = window.innerWidth * 0.1;
-//   const maxX = window.innerWidth * 0.9 - element.offsetWidth;
-  
-//   const minY = window.innerHeight * 0.1;
-//   const maxY = window.innerHeight * 0.9 - element.offsetHeight;
-  
-//   const randomX = Math.floor(Math.random() * (maxX - minX) + minX);
-//   const randomY = Math.floor(Math.random() * (maxY - minY) + minY);
-  
-//   element.style.left = randomX + 'px';
-//   element.style.top = randomY + 'px';
-// }
-
-// This will ensure that makeDraggable and makeResizable are available
-if (typeof makeDraggable === 'undefined' || typeof makeResizable === 'undefined') {
-  console.error('makeDraggable or makeResizable functions are not defined. Make sure draggable-resizable.js is loaded before content.js');
-}
-
 function updateInstructionsOverlay(overlay, content, question) {
   const instructionsBody = overlay.querySelector('.instructions-body');
-  const chatInput = overlay.querySelector('.chat-input');
+  const chatInput = overlay.querySelector('.continue-chat-input');
   const minimizeBtn = overlay.querySelector('.minimize-btn');
 
   instructionsBody.innerHTML = `<h2>Question: ${question}</h2><p>${content}</p>`;
@@ -71,12 +51,34 @@ function updateInstructionsOverlay(overlay, content, question) {
     isMinimized = !isMinimized;
     overlay.classList.toggle('minimized', isMinimized);
     instructionsBody.classList.toggle('minimized', isMinimized);
-    chatInput.classList.toggle('minimized', isMinimized);
-    minimizeBtn.textContent = isMinimized ? '+' : '-';
+    chatInput.parentElement.classList.toggle('minimized', isMinimized);
+    minimizeBtn.textContent = isMinimized ? '🔼' : '🔽';
 
-    // Use setTimeout to ensure the height change happens after the content is hidden
     setTimeout(() => {
       overlay.style.height = isMinimized ? '40px' : '';
-    }, isMinimized ? 300 : 0); // 300ms matches the transition duration
+    }, isMinimized ? 300 : 0);
+  });
+
+  chatInput.addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+      const followUpQuestion = chatInput.value.trim();
+      if (followUpQuestion) {
+        instructionsBody.innerHTML += `<p><strong>Q: ${followUpQuestion}</strong></p><p>Loading...</p>`;
+        instructionsBody.scrollTop = instructionsBody.scrollHeight;
+        
+        sendQuestionToBackend(followUpQuestion)
+          .then(answer => {
+            const loadingParagraph = instructionsBody.lastElementChild;
+            loadingParagraph.textContent = answer;
+            instructionsBody.scrollTop = instructionsBody.scrollHeight;
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            const loadingParagraph = instructionsBody.lastElementChild;
+            loadingParagraph.textContent = 'An error occurred. Please try again.';
+          });
+        chatInput.value = '';
+      }
+    }
   });
 }

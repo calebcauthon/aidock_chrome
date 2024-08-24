@@ -14,12 +14,25 @@
   z-index: 10000; /* Ensure it is on top of everything */
 }
 
-#extension-overlay input {
-  width: 100%;
-  padding: 5px;
+#extension-overlay input,
+#instructions-overlay input {
+  width: 90%;
+  padding: 12px 15px;
   border: none;
-  background-color: white;
-  color: black;
+  background-color: #f0f0f0;
+  color: #333;
+  font-family: 'Roboto', Arial, sans-serif;
+  font-size: 16px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#extension-overlay input:focus,
+#instructions-overlay input:focus {
+  outline: none;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 #instructions-overlay {
@@ -27,7 +40,7 @@
   bottom: 0;
   right: 0; /* Remove 'left: auto' */
   width: 400px;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.6);
   color: white;
   padding: 0;
   box-sizing: border-box;
@@ -44,10 +57,6 @@
 
 #instructions-overlay.minimized {
   height: 40px; /* Height of the handle */
-}
-
-#instructions-overlay input {
-  color: black;
 }
 
 .instructions-content {
@@ -108,7 +117,7 @@
 
 .chat-input {
   transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out, opacity 0.3s ease-in-out;
-  max-height: 50px;
+  max-height: 60px;
   padding: 10px;
   opacity: 1;
 }
