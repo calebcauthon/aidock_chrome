@@ -5,7 +5,8 @@
 #extension-overlay {
   position: fixed;
   top: 0;
-  left: 0;
+  left: auto;
+  right: 0;
   width: 100%;
   background-color: rgba(0, 0, 0, 0.8);
   padding: 10px;
@@ -24,18 +25,23 @@
 #instructions-overlay {
   position: fixed;
   bottom: 0;
-  left: 0;
+  left: auto;
+  right: 0;
   width: 400px;
-  max-height: var(--overlay-max-height);
   background-color: rgba(0, 0, 0, 0.8);
   color: white;
   padding: 0;
   box-sizing: border-box;
   overflow: hidden;
   z-index: 9999;
-  transition: opacity 0.3s ease-in-out, height 0.3s ease-in-out; /* Added this line */
+  transition: opacity 0.3s ease-in-out, height 0.3s ease-in-out;
   display: flex;
   flex-direction: column;
+  height: var(--overlay-max-height);
+}
+
+#instructions-overlay.minimized {
+  height: 40px; /* Height of the handle */
 }
 
 #instructions-overlay input {
@@ -77,13 +83,15 @@
   padding: 25px;
   overflow-y: auto;
   max-height: calc(var(--overlay-max-height) - 40px);
-  transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out;
+  transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  opacity: 1;
 }
 
 .instructions-body.minimized {
   max-height: 0;
   padding: 0 25px;
   overflow: hidden;
+  opacity: 0;
 }
 
 #instructions-overlay h2 {
@@ -98,21 +106,24 @@
 .resize-handle {
   position: absolute;
   bottom: 0;
-  right: 0;
+  left: 0;
+  right: auto;
   width: 10px;
   height: 10px;
   background-color: #fff;
-  cursor: se-resize;
+  cursor: sw-resize;
 }
 
 .chat-input {
-  transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out;
+  transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out, opacity 0.3s ease-in-out;
   max-height: 50px;
   padding: 10px;
+  opacity: 1;
 }
 
 .chat-input.minimized {
   max-height: 0;
   padding: 0 10px;
   overflow: hidden;
+  opacity: 0;
 }

@@ -69,15 +69,14 @@ function updateInstructionsOverlay(overlay, content, question) {
 
   minimizeBtn.addEventListener('click', () => {
     isMinimized = !isMinimized;
+    overlay.classList.toggle('minimized', isMinimized);
     instructionsBody.classList.toggle('minimized', isMinimized);
     chatInput.classList.toggle('minimized', isMinimized);
     minimizeBtn.textContent = isMinimized ? '+' : '-';
 
-    // Adjust overlay height
-    if (isMinimized) {
-      overlay.style.height = '40px'; // Height of the handle
-    } else {
-      overlay.style.height = ''; // Reset to default (CSS will handle it)
-    }
+    // Use setTimeout to ensure the height change happens after the content is hidden
+    setTimeout(() => {
+      overlay.style.height = isMinimized ? '40px' : '';
+    }, isMinimized ? 300 : 0); // 300ms matches the transition duration
   });
 }
