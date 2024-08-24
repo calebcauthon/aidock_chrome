@@ -53,21 +53,27 @@ function createInstructionsOverlay(content, question) {
 
 function updateInstructionsOverlay(overlay, content, question) {
   const instructionsBody = overlay.querySelector('.instructions-body');
-  instructionsBody.innerHTML = `<p>${content}</p>`;
-  
-  // Update the chat input event listener
   const chatInput = overlay.querySelector('.continue-chat-input');
+  const minimizeBtn = overlay.querySelector('.minimize-btn');
+
+  instructionsBody.innerHTML = `<h2>Question: ${question}</h2><p>${content}</p>`;
+
+  let isMinimized = false;
+
+  minimizeBtn.addEventListener('click', () => {
+    toggleMinimize(overlay, instructionsBody, chatInput, minimizeBtn, isMinimized);
+    isMinimized = !isMinimized;
+  });
+
   chatInput.addEventListener('keypress', function(event) {
     if (event.key === 'Enter') {
       const followUpQuestion = chatInput.value.trim();
       if (followUpQuestion) {
-        // Show loading message
         instructionsBody.innerHTML += `<p><strong>Q: ${followUpQuestion}</strong></p><p>Loading...</p>`;
         instructionsBody.scrollTop = instructionsBody.scrollHeight;
         
         sendQuestionToBackend(followUpQuestion)
           .then(answer => {
-            // Update the existing overlay with the new answer
             const loadingParagraph = instructionsBody.lastElementChild;
             loadingParagraph.textContent = answer;
             instructionsBody.scrollTop = instructionsBody.scrollHeight;
@@ -77,8 +83,19 @@ function updateInstructionsOverlay(overlay, content, question) {
             const loadingParagraph = instructionsBody.lastElementChild;
             loadingParagraph.textContent = 'An error occurred. Please try again.';
           });
-        chatInput.value = ''; // Clear the input after sending the question
+        chatInput.value = '';
       }
     }
   });
+}
+
+function toggleMinimize(overlay, instructionsBody, chatInput, minimizeBtn, isMinimized) {
+  overlay.classList.toggle('minimized', !isMinimized);
+  instructionsBody.classList.toggle('minimized', !isMinimized);
+  chatInput.parentElement.classList.toggle('minimized', !isMinimized);
+  minimizeBtn.textContent = !isMinimized ? '🔼' : '🔽';
+
+  setTimeout(() => {
+    overlay.style.height = !isMinimized ? '40px' : '';
+  }, !isMinimized ? 300 : 0);
 }

@@ -59,15 +59,8 @@ function updateInstructionsOverlay(overlay, content, question) {
   let isMinimized = false;
 
   minimizeBtn.addEventListener('click', () => {
+    toggleMinimize(overlay, instructionsBody, chatInput, minimizeBtn, isMinimized);
     isMinimized = !isMinimized;
-    overlay.classList.toggle('minimized', isMinimized);
-    instructionsBody.classList.toggle('minimized', isMinimized);
-    chatInput.parentElement.classList.toggle('minimized', isMinimized);
-    minimizeBtn.textContent = isMinimized ? '🔼' : '🔽';
-
-    setTimeout(() => {
-      overlay.style.height = isMinimized ? '40px' : '';
-    }, isMinimized ? 300 : 0);
   });
 
   chatInput.addEventListener('keypress', function(event) {
@@ -92,4 +85,15 @@ function updateInstructionsOverlay(overlay, content, question) {
       }
     }
   });
+}
+
+function toggleMinimize(overlay, instructionsBody, chatInput, minimizeBtn, isMinimized) {
+  overlay.classList.toggle('minimized', !isMinimized);
+  instructionsBody.classList.toggle('minimized', !isMinimized);
+  chatInput.parentElement.classList.toggle('minimized', !isMinimized);
+  minimizeBtn.textContent = !isMinimized ? '🔼' : '🔽';
+
+  setTimeout(() => {
+    overlay.style.height = !isMinimized ? '40px' : '';
+  }, !isMinimized ? 300 : 0);
 }
