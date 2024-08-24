@@ -81,7 +81,6 @@ function updateInstructionsOverlay(overlay, content, question) {
             const loadingParagraph = instructionsBody.lastElementChild;
             loadingParagraph.textContent = answer;
             instructionsBody.scrollTop = instructionsBody.scrollHeight;
-            addEntryToHeadquarters(followUpQuestion, answer, overlay);
           })
           .catch(error => {
             console.error('Error:', error);
