@@ -72,6 +72,7 @@ function updateInstructionsOverlay(overlay, content, question) {
             const loadingParagraph = instructionsBody.lastElementChild;
             loadingParagraph.textContent = answer;
             instructionsBody.scrollTop = instructionsBody.scrollHeight;
+            addEntryToHeadquarters(followUpQuestion, answer, overlay);
           })
           .catch(error => {
             console.error('Error:', error);
@@ -107,7 +108,7 @@ function createHeadquarters() {
       <div class="handle">Past Inquiries</div>
       <span class="minimize-btn">🔽</span>
       <div class="instructions-body">
-        <ul id="question-list"></ul>
+        <ul id="question-list" class="question-list"></ul>
       </div>
     </div>
   `;
@@ -120,14 +121,25 @@ function createHeadquarters() {
   return headquarters;
 }
 
-function addEntryToHeadquarters(question, overlay) {
+function addEntryToHeadquarters(question, answer, overlay) {
   const questionList = headquarters.querySelector('#question-list');
   const listItem = document.createElement('li');
-  listItem.textContent = question;
+  const timestamp = new Date().toLocaleTimeString();
+  const truncatedAnswer = answer.substring(0, 20) + (answer.length > 20 ? '...' : '');
+  
+  listItem.innerHTML = `
+    <div class="entry-header">
+      <span class="entry-timestamp">${timestamp}</span>
+      <span class="entry-question">${question}</span>
+    </div>
+    <div class="entry-preview">${truncatedAnswer}</div>
+  `;
+  
   listItem.addEventListener('click', () => {
     showOverlay(overlay);
   });
-  questionList.appendChild(listItem);
+  
+  questionList.insertBefore(listItem, questionList.firstChild);
 }
 
 function showOverlay(overlay) {

@@ -27,7 +27,7 @@ input.addEventListener('keypress', function(event) {
           // Update the existing overlay with the answer
           const updatedOverlay = updateInstructionsOverlay(loadingOverlay, answer, question);
           // Add entry to headquarters
-          addEntryToHeadquarters(question, updatedOverlay);
+          addEntryToHeadquarters(question, answer, updatedOverlay);
         })
         .catch(error => {
           console.error('Error:', error);
