@@ -67,7 +67,7 @@ function updateInstructionsOverlay(overlay, content, question) {
             conversation.addMessage('answer', answer);
             
             const loadingParagraph = instructionsBody.lastElementChild;
-            loadingParagraph.textContent = answer;
+            loadingParagraph.innerHTML = followUpQuestionAnswerTemplate(followUpQuestion, answer);
             instructionsBody.scrollTop = instructionsBody.scrollHeight;
           })
           .catch(error => {

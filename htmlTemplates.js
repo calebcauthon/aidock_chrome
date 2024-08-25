@@ -39,3 +39,8 @@ function headquartersEntryTemplate(timestamp, question, truncatedAnswer) {
 function followUpQuestionLoadingTemplate(question) {
   return `<p><strong>Q: ${question}</strong></p><p>Loading...</p>`;
 }
+
+function followUpQuestionAnswerTemplate(question, answer) {
+  return `<p><strong>Q: ${question}</strong></p><p>${answer}</p>`;
+}
+
