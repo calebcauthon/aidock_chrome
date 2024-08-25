@@ -15,7 +15,7 @@ function createInstructionsOverlayTemplate(question) {
 }
 
 function updateInstructionsOverlayTemplate(question, content) {
-  const timestamp = new Date().toLocaleTimeString();
+  const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   return `
     <div class="chat-row question-row">
       <div class="avatar-container">
