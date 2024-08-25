@@ -59,7 +59,7 @@ function updateInstructionsOverlay(overlay, content, question) {
         
         conversation.addMessage('question', followUpQuestion);
         
-        instructionsBody.innerHTML += `<p><strong>Q: ${followUpQuestion}</strong></p><p>Loading...</p>`;
+        instructionsBody.innerHTML += followUpQuestionLoadingTemplate(followUpQuestion);
         instructionsBody.scrollTop = instructionsBody.scrollHeight;
         
         sendQuestionToBackend(followUpQuestion)

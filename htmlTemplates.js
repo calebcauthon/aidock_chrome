@@ -35,3 +35,7 @@ function headquartersEntryTemplate(timestamp, question, truncatedAnswer) {
     <div class="entry-preview">${ truncatedAnswer }</div>
   `;
 }
+
+function followUpQuestionLoadingTemplate(question) {
+  return `<p><strong>Q: ${question}</strong></p><p>Loading...</p>`;
+}
