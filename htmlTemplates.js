@@ -1,14 +1,37 @@
-function instructionsOverlayTemplate(question, content) {
+function createInstructionsOverlayTemplate(question) {
   return `
     <div class="instructions-content">
-      <div class="handle">${ question }</div>
+      <div class="handle">${question}</div>
       <span class="minimize-btn">🔽</span>
       <span class="close-btn">&times;</span>
       <div class="instructions-body">
-        <p>${ content }</p>
+        <p>Loading...</p>
       </div>
       <div class="chat-input">
         <input type="text" placeholder="Ask away" class="continue-chat-input">
+      </div>
+    </div>
+  `;
+}
+
+function updateInstructionsOverlayTemplate(question, content) {
+  return `
+    <div class="chat-row question-row">
+      <div class="avatar-container">
+        <div class="avatar-circle"></div>
+        <div class="avatar-name">You</div>
+      </div>
+      <div class="message-content">
+        <p><strong>${question}</strong></p>
+      </div>
+    </div>
+    <div class="chat-row answer-row">
+      <div class="message-content">
+        <p>${content}</p>
+      </div>
+      <div class="avatar-container">
+        <div class="avatar-circle"></div>
+        <div class="avatar-name">AI</div>
       </div>
     </div>
   `;
@@ -37,10 +60,38 @@ function headquartersEntryTemplate(timestamp, question, truncatedAnswer) {
 }
 
 function followUpQuestionLoadingTemplate(question) {
-  return `<p><strong>Q: ${question}</strong></p><p>Loading...</p>`;
+  return `
+    <div class="chat-row question-row">
+      <div class="avatar-container">
+        <div class="avatar-circle"></div>
+        <div class="avatar-name">You</div>
+      </div>
+      <div class="message-content">
+        <p><strong>${ question }</strong></p>
+      </div>
+    </div>
+    <div class="chat-row answer-row">
+      <div class="message-content">
+        <p>Thinking...</p>
+      </div>
+      <div class="avatar-container">
+        <div class="avatar-circle"></div>
+        <div class="avatar-name">AI</div>
+      </div>
+    </div>
+  `;
 }
 
 function followUpQuestionAnswerTemplate(question, answer) {
-  return `<p><strong>Q: ${question}</strong></p><p>${answer}</p>`;
+  return `
+    <div class="chat-row answer-row">
+      <div class="message-content">
+        <p>${ answer }</p>
+      </div>
+      <div class="avatar-container">
+        <div class="avatar-circle"></div>
+        <div class="avatar-name">AI</div>
+      </div>
+    </div>
+  `;
 }
-

@@ -25,7 +25,7 @@ input.addEventListener('keypress', function(event) {
       
       // Show loading overlay immediately
       const conversationId = conversation.id;
-      const loadingOverlay = createInstructionsOverlay('Loading...', question, conversationId);
+      const loadingOverlay = createInstructionsOverlay(question, conversationId);
       
       sendQuestionToBackend(question)
         .then(answer => {

@@ -1,10 +1,10 @@
-function createInstructionsOverlay(content, question, conversationId) {
+function createInstructionsOverlay(question, conversationId) {
   const instructionsOverlay = document.createElement('div');
   instructionsOverlay.id = 'instructions-overlay';
   instructionsOverlay.style.opacity = '0';
   instructionsOverlay.setAttribute('data-conversation-id', conversationId);
   
-  instructionsOverlay.innerHTML = instructionsOverlayTemplate(question, content);
+  instructionsOverlay.innerHTML = createInstructionsOverlayTemplate(question);
   
   document.body.appendChild(instructionsOverlay);
   
@@ -14,7 +14,6 @@ function createInstructionsOverlay(content, question, conversationId) {
   
   instructionsOverlay.style.opacity = '1';
   
-  // Fix: Use instructionsOverlay instead of overlay
   const closeBtn = instructionsOverlay.querySelector('.close-btn');
   closeBtn.addEventListener('click', function() {
     instructionsOverlay.style.display = 'none';
@@ -40,7 +39,7 @@ function updateInstructionsOverlay(overlay, content, question) {
   const chatInput = overlay.querySelector('.continue-chat-input');
   const minimizeBtn = overlay.querySelector('.minimize-btn');
 
-  instructionsBody.innerHTML = `<h2>Question: ${question}</h2><p>${content}</p>`;
+  instructionsBody.innerHTML = updateInstructionsOverlayTemplate(question, content);
 
   let isMinimized = false;
 
