@@ -51,7 +51,7 @@
   position: fixed;
   bottom: 0;
   right: 0; /* Remove 'left: auto' */
-  width: 400px;
+  width: 250px;
   background-color: white;
   color: var(--text-color);
   padding: 0;
@@ -184,8 +184,8 @@
 }
 
 #headquarters .handle {
-  background-color: var(--secondary-bg-color);
-  color: var(--text-color);
+  background-color: white;
+  color: black;
 }
 
 .minimize-btn {

@@ -81,7 +81,7 @@ function updateInstructionsOverlayTemplate(question, content) {
 function headquartersTemplate() {
   return `
     <div class="instructions-content">
-      <div class="handle">Past Inquiries</div>
+      <div class="handle">Messaging</div>
       <span class="minimize-btn">🔽</span>
       <div class="instructions-body">
         <ul id="question-list" class="question-list"></ul>
