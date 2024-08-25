@@ -1,12 +1,12 @@
 :root {
   --overlay-max-height: 60vh;
-  --primary-bg-color: rgba(199, 54, 100, 0.8) !important;
-  --secondary-bg-color: #64c7c7;
+  --primary-bg-color: rgba(255, 255, 255, 0.8) !important;
+  --secondary-bg-color: rgba(0, 0, 0, 0.8) !important;
   --input-bg-color: #f0f0f0;
   --input-text-color: #333;
   --input-focus-bg-color: #ffffff;
-  --text-color: white;
-  --handle-bg-color: #c73664 !important;
+  --text-color: rgb(0, 0, 0);
+  --handle-bg-color: rgba(255, 255, 255, 0.8) !important;
   --list-item-odd-bg-color: rgba(255, 255, 255, 0.05);
   --list-item-even-bg-color: rgba(255, 255, 255, 0.1);
   --list-item-hover-bg-color: rgba(255, 255, 255, 0.2);
@@ -116,7 +116,7 @@
 .instructions-body.minimized {
   max-height: 0;
   padding: 0 25px;
-  overflow: hidden;
+  overflow: hiddenwhite;
   opacity: 0;
 }
 
@@ -207,11 +207,11 @@
 }
 
 .question-row {
-  background-color: var(--list-item-odd-bg-color);
+  background-color: white;
 }
 
 .answer-row {
-  background-color: var(--list-item-even-bg-color);
+  background-color: white;
   flex-direction: row-reverse;
 }
 
@@ -249,24 +249,26 @@
 }
 
 #instructions-overlay .instructions-body {
-  padding: 10px;
+  padding: 0;
 }
 
 #instructions-overlay .chat-row {
-  margin-bottom: 15px;
+  margin-bottom: 0px;
 }
 
 #instructions-overlay .message-content {
   background-color: var(--primary-bg-color);
-  box-shadow: 0 1px 2px var(--shadow-color);
+  box-shadow: 0 4px 8px var(--shadow-color-strong);
 }
 
 #instructions-overlay .question-row .message-content {
   margin-right: 40px;
+  margin-bottom: 5px;
 }
 
 #instructions-overlay .answer-row .message-content {
   margin-left: 40px;
+  margin-bottom: 5px;
 }
 
 #instructions-overlay .avatar-circle {
@@ -276,4 +278,5 @@
 
 #instructions-overlay .avatar-name {
   font-size: 10px;
+  color: black;
 }

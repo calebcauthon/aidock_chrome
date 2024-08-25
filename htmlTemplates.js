@@ -15,23 +15,34 @@ function createInstructionsOverlayTemplate(question) {
 }
 
 function updateInstructionsOverlayTemplate(question, content) {
+  const timestamp = new Date().toLocaleTimeString();
   return `
     <div class="chat-row question-row">
       <div class="avatar-container">
         <div class="avatar-circle"></div>
-        <div class="avatar-name">You</div>
       </div>
       <div class="message-content">
-        <p><strong>${question}</strong></p>
+        <div class="message-header">
+          <span class="avatar-name">You</span>
+          <span class="timestamp">${timestamp}</span>
+        </div>
+        <div class="message-body">
+          <p><strong>${question}</strong></p>
+        </div>
       </div>
     </div>
     <div class="chat-row answer-row">
-      <div class="message-content">
-        <p>${content}</p>
-      </div>
       <div class="avatar-container">
         <div class="avatar-circle"></div>
-        <div class="avatar-name">AI</div>
+      </div>
+      <div class="message-content">
+        <div class="message-header">
+          <span class="avatar-name">AI</span>
+          <span class="timestamp">${timestamp}</span>
+        </div>
+        <div class="message-body">
+          <p>${content}</p>
+        </div>
       </div>
     </div>
   `;
