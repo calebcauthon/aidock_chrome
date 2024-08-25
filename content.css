@@ -48,10 +48,11 @@
 }
 
 #instructions-overlay {
+  margin-right: 10px;
   position: fixed;
   bottom: 0;
   right: 0; /* Remove 'left: auto' */
-  width: 250px;
+  width: 300px;
   background-color: white;
   color: var(--text-color);
   padding: 0;
