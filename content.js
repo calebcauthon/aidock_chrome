@@ -60,10 +60,10 @@ function repositionOverlays() {
   const overlays = document.querySelectorAll('#instructions-overlay:not(#headquarters)');
   let rightPosition = headquarters.offsetWidth;
   
-  overlays.forEach((overlay) => {
+  overlays.forEach((overlay, index) => {
     if (overlay.style.display !== 'none') {
-      overlay.style.right = `${rightPosition}px`;
-      rightPosition += overlay.offsetWidth;
+      overlay.style.right = `${rightPosition + (index * 10)}px`;
+      rightPosition += overlay.offsetWidth + (index * 10)
     }
   });
 }
