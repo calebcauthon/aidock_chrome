@@ -1,11 +1,16 @@
-function createInstructionsOverlayTemplate(question) {
+function createInstructionsOverlayTemplate(conversation) {
   const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const messages = conversation.messages;
+  const question = messages.find(message => message.type === 'question');
+  const answer = messages.find(message => message.type === 'answer');
+  const title = question ? question.content : "New Chat";
   return `
     <div class="instructions-content">
-      <div class="handle">${question}</div>
+      <div class="handle">${title}</div>
       <span class="minimize-btn">🔽</span>
       <span class="close-btn">&times;</span>
       <div class="instructions-body">
+        ${question ? `
         <div class="chat-row question-row">
           <div class="avatar-container">
             <div class="avatar-circle"></div>
@@ -16,11 +21,12 @@ function createInstructionsOverlayTemplate(question) {
               <span class="timestamp">${timestamp}</span>
             </div>
             <div class="message-body">
-              <p><strong>${question}</strong></p>
+              <p><strong>${question.content}</strong></p>
             </div>
           </div>
         </div>
-
+        ` : ''}
+        ${answer ? `
         <div class="chat-row answer-row">
           <div class="avatar-container">
             <div class="avatar-circle"></div>
@@ -31,11 +37,11 @@ function createInstructionsOverlayTemplate(question) {
               <span class="timestamp">${timestamp}</span>
             </div>
             <div class="message-body">
-              <p>Thinking...</p>
+              <p>${answer.content}</p>
             </div>
           </div>
         </div>
-
+        ` : ''}
       </div>
       <div class="chat-input">
         <input type="text" placeholder="Ask away" class="continue-chat-input">

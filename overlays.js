@@ -1,17 +1,16 @@
-function createInstructionsOverlay(question, conversationId) {
+function createInstructionsOverlay(conversation, conversationId) {
   const instructionsOverlay = document.createElement('div');
   instructionsOverlay.id = 'instructions-overlay';
   instructionsOverlay.style.opacity = '0';
   instructionsOverlay.setAttribute('data-conversation-id', conversationId);
   
-  instructionsOverlay.innerHTML = createInstructionsOverlayTemplate(question);
+  instructionsOverlay.innerHTML = createInstructionsOverlayTemplate(conversation);
   
   document.body.appendChild(instructionsOverlay);
   
   repositionOverlays();
   
   instructionsOverlay.offsetHeight;
-  
   instructionsOverlay.style.opacity = '1';
   
   const closeBtn = instructionsOverlay.querySelector('.close-btn');
@@ -31,34 +30,19 @@ function createInstructionsOverlay(question, conversationId) {
     this.textContent = instructionsBody.classList.contains('minimized') ? '🔼' : '🔽';
   });
 
-  return instructionsOverlay;
-}
-
-function updateInstructionsOverlay(overlay, content, question) {
-  const instructionsBody = overlay.querySelector('.instructions-body');
-  const chatInput = overlay.querySelector('.continue-chat-input');
-  const minimizeBtn = overlay.querySelector('.minimize-btn');
-
-  instructionsBody.innerHTML = updateInstructionsOverlayTemplate(question, content);
-
-  let isMinimized = false;
-
-  minimizeBtn.addEventListener('click', () => {
-    toggleMinimize(overlay, instructionsBody, chatInput, minimizeBtn, isMinimized);
-    isMinimized = !isMinimized;
-  });
+  const chatInput = instructionsOverlay.querySelector('.continue-chat-input');
 
   chatInput.addEventListener('keypress', function(event) {
     if (event.key === 'Enter') {
       const followUpQuestion = chatInput.value.trim();
       if (followUpQuestion) {
         // Get the conversation ID from the overlay's data attribute
-        const conversationId = overlay.getAttribute('data-conversation-id');
         const conversation = conversationManager.getConversation(conversationId);
         
         conversation.addMessage('question', followUpQuestion);
-        trigger(overlay, "new-message", conversation);
+        trigger(instructionsOverlay, "new-message", conversation);
         
+        const instructionsBody = instructionsOverlay.querySelector('.instructions-body');
         instructionsBody.innerHTML += followUpQuestionLoadingTemplate(followUpQuestion);
         instructionsBody.scrollTop = instructionsBody.scrollHeight;
         
@@ -80,6 +64,23 @@ function updateInstructionsOverlay(overlay, content, question) {
     }
   });
 
+  return instructionsOverlay;
+}
+
+function updateInstructionsOverlay(overlay, content, question) {
+  const instructionsBody = overlay.querySelector('.instructions-body');
+  const chatInput = overlay.querySelector('.continue-chat-input');
+  const minimizeBtn = overlay.querySelector('.minimize-btn');
+
+  instructionsBody.innerHTML = updateInstructionsOverlayTemplate(question, content);
+
+  let isMinimized = false;
+
+  minimizeBtn.addEventListener('click', () => {
+    toggleMinimize(overlay, instructionsBody, chatInput, minimizeBtn, isMinimized);
+    isMinimized = !isMinimized;
+  });
+
   return overlay; // Return the updated overlay
 }
 
@@ -94,6 +95,18 @@ function createHeadquarters() {
   
   const minimizeBtn = headquarters.querySelector('.minimize-btn');
   minimizeBtn.addEventListener('click', () => toggleMinimize(headquarters));
+
+  const pencilBtn = headquarters.querySelector('.new-chat-btn');
+  pencilBtn.addEventListener('click', () => {
+    const conversation = conversationManager.createBlankConversation();
+    conversation.addMessage('answer', 'What do you need help with?');
+    const newOverlay = createInstructionsOverlay(conversation, conversation.id);
+    addEntryToHeadquarters("New Chat", null, newOverlay);
+    const newOverlayInput = newOverlay.querySelector('.continue-chat-input');
+    if (newOverlayInput) {
+      newOverlayInput.focus();
+    }
+  });
   
   return headquarters;
 }
@@ -102,9 +115,8 @@ function addEntryToHeadquarters(question, answer, overlay) {
   const questionList = headquarters.querySelector('#question-list');
   const listItem = document.createElement('li');
   const timestamp = new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
-  const truncatedAnswer = answer.substring(0, 20) + (answer.length > 20 ? '...' : '');
   
-  listItem.innerHTML = headquartersEntryTemplate(timestamp, question, 1);
+  listItem.innerHTML = headquartersEntryTemplate(timestamp, question, 0);
   when(overlay, "new-message", (conversation) => {
     const questionCount = conversation.messages.filter(message => message.type === 'question').length;
     listItem.innerHTML = headquartersEntryTemplate(timestamp, question, questionCount);

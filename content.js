@@ -6,47 +6,10 @@ input.type = 'text';
 input.placeholder = 'Ask away';
 
 overlay.appendChild(input);
-document.body.appendChild(overlay);
+//document.body.appendChild(overlay);
 
-let headquarters;
+let headquarters = createHeadquarters();
 const conversationManager = new Conversations();
-
-// Update the event listener for the main input
-input.addEventListener('keypress', function(event) {
-  if (event.key === 'Enter') {
-    const question = input.value.trim();
-    if (question) {
-      if (!headquarters) {
-        headquarters = createHeadquarters();
-      }
-      
-      // Create a new conversation
-      const conversation = conversationManager.createConversation(question);
-      
-      // Show loading overlay immediately
-      const conversationId = conversation.id;
-      const loadingOverlay = createInstructionsOverlay(question, conversationId);
-      
-      sendQuestionToBackend(question)
-        .then(answer => {
-          // Add answer to the conversation
-          conversation.addMessage('answer', answer);
-          
-          // Update the existing overlay with the answer
-          const updatedOverlay = updateInstructionsOverlay(loadingOverlay, answer, question);
-
-          // Add entry to headquarters
-          addEntryToHeadquarters(question, answer, updatedOverlay);
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          // Update the overlay with an error message
-          updateInstructionsOverlay(loadingOverlay, 'An error occurred. Please try again.', question);
-        });
-      input.value = ''; // Clear the input after sending the question
-    }
-  }
-});
 
 function fadeOutAndRemove(element) {
   element.style.opacity = '0';
