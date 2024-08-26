@@ -81,8 +81,16 @@ function updateInstructionsOverlayTemplate(question, content) {
 function headquartersTemplate() {
   return `
     <div class="instructions-content">
-      <div class="handle">Messaging</div>
-      <span class="minimize-btn">🔽</span>
+      <div class="handle">
+        <div class="avatar-container">
+          <div class="avatar-circle"></div>
+        </div>
+        <span class="title">Messaging</span>
+        <div class="icons">
+          <span class="minimize-btn">🔽</span>
+          <span class="new-chat-btn">🆕</span>
+        </div>
+      </div>
       <div class="instructions-body">
         <ul id="question-list" class="question-list"></ul>
       </div>
