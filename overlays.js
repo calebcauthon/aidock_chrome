@@ -23,11 +23,8 @@ function createInstructionsOverlay(conversation, conversationId) {
   minimizeBtn.addEventListener('click', function() {
     const instructionsBody = instructionsOverlay.querySelector('.instructions-body');
     const chatInput = instructionsOverlay.querySelector('.chat-input');
-    
-    instructionsBody.classList.toggle('minimized');
-    chatInput.classList.toggle('minimized');
-    
-    this.textContent = instructionsBody.classList.contains('minimized') ? '🔼' : '🔽';
+
+    toggleMinimize(instructionsOverlay);
   });
 
   const chatInput = instructionsOverlay.querySelector('.continue-chat-input');
