@@ -88,7 +88,7 @@ function headquartersTemplate() {
         <span class="title">Messaging</span>
         <div class="icons">
           <span class="minimize-btn">🔽</span>
-          <span class="new-chat-btn">🆕</span>
+          <span class="new-chat-btn">✏️</span>
         </div>
       </div>
       <div class="instructions-body">
