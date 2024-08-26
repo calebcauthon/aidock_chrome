@@ -65,7 +65,7 @@
   height: var(--overlay-max-height);
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-  box-shadow: 0 0 10px var(--shadow-color-strong);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
 }
 
 #instructions-overlay.minimized {
@@ -153,6 +153,7 @@
   width: 250px;
   z-index: 10000;
   transition: height 0.3s ease-in-out;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
 }
 
 #headquarters .instructions-body {
