@@ -21,9 +21,6 @@ function createInstructionsOverlay(conversation, conversationId) {
 
   const minimizeBtn = instructionsOverlay.querySelector('.minimize-btn');
   minimizeBtn.addEventListener('click', function() {
-    const instructionsBody = instructionsOverlay.querySelector('.instructions-body');
-    const chatInput = instructionsOverlay.querySelector('.chat-input');
-
     toggleMinimize(instructionsOverlay);
   });
 
@@ -66,16 +63,12 @@ function createInstructionsOverlay(conversation, conversationId) {
 
 function updateInstructionsOverlay(overlay, content, question) {
   const instructionsBody = overlay.querySelector('.instructions-body');
-  const chatInput = overlay.querySelector('.continue-chat-input');
   const minimizeBtn = overlay.querySelector('.minimize-btn');
 
   instructionsBody.innerHTML = updateInstructionsOverlayTemplate(question, content);
 
-  let isMinimized = false;
-
   minimizeBtn.addEventListener('click', () => {
-    toggleMinimize(overlay, instructionsBody, chatInput, minimizeBtn, isMinimized);
-    isMinimized = !isMinimized;
+    toggleMinimize(overlay);
   });
 
   return overlay; // Return the updated overlay
@@ -87,6 +80,7 @@ function createHeadquarters() {
   headquarters.className = 'instructions-overlay';
   
   headquarters.innerHTML = headquartersTemplate();
+  maximizeOverlay(headquarters);
   
   document.body.appendChild(headquarters);
   
@@ -137,9 +131,15 @@ function toggleMinimize(overlay) {
   
   overlay.classList.toggle('minimized');
   instructionsBody.classList.toggle('minimized');
-  minimizeBtn.textContent = overlay.classList.contains('minimized') ? '🔼' : '🔽';
   
   if (overlay.id === 'headquarters') {
     overlay.style.height = overlay.classList.contains('minimized') ? '40px' : '';
   }
+}
+
+function maximizeOverlay(overlay) {
+  const instructionsBody = overlay.querySelector('.instructions-body');
+  instructionsBody.classList.remove('minimized');
+  overlay.classList.remove('minimized');
+  overlay.style.height = '';
 }
