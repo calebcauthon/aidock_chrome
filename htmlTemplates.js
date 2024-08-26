@@ -6,7 +6,7 @@ function createInstructionsOverlayTemplate(conversation) {
   const title = question ? question.content : "New Chat";
   return `
     <div class="instructions-content">
-      <div class="handle">${title}</div>
+      <div class="handle instructions-title">${title}</div>
       <span class="minimize-btn">🔽</span>
       <span class="close-btn">&times;</span>
       <div class="instructions-body">

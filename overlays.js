@@ -47,6 +47,7 @@ function createInstructionsOverlay(conversation, conversationId) {
             const loadingParagraph = instructionsBody.lastElementChild;
             loadingParagraph.innerHTML = followUpQuestionAnswerTemplate(followUpQuestion, answer);
             instructionsBody.scrollTop = instructionsBody.scrollHeight;
+            trigger(instructionsOverlay, "new-answer", conversation);
           })
           .catch(error => {
             console.error('Error:', error);
@@ -58,7 +59,48 @@ function createInstructionsOverlay(conversation, conversationId) {
     }
   });
 
+  when(instructionsOverlay, "new-answer", async (updatedConversation) => {
+    if (updatedConversation.messages.filter(msg => msg.type === 'question').length < 1 || 
+        updatedConversation.messages.filter(msg => msg.type === 'answer').length < 1) {
+      return;
+    }
+
+
+    const titleElement = instructionsOverlay.querySelector('.instructions-title');
+    if (titleElement.textContent.trim() !== 'New Chat') {
+      return;
+    }
+
+    const messages = updatedConversation.messages;
+    const title = await callPromptEndpoint(messages[0].content, messages[1].content);
+    if (title) {
+      if (titleElement && titleElement.textContent.trim() === 'New Chat') {
+        titleElement.textContent = title;
+        const entryElement = headquarters.querySelector(`li[data-conversation-id="${updatedConversation.id}"] .entry-question`);
+        if (entryElement && entryElement.textContent.trim() === 'New Chat') {
+          entryElement.textContent = title;
+        }
+      }
+    }
+  });
+
   return instructionsOverlay;
+}
+
+function callPromptEndpoint(question, answer) {
+  return fetch('http://localhost:5000/prompt', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ question, answer }),
+  })
+  .then(response => response.json())
+  .then(data => data.title)
+  .catch(error => {
+    console.error('Error calling /prompt:', error);
+    return null;
+  });
 }
 
 function updateInstructionsOverlay(overlay, content, question) {
@@ -108,10 +150,12 @@ function addEntryToHeadquarters(question, answer, overlay) {
   const timestamp = new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
   
   listItem.innerHTML = headquartersEntryTemplate(timestamp, question, 0);
+  listItem.setAttribute('data-conversation-id', overlay.getAttribute('data-conversation-id'));
   when(overlay, "new-message", (conversation) => {
     const questionCount = conversation.messages.filter(message => message.type === 'question').length;
     listItem.innerHTML = headquartersEntryTemplate(timestamp, question, questionCount);
   });
+  
   
   listItem.addEventListener('click', () => {
     showOverlay(overlay);
