@@ -100,7 +100,7 @@ function createHeadquarters() {
 function addEntryToHeadquarters(question, answer, overlay) {
   const questionList = headquarters.querySelector('#question-list');
   const listItem = document.createElement('li');
-  const timestamp = new Date().toLocaleTimeString();
+  const timestamp = new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
   const truncatedAnswer = answer.substring(0, 20) + (answer.length > 20 ? '...' : '');
   
   listItem.innerHTML = headquartersEntryTemplate(timestamp, question, truncatedAnswer);
