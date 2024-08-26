@@ -57,6 +57,7 @@ function updateInstructionsOverlay(overlay, content, question) {
         const conversation = conversationManager.getConversation(conversationId);
         
         conversation.addMessage('question', followUpQuestion);
+        trigger(overlay, "new-message", conversation);
         
         instructionsBody.innerHTML += followUpQuestionLoadingTemplate(followUpQuestion);
         instructionsBody.scrollTop = instructionsBody.scrollHeight;
@@ -103,7 +104,11 @@ function addEntryToHeadquarters(question, answer, overlay) {
   const timestamp = new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
   const truncatedAnswer = answer.substring(0, 20) + (answer.length > 20 ? '...' : '');
   
-  listItem.innerHTML = headquartersEntryTemplate(timestamp, question, truncatedAnswer);
+  listItem.innerHTML = headquartersEntryTemplate(timestamp, question, 1);
+  when(overlay, "new-message", (conversation) => {
+    const questionCount = conversation.messages.filter(message => message.type === 'question').length;
+    listItem.innerHTML = headquartersEntryTemplate(timestamp, question, questionCount);
+  });
   
   listItem.addEventListener('click', () => {
     showOverlay(overlay);

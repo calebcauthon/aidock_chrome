@@ -98,13 +98,13 @@ function headquartersTemplate() {
   `;
 }
 
-function headquartersEntryTemplate(timestamp, question, truncatedAnswer) {
+function headquartersEntryTemplate(timestamp, question, messageCount) {
   return `
     <div class="entry-header">
+      <span class="entry-message-count">(${ messageCount })</span>
       <span class="entry-timestamp">${ timestamp }</span>
       <span class="entry-question">${ question }</span>
     </div>
-    <div class="entry-preview">${ truncatedAnswer }</div>
   `;
 }
 
