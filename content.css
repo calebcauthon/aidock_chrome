@@ -316,3 +316,80 @@
   width: 30px;
   height: 30px;
 }
+
+.settings-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 300px;
+  height: 100vh;
+  background-color: var(--primary-bg-color);
+  box-shadow: 2px 0 10px var(--shadow-color);
+  z-index: 10001;
+  overflow-y: auto;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease-in-out;
+}
+
+.settings-overlay.active {
+  transform: translateX(0);
+}
+
+.settings-content {
+  padding: 20px;
+}
+
+.setting-group {
+  margin-bottom: 20px;
+}
+
+.setting-group h3 {
+  margin-bottom: 10px;
+}
+
+#add-document-btn {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.document-item {
+  background-color: var(--list-item-odd-bg-color);
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+
+.document-item input[type="text"],
+.document-item textarea,
+.document-item select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.document-item textarea {
+  height: 100px;
+  resize: vertical;
+}
+
+.role-checkboxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.remove-document-btn {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+}

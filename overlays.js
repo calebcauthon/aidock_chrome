@@ -140,6 +140,11 @@ function createHeadquarters() {
     }
   });
   
+  const settingsBtn = headquarters.querySelector('.settings-btn');
+  settingsBtn.addEventListener('click', () => {
+    showSettingsOverlay();
+  });
+
   return headquarters;
 }
 
@@ -161,4 +166,98 @@ function addEntryToHeadquarters(question, answer, overlay) {
   });
   
   questionList.insertBefore(listItem, questionList.firstChild);
+}
+
+function showSettingsOverlay() {
+  let settingsOverlay = document.getElementById('settings-overlay');
+  if (!settingsOverlay) {
+    settingsOverlay = document.createElement('div');
+    settingsOverlay.innerHTML = settingsOverlayTemplate();
+    document.body.appendChild(settingsOverlay);
+    setupSettingsEvents(settingsOverlay);
+  }
+  settingsOverlay.classList.add('active');
+}
+
+function setupSettingsEvents(overlay) {
+  const addDocumentBtn = overlay.querySelector('#add-document-btn');
+  const documentList = overlay.querySelector('#document-list');
+
+  addDocumentBtn.addEventListener('click', () => {
+    const newDocId = Date.now();
+    const newDocElement = document.createElement('li');
+    newDocElement.innerHTML = documentTemplate(newDocId);
+    documentList.appendChild(newDocElement);
+    setupDocumentEvents(newDocElement);
+  });
+
+  // Load saved settings
+  loadSettings();
+}
+
+function setupDocumentEvents(documentElement) {
+  const removeBtn = documentElement.querySelector('.remove-document-btn');
+  removeBtn.addEventListener('click', () => {
+    documentElement.remove();
+    saveSettings();
+  });
+
+  const scopeSelect = documentElement.querySelector('.document-scope');
+  const customUrlInput = documentElement.querySelector('.custom-url');
+  scopeSelect.addEventListener('change', () => {
+    customUrlInput.style.display = scopeSelect.value === 'custom-url' ? 'block' : 'none';
+    saveSettings();
+  });
+
+  const inputs = documentElement.querySelectorAll('input, textarea, select');
+  inputs.forEach(input => {
+    input.addEventListener('change', saveSettings);
+  });
+}
+
+function saveSettings() {
+  const settings = {
+    llmEndpoint: document.getElementById('llm-endpoint').value,
+    documents: []
+  };
+
+  const documentElements = document.querySelectorAll('.document-item');
+  documentElements.forEach(doc => {
+    settings.documents.push({
+      id: doc.dataset.id,
+      name: doc.querySelector('.document-name').value,
+      content: doc.querySelector('.document-content').value,
+      scope: doc.querySelector('.document-scope').value,
+      customUrl: doc.querySelector('.custom-url').value,
+      roles: Array.from(doc.querySelectorAll('.role-checkboxes input:checked')).map(cb => cb.value)
+    });
+  });
+
+  localStorage.setItem('lavendalChatbotSettings', JSON.stringify(settings));
+}
+
+function loadSettings() {
+  const savedSettings = localStorage.getItem('lavendalChatbotSettings');
+  if (savedSettings) {
+    const settings = JSON.parse(savedSettings);
+    document.getElementById('llm-endpoint').value = settings.llmEndpoint;
+
+    const documentList = document.getElementById('document-list');
+    documentList.innerHTML = '';
+    settings.documents.forEach(doc => {
+      const newDocElement = document.createElement('li');
+      newDocElement.innerHTML = documentTemplate(doc.id);
+      documentList.appendChild(newDocElement);
+      setupDocumentEvents(newDocElement);
+
+      newDocElement.querySelector('.document-name').value = doc.name;
+      newDocElement.querySelector('.document-content').value = doc.content;
+      newDocElement.querySelector('.document-scope').value = doc.scope;
+      newDocElement.querySelector('.custom-url').value = doc.customUrl;
+      newDocElement.querySelector('.custom-url').style.display = doc.scope === 'custom-url' ? 'block' : 'none';
+      doc.roles.forEach(role => {
+        newDocElement.querySelector(`.role-checkboxes input[value="${role}"]`).checked = true;
+      });
+    });
+  }
 }

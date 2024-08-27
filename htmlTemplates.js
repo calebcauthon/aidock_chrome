@@ -95,6 +95,7 @@ function headquartersTemplate() {
         <div class="icons">
           <span class="minimize-btn">🔽</span>
           <span class="new-chat-btn">✏️</span>
+          <span class="settings-btn">⚙️</span>
         </div>
       </div>
       <div class="instructions-body">
@@ -167,3 +168,48 @@ function followUpQuestionAnswerTemplate(question, answer) {
     </div>
   `;
 }
+
+function settingsOverlayTemplate() {
+  return `
+    <div id="settings-overlay" class="settings-overlay">
+      <div class="settings-content">
+        <h2>Settings</h2>
+        <div class="setting-group">
+          <label for="llm-endpoint">LLM Server Endpoint:</label>
+          <input type="text" id="llm-endpoint" name="llm-endpoint">
+        </div>
+        <div class="setting-group">
+          <h3>Documents</h3>
+          <button id="add-document-btn">Add Document</button>
+          <ul id="document-list"></ul>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function documentTemplate(id) {
+  return `
+    <li class="document-item" data-id="[[id]]">
+      <input type="text" class="document-name" placeholder="Document Name">
+      <textarea class="document-content" placeholder="Document Content"></textarea>
+      <div class="document-settings">
+        <select class="document-scope">
+          <option value="entire-domain">Entire Domain</option>
+          <option value="this-page">Just this page</option>
+          <option value="custom-url">Custom URL</option>
+        </select>
+        <input type="text" class="custom-url" placeholder="Custom URL" style="display: none;">
+        <div class="role-checkboxes">
+          <label><input type="checkbox" value="admin"> Admin</label>
+          <label><input type="checkbox" value="manager"> Manager</label>
+          <label><input type="checkbox" value="employee"> Employee</label>
+          <label><input type="checkbox" value="customer"> Customer</label>
+        </div>
+      </div>
+      <button class="remove-document-btn">Remove</button>
+    </li>
+  `;
+}
+
+
