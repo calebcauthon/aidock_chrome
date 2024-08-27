@@ -187,3 +187,23 @@ function maximizeOverlay(overlay) {
   overlay.classList.remove('minimized');
   overlay.style.height = '';
 }
+
+function fadeOutAndRemove(element) {
+  element.style.opacity = '0';
+  setTimeout(() => {
+    document.body.removeChild(element);
+    repositionOverlays();
+  }, 300); // Adjust this value to match your CSS transition duration
+}
+
+function repositionOverlays() {
+  const overlays = document.querySelectorAll('#instructions-overlay:not(#headquarters)');
+  let rightPosition = headquarters.offsetWidth;
+  
+  overlays.forEach((overlay, index) => {
+    if (overlay.style.display !== 'none') {
+      overlay.style.right = `${rightPosition + (index * 10)}px`;
+      rightPosition += overlay.offsetWidth + (index * 10)
+    }
+  });
+}
