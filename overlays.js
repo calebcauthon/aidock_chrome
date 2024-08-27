@@ -87,22 +87,6 @@ function createInstructionsOverlay(conversation, conversationId) {
   return instructionsOverlay;
 }
 
-function callPromptEndpoint(question, answer) {
-  return fetch('http://localhost:5000/prompt', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ question, answer }),
-  })
-  .then(response => response.json())
-  .then(data => data.title)
-  .catch(error => {
-    console.error('Error calling /prompt:', error);
-    return null;
-  });
-}
-
 function updateInstructionsOverlay(overlay, content, question) {
   const instructionsBody = overlay.querySelector('.instructions-body');
   const minimizeBtn = overlay.querySelector('.minimize-btn');

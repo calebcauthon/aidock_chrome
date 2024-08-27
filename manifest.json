@@ -7,7 +7,7 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["helpers/visual_effects.js", "events.js", "htmlTemplates.js", "conversationManager.js", "overlays.js", "outbound.js", "content.js"],
+      "js": ["helpers/visual_effects.js", "events.js", "htmlTemplates.js", "conversationManager.js", "overlays.js", "helpers/outbound.js", "content.js"],
       "css": ["content.css"]
     }
   ]
