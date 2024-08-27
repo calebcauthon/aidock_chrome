@@ -67,12 +67,11 @@ function createInstructionsOverlay(conversation, conversationId) {
     if (event.key === 'Enter') {
       const followUpQuestion = chatInput.value.trim();
       if (followUpQuestion) {
-        // Get the conversation ID from the overlay's data attribute
+
         const conversation = conversationManager.getConversation(conversationId);
-        
         conversation.addMessage('question', followUpQuestion);
+
         trigger(instructionsOverlay, "new-message", conversation);
-        
         addQuestionHtml(instructionsOverlay, followUpQuestion);
         
         sendQuestionToBackend(followUpQuestion)
