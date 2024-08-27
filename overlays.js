@@ -1,4 +1,10 @@
 function createInstructionsOverlay(conversation, conversationId) {
+  function addQuestionHtml(overlay, question) {
+    const instructionsBody = overlay.querySelector('.instructions-body');
+    instructionsBody.innerHTML += followUpQuestionLoadingTemplate(question);
+    instructionsBody.scrollTop = instructionsBody.scrollHeight;
+  }
+
   const instructionsOverlay = document.createElement('div');
   instructionsOverlay.id = 'instructions-overlay';
   instructionsOverlay.style.opacity = '0';
@@ -36,14 +42,13 @@ function createInstructionsOverlay(conversation, conversationId) {
         conversation.addMessage('question', followUpQuestion);
         trigger(instructionsOverlay, "new-message", conversation);
         
-        const instructionsBody = instructionsOverlay.querySelector('.instructions-body');
-        instructionsBody.innerHTML += followUpQuestionLoadingTemplate(followUpQuestion);
-        instructionsBody.scrollTop = instructionsBody.scrollHeight;
+        addQuestionHtml(instructionsOverlay, followUpQuestion);
         
         sendQuestionToBackend(followUpQuestion)
           .then(answer => {
             conversation.addMessage('answer', answer);
             
+            const instructionsBody = instructionsOverlay.querySelector('.instructions-body');
             const loadingParagraph = instructionsBody.lastElementChild;
             loadingParagraph.innerHTML = followUpQuestionAnswerTemplate(followUpQuestion, answer);
             instructionsBody.scrollTop = instructionsBody.scrollHeight;
