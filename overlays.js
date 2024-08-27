@@ -5,7 +5,7 @@ function createInstructionsOverlay(conversation, conversationId) {
     instructionsBody.scrollTop = instructionsBody.scrollHeight;
   }
 
-  function addEmptyInstructionsOverlayHtml(overlay, conversation) {
+  function addEmptyChatWindowHtml(overlay, conversation) {
     overlay.id = 'instructions-overlay';
     overlay.offsetHeight;
     overlay.style.opacity = '1';
@@ -15,7 +15,7 @@ function createInstructionsOverlay(conversation, conversationId) {
   }
 
   function setupCloseButton(overlay) {
-    const closeBtn = instructionsOverlay.querySelector('.close-btn');
+    const closeBtn = chatDiv.querySelector('.close-btn');
     closeBtn.addEventListener('click', function() {
       overlay.style.display = 'none';
       repositionOverlays();
@@ -23,7 +23,7 @@ function createInstructionsOverlay(conversation, conversationId) {
   }
 
   function setupMinimizeButton(overlay) {
-    const minimizeBtn = instructionsOverlay.querySelector('.minimize-btn');
+    const minimizeBtn = chatDiv.querySelector('.minimize-btn');
     minimizeBtn.addEventListener('click', function() {
       toggleMinimize(overlay);
     });
@@ -55,13 +55,13 @@ function createInstructionsOverlay(conversation, conversationId) {
     }
   }
 
-  const instructionsOverlay = document.createElement('div');
-  addEmptyInstructionsOverlayHtml(instructionsOverlay, conversation);
+  const chatDiv = document.createElement('div');
+  addEmptyChatWindowHtml(chatDiv, conversation);
   repositionOverlays();
-  setupCloseButton(instructionsOverlay);
-  setupMinimizeButton(instructionsOverlay);
+  setupCloseButton(chatDiv);
+  setupMinimizeButton(chatDiv);
 
-  const chatInput = instructionsOverlay.querySelector('.continue-chat-input');
+  const chatInput = chatDiv.querySelector('.continue-chat-input');
 
   chatInput.addEventListener('keypress', function(event) {
     if (event.key === 'Enter') {
@@ -71,14 +71,14 @@ function createInstructionsOverlay(conversation, conversationId) {
         const conversation = conversationManager.getConversation(conversationId);
         conversation.addMessage('question', followUpQuestion);
 
-        trigger(instructionsOverlay, "new-message", conversation);
-        addQuestionHtml(instructionsOverlay, followUpQuestion);
+        trigger(chatDiv, "new-message", conversation);
+        addQuestionHtml(chatDiv, followUpQuestion);
         
         sendQuestionToBackend(followUpQuestion)
           .then(answer => {
             conversation.addMessage('answer', answer);
-            replaceLoadingHtmlWithAnswer(instructionsOverlay, followUpQuestion, answer);
-            trigger(instructionsOverlay, "new-answer", conversation);
+            replaceLoadingHtmlWithAnswer(chatDiv, followUpQuestion, answer);
+            trigger(chatDiv, "new-answer", conversation);
           })
           .catch(error => {
             console.error('Error:', error);
@@ -90,16 +90,16 @@ function createInstructionsOverlay(conversation, conversationId) {
     }
   });
 
-  when(instructionsOverlay, "new-answer", async (updatedConversation) => {
+  when(chatDiv, "new-answer", async (updatedConversation) => {
     if (updatedConversation.messages.filter(msg => msg.type === 'question').length < 1 || 
         updatedConversation.messages.filter(msg => msg.type === 'answer').length < 1) {
       return;
     }
 
-    comeUpWithTitle(instructionsOverlay, updatedConversation);
+    comeUpWithTitle(chatDiv, updatedConversation);
   });
 
-  return instructionsOverlay;
+  return chatDiv;
 }
 
 function updateInstructionsOverlay(overlay, content, question) {
