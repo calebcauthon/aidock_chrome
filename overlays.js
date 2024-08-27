@@ -36,6 +36,25 @@ function createInstructionsOverlay(conversation, conversationId) {
     instructionsBody.scrollTop = instructionsBody.scrollHeight;
   }
 
+  async function comeUpWithTitle(overlay, conversation) {
+    const titleElement = overlay.querySelector('.instructions-title');
+    if (titleElement.textContent.trim() !== 'New Chat') {
+      return;
+    }
+
+    const messages = conversation.messages;
+    const title = await callPromptEndpoint(messages[0].content, messages[1].content);
+    if (title) {
+      if (titleElement && titleElement.textContent.trim() === 'New Chat') {
+        titleElement.textContent = title;
+        const entryElement = headquarters.querySelector(`li[data-conversation-id="${conversation.id}"] .entry-question`);
+        if (entryElement && entryElement.textContent.trim() === 'New Chat') {
+          entryElement.textContent = title;
+        }
+      }
+    }
+  }
+
   const instructionsOverlay = document.createElement('div');
   addEmptyInstructionsOverlayHtml(instructionsOverlay, conversation);
   repositionOverlays();
@@ -78,23 +97,7 @@ function createInstructionsOverlay(conversation, conversationId) {
       return;
     }
 
-
-    const titleElement = instructionsOverlay.querySelector('.instructions-title');
-    if (titleElement.textContent.trim() !== 'New Chat') {
-      return;
-    }
-
-    const messages = updatedConversation.messages;
-    const title = await callPromptEndpoint(messages[0].content, messages[1].content);
-    if (title) {
-      if (titleElement && titleElement.textContent.trim() === 'New Chat') {
-        titleElement.textContent = title;
-        const entryElement = headquarters.querySelector(`li[data-conversation-id="${updatedConversation.id}"] .entry-question`);
-        if (entryElement && entryElement.textContent.trim() === 'New Chat') {
-          entryElement.textContent = title;
-        }
-      }
-    }
+    comeUpWithTitle(instructionsOverlay, updatedConversation);
   });
 
   return instructionsOverlay;
