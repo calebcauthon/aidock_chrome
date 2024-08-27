@@ -199,6 +199,28 @@ function setupSettingsEvents(overlay) {
   closeBtn.addEventListener('click', () => {
     overlay.classList.remove('active');
   });
+
+  const resizeHandle = overlay.querySelector('.resize-handle');
+  let isResizing = false;
+  let lastDownX = 0;
+
+  resizeHandle.addEventListener('mousedown', (e) => {
+    isResizing = true;
+    lastDownX = e.clientX;
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    if (!isResizing) return;
+    const offsetRight = document.body.offsetWidth - (e.clientX - document.body.offsetLeft);
+    const minWidth = 250; // Minimum width of the settings overlay
+    const maxWidth = document.body.offsetWidth * 0.8; // Maximum width (80% of viewport)
+    const newWidth = Math.min(Math.max(document.body.offsetWidth - offsetRight, minWidth), maxWidth);
+    overlay.style.width = newWidth + 'px';
+  });
+
+  document.addEventListener('mouseup', () => {
+    isResizing = false;
+  });
 }
 
 function setupDocumentEvents(documentElement) {

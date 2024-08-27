@@ -184,6 +184,7 @@ function settingsOverlayTemplate() {
           <ul id="document-list"></ul>
         </div>
       </div>
+      <div class="resize-handle"></div>
     </div>
   `;
 }
