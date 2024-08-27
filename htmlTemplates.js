@@ -173,7 +173,7 @@ function settingsOverlayTemplate() {
   return `
     <div id="settings-overlay" class="settings-overlay">
       <div class="settings-content">
-        <h2>Settings</h2>
+        <h2>Settings <span class="close-settings-btn">&times;</span></h2>
         <div class="setting-group">
           <label for="llm-endpoint">LLM Server Endpoint:</label>
           <input type="text" id="llm-endpoint" name="llm-endpoint">

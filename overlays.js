@@ -171,9 +171,10 @@ function addEntryToHeadquarters(question, answer, overlay) {
 function showSettingsOverlay() {
   let settingsOverlay = document.getElementById('settings-overlay');
   if (!settingsOverlay) {
-    settingsOverlay = document.createElement('div');
-    settingsOverlay.innerHTML = settingsOverlayTemplate();
-    document.body.appendChild(settingsOverlay);
+    const div = document.createElement('div');
+    div.innerHTML = settingsOverlayTemplate();
+    document.body.appendChild(div);
+    settingsOverlay = document.getElementById('settings-overlay');
     setupSettingsEvents(settingsOverlay);
   }
   settingsOverlay.classList.add('active');
@@ -193,6 +194,11 @@ function setupSettingsEvents(overlay) {
 
   // Load saved settings
   loadSettings();
+
+  const closeBtn = overlay.querySelector('.close-settings-btn');
+  closeBtn.addEventListener('click', () => {
+    overlay.classList.remove('active');
+  });
 }
 
 function setupDocumentEvents(documentElement) {

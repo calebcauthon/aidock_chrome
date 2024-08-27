@@ -393,3 +393,21 @@
   cursor: pointer;
   border-radius: 4px;
 }
+
+.close-settings-btn {
+  float: right;
+  cursor: pointer;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.close-settings-btn:hover {
+  color: #000;
+}
+
+.settings-content h2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
