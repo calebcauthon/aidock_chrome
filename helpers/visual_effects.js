@@ -1,6 +1,5 @@
 function toggleMinimize(overlay) {
   const instructionsBody = overlay.querySelector('.instructions-body');
-  const minimizeBtn = overlay.querySelector('.minimize-btn');
   
   overlay.classList.toggle('minimized');
   instructionsBody.classList.toggle('minimized');
