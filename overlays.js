@@ -147,8 +147,3 @@ function addEntryToHeadquarters(question, answer, overlay) {
   
   questionList.insertBefore(listItem, questionList.firstChild);
 }
-
-function showOverlay(overlay) {
-  overlay.style.display = 'flex';
-  repositionOverlays();
-}

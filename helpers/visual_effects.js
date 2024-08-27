@@ -36,3 +36,8 @@ function repositionOverlays() {
     }
   });
 }
+
+function showOverlay(overlay) {
+  overlay.style.display = 'flex';
+  repositionOverlays();
+}
