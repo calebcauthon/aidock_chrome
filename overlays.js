@@ -22,16 +22,20 @@ function createInstructionsOverlay(conversation, conversationId) {
     });
   }
 
+  function setupMinimizeButton(overlay) {
+    const minimizeBtn = instructionsOverlay.querySelector('.minimize-btn');
+    minimizeBtn.addEventListener('click', function() {
+      toggleMinimize(overlay);
+    });
+  }
+
   const instructionsOverlay = document.createElement('div');
   addEmptyInstructionsOverlayHtml(instructionsOverlay, conversation);
   repositionOverlays();
   setupCloseButton(instructionsOverlay);
-  
+  setupMinimizeButton(instructionsOverlay);
 
-  const minimizeBtn = instructionsOverlay.querySelector('.minimize-btn');
-  minimizeBtn.addEventListener('click', function() {
-    toggleMinimize(instructionsOverlay);
-  });
+
 
   const chatInput = instructionsOverlay.querySelector('.continue-chat-input');
 
