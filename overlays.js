@@ -178,18 +178,13 @@ function showSettingsOverlay() {
     setupSettingsEvents(settingsOverlay);
   }
   settingsOverlay.classList.add('active');
+  loadDocuments(); // Add this line to load documents when opening settings
 }
 
 function setupSettingsEvents(overlay) {
   const addDocumentBtn = overlay.querySelector('#add-document-btn');
-  const documentList = overlay.querySelector('#document-list');
-
   addDocumentBtn.addEventListener('click', () => {
-    const newDocId = Date.now();
-    const newDocElement = document.createElement('li');
-    newDocElement.innerHTML = documentTemplate(newDocId);
-    documentList.appendChild(newDocElement);
-    setupDocumentEvents(newDocElement);
+    showDocumentEditForm();
   });
 
   const llmEndpointInput = overlay.querySelector('#llm-endpoint');
@@ -226,24 +221,150 @@ function setupSettingsEvents(overlay) {
   });
 }
 
-function setupDocumentEvents(documentElement) {
-  const removeBtn = documentElement.querySelector('.remove-document-btn');
-  removeBtn.addEventListener('click', () => {
-    documentElement.remove();
-    saveSettings();
+function loadDocuments() {
+  const documentList = document.getElementById('document-list');
+  documentList.innerHTML = '<tr><th>Name</th><th>Scope</th><th>Actions</th></tr>';
+
+  const savedSettings = localStorage.getItem('lavendalChatbotSettings');
+  if (savedSettings) {
+    const settings = JSON.parse(savedSettings);
+    settings.documents.forEach(doc => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${doc.name}</td>
+        <td>${doc.scope}</td>
+        <td>
+          <button class="edit-document-btn" data-id="${doc.id}">Edit</button>
+          <button class="delete-document-btn" data-id="${doc.id}">Delete</button>
+        </td>
+      `;
+      documentList.appendChild(row);
+    });
+  }
+
+  setupDocumentActions();
+}
+
+function setupDocumentActions() {
+  const editButtons = document.querySelectorAll('.edit-document-btn');
+  const deleteButtons = document.querySelectorAll('.delete-document-btn');
+
+  editButtons.forEach(button => {
+    button.addEventListener('click', (e) => {
+      const docId = e.target.getAttribute('data-id');
+      showDocumentEditForm(docId);
+    });
   });
 
-  const scopeSelect = documentElement.querySelector('.document-scope');
-  const customUrlInput = documentElement.querySelector('.custom-url');
-  scopeSelect.addEventListener('change', () => {
-    customUrlInput.style.display = scopeSelect.value === 'custom-url' ? 'block' : 'none';
-    saveSettings();
+  deleteButtons.forEach(button => {
+    button.addEventListener('click', (e) => {
+      const docId = e.target.getAttribute('data-id');
+      deleteDocument(docId);
+    });
   });
+}
 
-  const inputs = documentElement.querySelectorAll('input, textarea, select');
-  inputs.forEach(input => {
-    input.addEventListener('change', saveSettings);
-  });
+function showDocumentEditForm(docId = null) {
+  const editForm = document.getElementById('document-edit-form');
+  editForm.innerHTML = documentEditTemplate();
+
+  if (docId) {
+    const savedSettings = localStorage.getItem('lavendalChatbotSettings');
+    if (savedSettings) {
+      const settings = JSON.parse(savedSettings);
+      const doc = settings.documents.find(d => d.id === docId);
+      if (doc) {
+        editForm.querySelector('#edit-document-id').value = doc.id;
+        editForm.querySelector('#edit-document-name').value = doc.name;
+        editForm.querySelector('#edit-document-content').value = doc.content;
+        editForm.querySelector('#edit-document-scope').value = doc.scope;
+        editForm.querySelector('#edit-document-custom-url').value = doc.customUrl;
+        doc.roles.forEach(role => {
+          editForm.querySelector(`#edit-role-${role}`).checked = true;
+        });
+      }
+    }
+  }
+
+  const saveBtn = editForm.querySelector('#save-document-btn');
+  saveBtn.addEventListener('click', saveDocument);
+
+  editForm.style.display = 'block';
+}
+
+function saveDocument() {
+  const editForm = document.getElementById('document-edit-form');
+  const docId = editForm.querySelector('#edit-document-id').value;
+  const name = editForm.querySelector('#edit-document-name').value;
+  const content = editForm.querySelector('#edit-document-content').value;
+  const scope = editForm.querySelector('#edit-document-scope').value;
+  const customUrl = editForm.querySelector('#edit-document-custom-url').value;
+  const roles = Array.from(editForm.querySelectorAll('.edit-role-checkbox:checked')).map(cb => cb.value);
+
+  const contextDocument = { url: customUrl, document_name: name, document_text: content };
+
+  const endpoint = docId ? '/context_docs/update_document' : '/context_docs/';
+  const llmEndpoint = getLLMEndpoint();
+
+  fetch(`${llmEndpoint}${endpoint}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(contextDocument)
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      updateLocalStorage(contextDocument);
+      loadDocuments();
+      editForm.style.display = 'none';
+    } else {
+      console.error('Error saving document:', data.error);
+    }
+  })
+  .catch(error => console.error('Error:', error));
+}
+
+function deleteDocument(docId) {
+  const llmEndpoint = getLLMEndpoint();
+
+  fetch(`${llmEndpoint}/context_docs/delete_document`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id: docId })
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      removeDocumentFromLocalStorage(docId);
+      loadDocuments();
+    } else {
+      console.error('Error deleting document:', data.error);
+    }
+  })
+  .catch(error => console.error('Error:', error));
+}
+
+function updateLocalStorage(contextDocument) {
+  const savedSettings = localStorage.getItem('lavendalChatbotSettings');
+  if (savedSettings) {
+    const settings = JSON.parse(savedSettings);
+    const index = settings.documents.findIndex(d => d.id === contextDocument.id);
+    if (index !== -1) {
+      settings.documents[index] = contextDocument;
+    } else {
+      settings.documents.push(contextDocument);
+    }
+    localStorage.setItem('lavendalChatbotSettings', JSON.stringify(settings));
+  }
+}
+
+function removeDocumentFromLocalStorage(docId) {
+  const savedSettings = localStorage.getItem('lavendalChatbotSettings');
+  if (savedSettings) {
+    const settings = JSON.parse(savedSettings);
+    settings.documents = settings.documents.filter(d => d.id !== docId);
+    localStorage.setItem('lavendalChatbotSettings', JSON.stringify(settings));
+  }
 }
 
 function saveSettings() {

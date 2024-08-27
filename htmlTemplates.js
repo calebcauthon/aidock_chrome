@@ -181,7 +181,8 @@ function settingsOverlayTemplate() {
         <div class="setting-group">
           <h3>Documents</h3>
           <button id="add-document-btn">Add Document</button>
-          <ul id="document-list"></ul>
+          <table id="document-list"></table>
+          <div id="document-edit-form" style="display: none;"></div>
         </div>
       </div>
       <div class="resize-handle"></div>
@@ -189,27 +190,24 @@ function settingsOverlayTemplate() {
   `;
 }
 
-function documentTemplate(id) {
+function documentEditTemplate() {
   return `
-    <li class="document-item" data-id="[[id]]">
-      <input type="text" class="document-name" placeholder="Document Name">
-      <textarea class="document-content" placeholder="Document Content"></textarea>
-      <div class="document-settings">
-        <select class="document-scope">
-          <option value="entire-domain">Entire Domain</option>
-          <option value="this-page">Just this page</option>
-          <option value="custom-url">Custom URL</option>
-        </select>
-        <input type="text" class="custom-url" placeholder="Custom URL" style="display: none;">
-        <div class="role-checkboxes">
-          <label><input type="checkbox" value="admin"> Admin</label>
-          <label><input type="checkbox" value="manager"> Manager</label>
-          <label><input type="checkbox" value="employee"> Employee</label>
-          <label><input type="checkbox" value="customer"> Customer</label>
-        </div>
-      </div>
-      <button class="remove-document-btn">Remove</button>
-    </li>
+    <input type="hidden" id="edit-document-id">
+    <input type="text" id="edit-document-name" placeholder="Document Name">
+    <textarea id="edit-document-content" placeholder="Document Content"></textarea>
+    <select id="edit-document-scope">
+      <option value="entire-domain">Entire Domain</option>
+      <option value="this-page">Just this page</option>
+      <option value="custom-url">Custom URL</option>
+    </select>
+    <input type="text" id="edit-document-custom-url" placeholder="Custom URL">
+    <div class="role-checkboxes">
+      <label><input type="checkbox" class="edit-role-checkbox" id="edit-role-admin" value="admin"> Admin</label>
+      <label><input type="checkbox" class="edit-role-checkbox" id="edit-role-manager" value="manager"> Manager</label>
+      <label><input type="checkbox" class="edit-role-checkbox" id="edit-role-employee" value="employee"> Employee</label>
+      <label><input type="checkbox" class="edit-role-checkbox" id="edit-role-customer" value="customer"> Customer</label>
+    </div>
+    <button id="save-document-btn">Save</button>
   `;
 }
 
