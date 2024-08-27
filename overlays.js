@@ -14,15 +14,19 @@ function createInstructionsOverlay(conversation, conversationId) {
     document.body.appendChild(overlay);
   }
 
+  function setupCloseButton(overlay) {
+    const closeBtn = instructionsOverlay.querySelector('.close-btn');
+    closeBtn.addEventListener('click', function() {
+      overlay.style.display = 'none';
+      repositionOverlays();
+    });
+  }
+
   const instructionsOverlay = document.createElement('div');
   addEmptyInstructionsOverlayHtml(instructionsOverlay, conversation);
   repositionOverlays();
+  setupCloseButton(instructionsOverlay);
   
-  const closeBtn = instructionsOverlay.querySelector('.close-btn');
-  closeBtn.addEventListener('click', function() {
-    instructionsOverlay.style.display = 'none';
-    repositionOverlays();
-  });
 
   const minimizeBtn = instructionsOverlay.querySelector('.minimize-btn');
   minimizeBtn.addEventListener('click', function() {
