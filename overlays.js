@@ -5,19 +5,18 @@ function createInstructionsOverlay(conversation, conversationId) {
     instructionsBody.scrollTop = instructionsBody.scrollHeight;
   }
 
+  function addEmptyInstructionsOverlayHtml(overlay, conversation) {
+    overlay.id = 'instructions-overlay';
+    overlay.offsetHeight;
+    overlay.style.opacity = '1';
+    overlay.setAttribute('data-conversation-id', conversationId);
+    overlay.innerHTML = createInstructionsOverlayTemplate(conversation);
+    document.body.appendChild(overlay);
+  }
+
   const instructionsOverlay = document.createElement('div');
-  instructionsOverlay.id = 'instructions-overlay';
-  instructionsOverlay.style.opacity = '0';
-  instructionsOverlay.setAttribute('data-conversation-id', conversationId);
-  
-  instructionsOverlay.innerHTML = createInstructionsOverlayTemplate(conversation);
-  
-  document.body.appendChild(instructionsOverlay);
-  
+  addEmptyInstructionsOverlayHtml(instructionsOverlay, conversation);
   repositionOverlays();
-  
-  instructionsOverlay.offsetHeight;
-  instructionsOverlay.style.opacity = '1';
   
   const closeBtn = instructionsOverlay.querySelector('.close-btn');
   closeBtn.addEventListener('click', function() {
