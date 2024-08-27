@@ -192,6 +192,9 @@ function setupSettingsEvents(overlay) {
     setupDocumentEvents(newDocElement);
   });
 
+  const llmEndpointInput = overlay.querySelector('#llm-endpoint');
+  llmEndpointInput.addEventListener('change', saveSettings);
+
   // Load saved settings
   loadSettings();
 
@@ -268,7 +271,7 @@ function loadSettings() {
   const savedSettings = localStorage.getItem('lavendalChatbotSettings');
   if (savedSettings) {
     const settings = JSON.parse(savedSettings);
-    document.getElementById('llm-endpoint').value = settings.llmEndpoint;
+    document.getElementById('llm-endpoint').value = settings.llmEndpoint || 'http://localhost:5000';
 
     const documentList = document.getElementById('document-list');
     documentList.innerHTML = '';

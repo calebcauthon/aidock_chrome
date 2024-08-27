@@ -1,3 +1,12 @@
+function getLLMEndpoint() {
+  const savedSettings = localStorage.getItem('lavendalChatbotSettings');
+  if (savedSettings) {
+    const settings = JSON.parse(savedSettings);
+    return settings.llmEndpoint || 'http://localhost:5000';
+  }
+  return 'http://localhost:5000'; // Default fallback
+}
+
 function sendQuestionToBackend(question) {
   const url = window.location.href;
   const pageTitle = document.title;
@@ -14,7 +23,9 @@ function sendQuestionToBackend(question) {
     scrollPosition: scrollPosition
   };
 
-  return fetch('http://localhost:5000/ask', {
+  const llmEndpoint = getLLMEndpoint();
+
+  return fetch(`${llmEndpoint}/ask`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -31,7 +42,9 @@ function sendQuestionToBackend(question) {
 }
 
 function callPromptEndpoint(question, answer) {
-  return fetch('http://localhost:5000/prompt', {
+  const llmEndpoint = getLLMEndpoint();
+
+  return fetch(`${llmEndpoint}/prompt`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
