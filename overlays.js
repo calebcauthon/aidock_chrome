@@ -29,13 +29,18 @@ function createInstructionsOverlay(conversation, conversationId) {
     });
   }
 
+  function replaceLoadingHtmlWithAnswer(overlay, question, answer) {
+    const instructionsBody = overlay.querySelector('.instructions-body');
+    const loadingParagraph = instructionsBody.lastElementChild;
+    loadingParagraph.innerHTML = followUpQuestionAnswerTemplate(question, answer);
+    instructionsBody.scrollTop = instructionsBody.scrollHeight;
+  }
+
   const instructionsOverlay = document.createElement('div');
   addEmptyInstructionsOverlayHtml(instructionsOverlay, conversation);
   repositionOverlays();
   setupCloseButton(instructionsOverlay);
   setupMinimizeButton(instructionsOverlay);
-
-
 
   const chatInput = instructionsOverlay.querySelector('.continue-chat-input');
 
@@ -54,11 +59,7 @@ function createInstructionsOverlay(conversation, conversationId) {
         sendQuestionToBackend(followUpQuestion)
           .then(answer => {
             conversation.addMessage('answer', answer);
-            
-            const instructionsBody = instructionsOverlay.querySelector('.instructions-body');
-            const loadingParagraph = instructionsBody.lastElementChild;
-            loadingParagraph.innerHTML = followUpQuestionAnswerTemplate(followUpQuestion, answer);
-            instructionsBody.scrollTop = instructionsBody.scrollHeight;
+            replaceLoadingHtmlWithAnswer(instructionsOverlay, followUpQuestion, answer);
             trigger(instructionsOverlay, "new-answer", conversation);
           })
           .catch(error => {
