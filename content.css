@@ -358,6 +358,7 @@
 
 .setting-group {
   margin-bottom: 20px;
+  clear: both; /* Add this to ensure proper spacing after the floated button */
 }
 
 .setting-group h3 {
@@ -368,9 +369,12 @@
   background-color: #4CAF50;
   color: white;
   border: none;
-  padding: 10px 15px;
+  padding: 5px 10px;
   cursor: pointer;
   border-radius: 4px;
+  font-size: 14px;
+  float: right;
+  margin-bottom: 10px;
 }
 
 .document-item {

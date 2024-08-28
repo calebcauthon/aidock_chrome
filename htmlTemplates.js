@@ -179,7 +179,6 @@ function settingsOverlayTemplate() {
           <input type="text" id="llm-endpoint" name="llm-endpoint">
         </div>
         <div class="setting-group">
-          <h3>Documents</h3>
           <button id="add-document-btn">Add Document</button>
           <table id="document-list"></table>
           <div id="document-edit-form" style="display: none;"></div>

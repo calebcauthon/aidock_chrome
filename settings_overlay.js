@@ -53,7 +53,7 @@ function setupSettingsEvents(overlay) {
 
 async function loadDocuments() {
   const documentList = document.getElementById('document-list');
-  documentList.innerHTML = '<tr><th>Name</th></tr>';
+  documentList.innerHTML = '<tr><th colspan="2">Name</th></tr>';
 
   const contextDocuments = await getContextDocuments();
 
