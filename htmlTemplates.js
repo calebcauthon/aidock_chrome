@@ -179,7 +179,7 @@ function settingsOverlayTemplate() {
           <input type="text" id="llm-endpoint" name="llm-endpoint">
         </div>
         <div class="setting-group">
-          <button id="add-document-btn">Add Document</button>
+          <button id="add-document-btn">Add Userguide</button>
           <table id="document-list"></table>
           <div id="document-edit-form" style="display: none;"></div>
         </div>
@@ -194,12 +194,12 @@ function documentEditTemplate() {
     <form id="document-edit-form" class="document-edit-form">
       <input type="hidden" id="edit-document-id">
       <div class="form-group">
-        <label for="edit-document-name">Document Name</label>
-        <input type="text" id="edit-document-name" placeholder="Enter document name">
+        <label for="edit-document-name">Userguide Name</label>
+        <input type="text" id="edit-document-name" placeholder="Enter userguide name">
       </div>
       <div class="form-group">
-        <label for="edit-document-content">Document Content</label>
-        <textarea id="edit-document-content" placeholder="Enter document content"></textarea>
+        <label for="edit-document-content">Userguide Content</label>
+        <textarea id="edit-document-content" placeholder="Enter userguide content"></textarea>
       </div>
       <div class="form-group">
         <label for="edit-document-scope">Scope</label>
