@@ -432,3 +432,59 @@
   justify-content: space-between;
   align-items: center;
 }
+
+#document-list {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: var(--primary-bg-color);
+  box-shadow: 0 2px 5px var(--shadow-color);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+#document-list th,
+#document-list td {
+  padding: 12px 15px;
+  text-align: left;
+}
+
+#document-list th {
+  background-color: var(--secondary-bg-color);
+  color: white;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+#document-list tr:nth-child(even) {
+  background-color: var(--list-item-even-bg-color);
+}
+
+#document-list tr:hover {
+  background-color: var(--list-item-hover-bg-color);
+}
+
+.document-actions {
+  text-align: right;
+}
+
+.edit-document-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  transition: transform 0.2s ease;
+}
+
+.edit-document-btn:hover {
+  transform: scale(1.1);
+}
+
+.pencil-btn {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}

@@ -82,3 +82,26 @@ async function getContextDocuments() {
   return data;
 }
 
+async function getContextDocument(docId) {
+  const llmEndpoint = getLLMEndpoint();
+
+  const response = await fetch(`${llmEndpoint}/context_docs/${docId}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  const data = await response.json();
+
+  if (data.error) {
+    throw new Error(data.error);
+  }
+
+  return data;
+}
+

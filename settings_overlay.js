@@ -70,47 +70,59 @@ async function loadDocuments() {
 
 function setupDocumentActions() {
   const editButtons = document.querySelectorAll('.edit-document-btn');
-  const deleteButtons = document.querySelectorAll('.delete-document-btn');
 
   editButtons.forEach(button => {
     button.addEventListener('click', (e) => {
-      const docId = e.target.getAttribute('data-id');
+      const docId = e.target.closest('.edit-document-btn').getAttribute('data-id');
       showDocumentEditForm(docId);
-    });
-  });
-
-  deleteButtons.forEach(button => {
-    button.addEventListener('click', (e) => {
-      const docId = e.target.getAttribute('data-id');
-      deleteDocument(docId);
+      
+      // Hide the document list and show the edit form
+      document.getElementById('document-list').style.display = 'none';
+      document.getElementById('document-edit-form').style.display = 'block';
     });
   });
 }
 
-function showDocumentEditForm(docId = null) {
+async function showDocumentEditForm(docId = null) {
   const editForm = document.getElementById('document-edit-form');
   editForm.innerHTML = documentEditTemplate();
 
   if (docId) {
-    const savedSettings = localStorage.getItem('lavendalChatbotSettings');
-    if (savedSettings) {
-      const settings = JSON.parse(savedSettings);
-      const doc = settings.documents.find(d => d.id === docId);
+    try {
+      const doc = await getContextDocument(docId);
       if (doc) {
         editForm.querySelector('#edit-document-id').value = doc.id;
-        editForm.querySelector('#edit-document-name').value = doc.name;
-        editForm.querySelector('#edit-document-content').value = doc.content;
-        editForm.querySelector('#edit-document-scope').value = doc.scope;
-        editForm.querySelector('#edit-document-custom-url').value = doc.customUrl;
-        doc.roles.forEach(role => {
-          editForm.querySelector(`#edit-role-${role}`).checked = true;
-        });
+        editForm.querySelector('#edit-document-name').value = doc.document_name;
+        editForm.querySelector('#edit-document-content').value = doc.document_text;
+        editForm.querySelector('#edit-document-scope').value = doc.scope || 'entire-domain';
+        editForm.querySelector('#edit-document-custom-url').value = doc.url;
+        // Assuming roles are stored in the backend, update this part accordingly
+        // doc.roles.forEach(role => {
+        //   editForm.querySelector(`#edit-role-${role}`).checked = true;
+        // });
       }
+    } catch (error) {
+      console.error('Error fetching document:', error);
+      // Display error message to user
     }
   }
 
   const saveBtn = editForm.querySelector('#save-document-btn');
-  saveBtn.addEventListener('click', saveDocument);
+  saveBtn.addEventListener('click', () => {
+    saveDocument();
+    // Show the document list and hide the edit form after saving
+    document.getElementById('document-list').style.display = 'table';
+    editForm.style.display = 'none';
+  });
+
+  // Add a cancel button to the form
+  const cancelBtn = document.createElement('button');
+  cancelBtn.textContent = 'Cancel';
+  cancelBtn.addEventListener('click', () => {
+    document.getElementById('document-list').style.display = 'table';
+    editForm.style.display = 'none';
+  });
+  editForm.appendChild(cancelBtn);
 
   editForm.style.display = 'block';
 }

@@ -215,6 +215,11 @@ function documentTemplate(contextDocument) {
   return `
     <tr class="document-item" data-id="${contextDocument.id}">
       <td class="document-name">${contextDocument.document_name}</td>
+      <td class="document-actions">
+        <button class="edit-document-btn" data-id="${contextDocument.id}">
+          <span class="pencil-btn"></span>
+        </button>
+      </td>
     </tr>
   `;
 }
