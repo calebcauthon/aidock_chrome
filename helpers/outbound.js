@@ -120,16 +120,17 @@ async function saveDocument(contextDocument) {
     const data = await response.json();
 
     if (data.id || (isUpdate && data.message)) {
-      hideEditForm();
-      await loadDocuments(); // Move this after hiding the edit form
-      showDocumentList(); // Add this line to show the document list
+      await loadDocuments();
       showSuccessMessage('Document saved successfully!');
+      return true; // Indicate success
     } else {
       console.error('Error saving document:', data.error);
       showErrorMessage('Error saving document. Please try again.');
+      return false; // Indicate failure
     }
   } catch (error) {
     console.error('Error:', error);
     showErrorMessage('An error occurred. Please try again.');
+    return false; // Indicate failure
   }
 }

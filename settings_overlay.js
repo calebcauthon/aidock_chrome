@@ -114,10 +114,14 @@ async function showDocumentEditForm(docId = null) {
   }
 
   const saveBtn = editForm.querySelector('#save-document-btn');
-  saveBtn.addEventListener('click', (e) => {
+  saveBtn.addEventListener('click', async (e) => {
     e.preventDefault(); // Prevent form submission
     const contextDocument = getContextDocumentFromForm();
-    saveDocument(contextDocument);
+    const success = await saveDocument(contextDocument);
+    if (success) {
+      hideEditForm();
+      showDocumentList();
+    }
   });
 
   const cancelBtn = editForm.querySelector('#cancel-edit-btn');
