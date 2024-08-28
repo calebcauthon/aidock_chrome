@@ -105,3 +105,30 @@ async function getContextDocument(docId) {
   return data;
 }
 
+async function saveDocument(contextDocument) {
+  const llmEndpoint = getLLMEndpoint();
+  const isUpdate = !!contextDocument.id;
+  const endpoint = isUpdate ? `/context_docs/${contextDocument.id}` : '/context_docs/';
+
+  try {
+    const response = await fetch(`${llmEndpoint}${endpoint}`, {
+      method: isUpdate ? 'PUT' : 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(contextDocument)
+    });
+
+    const data = await response.json();
+
+    if (data.id || (isUpdate && data.message)) {
+      await loadDocuments();
+      hideEditForm();
+      showSuccessMessage('Document saved successfully!');
+    } else {
+      console.error('Error saving document:', data.error);
+      showErrorMessage('Error saving document. Please try again.');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    showErrorMessage('An error occurred. Please try again.');
+  }
+}

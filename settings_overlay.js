@@ -108,60 +108,50 @@ async function showDocumentEditForm(docId = null) {
   }
 
   const saveBtn = editForm.querySelector('#save-document-btn');
-  saveBtn.addEventListener('click', () => {
-    saveDocument();
-    // Show the document list and hide the edit form after saving
-    document.getElementById('document-list').style.display = 'table';
-    editForm.style.display = 'none';
+  saveBtn.addEventListener('click', (e) => {
+    e.preventDefault(); // Prevent form submission
+    const contextDocument = getContextDocumentFromForm();
+    saveDocument(contextDocument);
   });
 
+  const cancelBtn = editForm.querySelector('#cancel-edit-btn');
+  cancelBtn.addEventListener('click', (e) => {
+    e.preventDefault(); // Prevent form submission
+    cancelEdit();
+  });
 
   editForm.style.display = 'block';
 }
 
-function saveDocument() {
+function cancelEdit() {
+  hideEditForm();
+}
+
+function hideEditForm() {
   const editForm = document.getElementById('document-edit-form');
-  const docId = editForm.querySelector('#edit-document-id').value;
-  const name = editForm.querySelector('#edit-document-name').value;
-  const content = editForm.querySelector('#edit-document-content').value;
-  const scope = editForm.querySelector('#edit-document-scope').value;
-  const customUrl = editForm.querySelector('#edit-document-custom-url').value;
-  const roles = Array.from(editForm.querySelectorAll('.edit-role-checkbox:checked')).map(cb => cb.value);
+  editForm.style.display = 'none';
+  document.getElementById('document-list').style.display = 'table';
+}
 
-  const contextDocument = { url: customUrl, document_name: name, document_text: content };
+function showSuccessMessage(message) {
+  showMessage(message, 'green');
+}
 
-  const endpoint = docId ? '/context_docs/update_document' : '/context_docs/';
-  const llmEndpoint = getLLMEndpoint();
+function showErrorMessage(message) {
+  showMessage(message, 'red');
+}
 
-  fetch(`${llmEndpoint}${endpoint}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(contextDocument)
-  })
-  .then(response => response.json())
-  .then(data => {
-    if (data.id) {
-      updateLocalStorage(contextDocument);
-      loadDocuments();
-      editForm.style.display = 'none'; // Hide the edit form
-      
-      // Show success message
-      const successMessage = document.createElement('div');
-      successMessage.textContent = 'Document saved successfully!';
-      successMessage.style.color = 'green';
-      successMessage.style.marginBottom = '10px';
-      const settingsOverlay = document.getElementById('settings-overlay');
-      settingsOverlay.insertBefore(successMessage, settingsOverlay.firstChild);
-      
-      // Remove success message after 3 seconds
-      setTimeout(() => {
-        successMessage.remove();
-      }, 3000);
-    } else {
-      console.error('Error saving document:', data.error);
-    }
-  })
-  .catch(error => console.error('Error:', error));
+function showMessage(message, color) {
+  const messageElement = document.createElement('div');
+  messageElement.textContent = message;
+  messageElement.style.color = color;
+  messageElement.style.marginBottom = '10px';
+  const settingsOverlay = document.getElementById('settings-overlay');
+  settingsOverlay.insertBefore(messageElement, settingsOverlay.firstChild);
+  
+  setTimeout(() => {
+    messageElement.remove();
+  }, 3000);
 }
 
 function deleteDocument(docId) {
@@ -234,4 +224,17 @@ function loadSettings() {
     const settings = JSON.parse(savedSettings);
     document.getElementById('llm-endpoint').value = settings.llmEndpoint || 'http://localhost:5000';
   }
+}
+
+// New helper function to get contextDocument from the form
+function getContextDocumentFromForm() {
+  const editForm = document.getElementById('document-edit-form');
+  return {
+    id: editForm.querySelector('#edit-document-id').value,
+    url: editForm.querySelector('#edit-document-custom-url').value,
+    document_name: editForm.querySelector('#edit-document-name').value,
+    document_text: editForm.querySelector('#edit-document-content').value,
+    scope: editForm.querySelector('#edit-document-scope').value,
+    roles: Array.from(editForm.querySelectorAll('.edit-role-checkbox:checked')).map(cb => cb.value)
+  };
 }
