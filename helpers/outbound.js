@@ -120,8 +120,9 @@ async function saveDocument(contextDocument) {
     const data = await response.json();
 
     if (data.id || (isUpdate && data.message)) {
-      await loadDocuments();
       hideEditForm();
+      await loadDocuments(); // Move this after hiding the edit form
+      showDocumentList(); // Add this line to show the document list
       showSuccessMessage('Document saved successfully!');
     } else {
       console.error('Error saving document:', data.error);

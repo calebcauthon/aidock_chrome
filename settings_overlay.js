@@ -85,7 +85,13 @@ function setupDocumentActions() {
 
 async function showDocumentEditForm(docId = null) {
   const editForm = document.getElementById('document-edit-form');
+  const documentList = document.getElementById('document-list');
+  
   editForm.innerHTML = documentEditTemplate();
+  
+  // Hide the document list and show the edit form
+  documentList.style.display = 'none';
+  editForm.style.display = 'block';
 
   if (docId) {
     try {
@@ -103,7 +109,7 @@ async function showDocumentEditForm(docId = null) {
       }
     } catch (error) {
       console.error('Error fetching document:', error);
-      // Display error message to user
+      showErrorMessage('Error fetching document. Please try again.');
     }
   }
 
@@ -119,18 +125,22 @@ async function showDocumentEditForm(docId = null) {
     e.preventDefault(); // Prevent form submission
     cancelEdit();
   });
-
-  editForm.style.display = 'block';
 }
 
 function cancelEdit() {
   hideEditForm();
+  showDocumentList();
+  loadDocuments(); // Add this line to refresh the document list
 }
 
 function hideEditForm() {
   const editForm = document.getElementById('document-edit-form');
   editForm.style.display = 'none';
-  document.getElementById('document-list').style.display = 'table';
+}
+
+function showDocumentList() {
+  const documentList = document.getElementById('document-list');
+  documentList.style.display = 'table';
 }
 
 function showSuccessMessage(message) {
