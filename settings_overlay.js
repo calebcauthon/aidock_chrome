@@ -115,14 +115,6 @@ async function showDocumentEditForm(docId = null) {
     editForm.style.display = 'none';
   });
 
-  // Add a cancel button to the form
-  const cancelBtn = document.createElement('button');
-  cancelBtn.textContent = 'Cancel';
-  cancelBtn.addEventListener('click', () => {
-    document.getElementById('document-list').style.display = 'table';
-    editForm.style.display = 'none';
-  });
-  editForm.appendChild(cancelBtn);
 
   editForm.style.display = 'block';
 }

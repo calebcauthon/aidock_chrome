@@ -488,3 +488,98 @@
   background-repeat: no-repeat;
   background-position: center;
 }
+
+.document-edit-form {
+  background-color: var(--primary-bg-color);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px var(--shadow-color);
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: var(--text-color);
+}
+
+.form-group input[type="text"],
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: var(--input-bg-color);
+  color: var(--input-text-color);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input[type="text"]:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #4CAF50;
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+}
+
+.form-group textarea {
+  height: 150px;
+  resize: vertical;
+}
+
+.role-checkboxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.role-checkboxes label {
+  display: flex;
+  align-items: center;
+  font-weight: normal;
+}
+
+.role-checkboxes input[type="checkbox"] {
+  margin-right: 5px;
+}
+
+.btn-primary,
+.btn-secondary {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #45a049;
+}
+
+.btn-secondary {
+  background-color: #f1f1f1;
+  color: #333;
+  margin-left: 10px;
+}
+
+.btn-secondary:hover {
+  background-color: #e0e0e0;
+}
+
+#document-edit-form {
+  max-width: 600px;
+  margin: 0 auto;
+}
