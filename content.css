@@ -411,6 +411,10 @@
   border-radius: 4px;
 }
 
+.settings-btn {
+  cursor: pointer;
+}
+
 .close-settings-btn {
   float: right;
   cursor: pointer;

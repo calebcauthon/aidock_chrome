@@ -211,4 +211,13 @@ function documentEditTemplate() {
   `;
 }
 
+function documentTemplate(contextDocument) {
+  return `
+    <tr class="document-item" data-id="${contextDocument.id}">
+      <td class="document-name">${contextDocument.document_name}</td>
+    </tr>
+  `;
+}
+
+
 

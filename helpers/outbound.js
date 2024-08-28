@@ -58,3 +58,27 @@ function callPromptEndpoint(question, answer) {
     return null;
   });
 }
+
+async function getContextDocuments() {
+  const llmEndpoint = getLLMEndpoint();
+
+  const response = await fetch(`${llmEndpoint}/context_docs/`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  const data = await response.json();
+
+  if (data.error) {
+    throw new Error(data.error);
+  }
+
+  return data;
+}
+

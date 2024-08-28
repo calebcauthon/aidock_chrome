@@ -51,23 +51,16 @@ function setupSettingsEvents(overlay) {
   });
 }
 
-function loadDocuments() {
+async function loadDocuments() {
   const documentList = document.getElementById('document-list');
-  documentList.innerHTML = '<tr><th>Name</th><th>Scope</th><th>Actions</th></tr>';
+  documentList.innerHTML = '<tr><th>Name</th></tr>';
 
-  const savedSettings = localStorage.getItem('lavendalChatbotSettings');
-  if (savedSettings) {
-    const settings = JSON.parse(savedSettings);
-    settings.documents.forEach(doc => {
+  const contextDocuments = await getContextDocuments();
+
+  if (contextDocuments) {
+    contextDocuments.forEach(contextDocument => {
       const row = document.createElement('tr');
-      row.innerHTML = `
-        <td>${doc.name}</td>
-        <td>${doc.scope}</td>
-        <td>
-          <button class="edit-document-btn" data-id="${doc.id}">Edit</button>
-          <button class="delete-document-btn" data-id="${doc.id}">Delete</button>
-        </td>
-      `;
+      row.innerHTML = documentTemplate(contextDocument);
       documentList.appendChild(row);
     });
   }
@@ -236,23 +229,5 @@ function loadSettings() {
   if (savedSettings) {
     const settings = JSON.parse(savedSettings);
     document.getElementById('llm-endpoint').value = settings.llmEndpoint || 'http://localhost:5000';
-
-    const documentList = document.getElementById('document-list');
-    documentList.innerHTML = '';
-    settings.documents.forEach(doc => {
-      const newDocElement = document.createElement('li');
-      newDocElement.innerHTML = documentTemplate(doc.id);
-      documentList.appendChild(newDocElement);
-      setupDocumentEvents(newDocElement);
-
-      newDocElement.querySelector('.document-name').value = doc.name;
-      newDocElement.querySelector('.document-content').value = doc.content;
-      newDocElement.querySelector('.document-scope').value = doc.scope;
-      newDocElement.querySelector('.custom-url').value = doc.customUrl;
-      newDocElement.querySelector('.custom-url').style.display = doc.scope === 'custom-url' ? 'block' : 'none';
-      doc.roles.forEach(role => {
-        newDocElement.querySelector(`.role-checkboxes input[value="${role}"]`).checked = true;
-      });
-    });
   }
 }
