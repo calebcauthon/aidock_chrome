@@ -129,6 +129,28 @@ async function showDocumentEditForm(docId = null) {
     e.preventDefault(); // Prevent form submission
     cancelEdit();
   });
+
+  const deleteBtn = editForm.querySelector('#delete-document-btn');
+  deleteBtn.addEventListener('click', async (e) => {
+    e.preventDefault(); // Prevent form submission
+    const docId = editForm.querySelector('#edit-document-id').value;
+    if (docId) {
+      if (confirm('Are you sure you want to delete this document?')) {
+        try {
+          await deleteDocument(docId);
+          showSuccessMessage('Document deleted successfully');
+          hideEditForm();
+          showDocumentList();
+          loadDocuments();
+        } catch (error) {
+          console.error('Error deleting document:', error);
+          showErrorMessage('Error deleting document. Please try again.');
+        }
+      }
+    } else {
+      showErrorMessage('Cannot delete: No document ID found.');
+    }
+  });
 }
 
 function cancelEdit() {

@@ -484,6 +484,30 @@
   transform: scale(1.1);
 }
 
+.btn-danger {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+}
+
+.btn-danger:focus {
+  outline: none;
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.5);
+}
+
+#delete-document-btn {
+  margin-left: 10px;
+}
+
+
 .pencil-btn {
   display: inline-block;
   width: 20px;

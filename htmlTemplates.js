@@ -225,6 +225,7 @@ function documentEditTemplate() {
       <div class="form-group">
         <button id="save-document-btn" class="btn-primary">Save</button>
         <button id="cancel-edit-btn" class="btn-secondary">Cancel</button>
+        <button id="delete-document-btn" class="btn-danger">Delete</button>
       </div>
     </form>
   `;

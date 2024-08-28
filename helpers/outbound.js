@@ -134,3 +134,34 @@ async function saveDocument(contextDocument) {
     return false; // Indicate failure
   }
 }
+
+async function deleteDocument(docId) {
+  const llmEndpoint = getLLMEndpoint();
+
+  try {
+    const response = await fetch(`${llmEndpoint}/context_docs/${docId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    if (data.message && data.message.toLowerCase().includes('success')) {
+      showSuccessMessage('Document deleted successfully');
+      return true;
+    } else {
+      showErrorMessage(data.error || 'Error deleting document');
+      return false;
+    }
+  } catch (error) {
+    console.error('Error deleting document:', error);
+    showErrorMessage('An error occurred while deleting the document. Please try again.');
+    return false;
+  }
+}
