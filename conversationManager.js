@@ -1,6 +1,7 @@
 class Conversation {
-  constructor(id, initialQuestion = null) {
+  constructor(id, initialQuestion = null, title = "New Chat") {
     this.id = id;
+    this.title = title;
     this.messages = [];
     if (initialQuestion) {
       this.addMessage('question', initialQuestion);
@@ -13,6 +14,10 @@ class Conversation {
       content,
       timestamp: new Date()
     });
+  }
+
+  setTitle(newTitle) {
+    this.title = newTitle;
   }
 }
 
@@ -30,9 +35,9 @@ class ConversationManager {
     return conversation;
   }
 
-  createConversation(initialQuestion) {
+  createConversation(initialQuestion, title = "New Chat") {
     const id = this.generateId();
-    const conversation = new Conversation(id, initialQuestion);
+    const conversation = new Conversation(id, initialQuestion, title);
     this.conversations.set(id, conversation);
     this.saveConversationsToStorage();
     return conversation;
@@ -47,7 +52,11 @@ class ConversationManager {
   }
 
   saveConversationsToStorage() {
-    const conversationsArray = Array.from(this.conversations.values());
+    const conversationsArray = Array.from(this.conversations.values()).map(conv => ({
+      id: conv.id,
+      title: conv.title,
+      messages: conv.messages
+    }));
     localStorage.setItem('lavendalChatbotConversations', JSON.stringify(conversationsArray));
   }
 
@@ -56,7 +65,7 @@ class ConversationManager {
     if (savedConversations) {
       const conversationsArray = JSON.parse(savedConversations);
       conversationsArray.forEach(conv => {
-        const conversation = new Conversation(conv.id);
+        const conversation = new Conversation(conv.id, null, conv.title);
         conv.messages.forEach(msg => {
           conversation.addMessage(msg.type, msg.content);
         });
@@ -68,5 +77,13 @@ class ConversationManager {
   deleteConversation(id) {
     this.conversations.delete(id);
     this.saveConversationsToStorage();
+  }
+
+  updateConversationTitle(id, newTitle) {
+    const conversation = this.getConversation(id);
+    if (conversation) {
+      conversation.setTitle(newTitle);
+      this.saveConversationsToStorage();
+    }
   }
 }

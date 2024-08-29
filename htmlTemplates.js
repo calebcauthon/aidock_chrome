@@ -1,47 +1,31 @@
 function createInstructionsOverlayTemplate(conversation) {
-  const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  const messages = conversation.messages;
-  const question = messages.find(message => message.type === 'question');
-  const answer = messages.find(message => message.type === 'answer');
-  const title = question ? question.content : "New Chat";
+  const title = conversation.title ? conversation.title : "New Chat";
   return `
     <div class="instructions-content">
       <div class="handle instructions-title">${title}</div>
       <span class="minimize-btn">🔽</span>
       <span class="close-btn">&times;</span>
       <div class="instructions-body">
-        ${question ? `
-        <div class="chat-row question-row">
-          <div class="avatar-container">
-            <div class="avatar-circle"></div>
-          </div>
-          <div class="message-content">
-            <div class="message-header">
-              <span class="avatar-name">You</span>
-              <span class="timestamp">${timestamp}</span>
+        ${conversation.messages.map(message => {
+          const timestamp = new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+          const isQuestion = message.type === 'question';
+          return `
+            <div class="chat-row ${isQuestion ? 'question-row' : 'answer-row'}">
+              <div class="avatar-container">
+                <div class="avatar-circle"></div>
+              </div>
+              <div class="message-content">
+                <div class="message-header">
+                  <span class="avatar-name">${isQuestion ? 'You' : 'AI'}</span>
+                  <span class="timestamp">${timestamp}</span>
+                </div>
+                <div class="message-body">
+                  <p>${isQuestion ? `<strong>${message.content}</strong>` : message.content}</p>
+                </div>
+              </div>
             </div>
-            <div class="message-body">
-              <p><strong>${question.content}</strong></p>
-            </div>
-          </div>
-        </div>
-        ` : ''}
-        ${answer ? `
-        <div class="chat-row answer-row">
-          <div class="avatar-container">
-            <div class="avatar-circle"></div>
-          </div>
-          <div class="message-content">
-            <div class="message-header">
-              <span class="avatar-name">AI</span>
-              <span class="timestamp">${timestamp}</span>
-            </div>
-            <div class="message-body">
-              <p>${answer.content}</p>
-            </div>
-          </div>
-        </div>
-        ` : ''}
+          `;
+        }).join('')}
       </div>
       <div class="chat-input">
         <input type="text" placeholder="Ask away" class="continue-chat-input">

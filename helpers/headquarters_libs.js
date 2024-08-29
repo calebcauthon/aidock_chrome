@@ -33,19 +33,18 @@ function createHeadquarters() {
 
 function loadSavedConversations() {
   conversationManager.conversations.forEach((conversation) => {
-    const lastQuestion = conversation.messages.filter(msg => msg.type === 'question').pop();
     const lastAnswer = conversation.messages.filter(msg => msg.type === 'answer').pop();
     const overlay = createInstructionsOverlay(conversation, conversation.id);
-    addEntryToHeadquarters(lastQuestion ? lastQuestion.content : "New Chat", lastAnswer ? lastAnswer.content : null, overlay);
+    addEntryToHeadquarters(conversation.title, lastAnswer ? lastAnswer.content : null, overlay);
   });
 }
 
-function addEntryToHeadquarters(question, answer, overlay) {
+function addEntryToHeadquarters(title, answer, overlay) {
   const questionList = headquarters.querySelector('#question-list');
   const listItem = document.createElement('li');
   const timestamp = new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
   
-  listItem.innerHTML = headquartersEntryTemplate(timestamp, question, 0);
+  listItem.innerHTML = headquartersEntryTemplate(timestamp, title, 0);
   listItem.setAttribute('data-conversation-id', overlay.getAttribute('data-conversation-id'));
   
   const deleteBtn = document.createElement('button');

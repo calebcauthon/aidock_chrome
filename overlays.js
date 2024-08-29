@@ -38,17 +38,15 @@ function createInstructionsOverlay(conversation, conversationId) {
 
   async function comeUpWithTitle(overlay, conversation) {
     const titleElement = overlay.querySelector('.instructions-title');
-    if (titleElement.textContent.trim() !== 'New Chat') {
-      return;
-    }
-
-    const messages = conversation.messages;
-    const title = await callPromptEndpoint(messages[0].content, messages[1].content);
-    if (title) {
-      if (titleElement && titleElement.textContent.trim() === 'New Chat') {
+    if (titleElement.textContent.trim() === 'New Chat') {
+      const messages = conversation.messages;
+      const title = await callPromptEndpoint(messages[0].content, messages[1].content);
+      if (title) {
+        conversation.setTitle(title);
+        conversationManager.saveConversationsToStorage();
         titleElement.textContent = title;
         const entryElement = headquarters.querySelector(`li[data-conversation-id="${conversation.id}"] .entry-question`);
-        if (entryElement && entryElement.textContent.trim() === 'New Chat') {
+        if (entryElement) {
           entryElement.textContent = title;
         }
       }
