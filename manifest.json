@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Simple Background Changer",
+  "name": "Ai Dock",
   "version": "1.0",
-  "description": "Changes the background color of web pages to light blue and adds an input overlay.",
+  "description": "Ai Dock",
   "permissions": ["activeTab"],
   "content_scripts": [
     {
