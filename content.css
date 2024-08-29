@@ -622,6 +622,7 @@
   border-radius: 4px;
   font-size: 12px;
   margin-left: 10px;
+  float: right;
 }
 
 .delete-chat-btn:hover {
