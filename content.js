@@ -7,5 +7,7 @@ input.placeholder = 'Ask away';
 
 overlay.appendChild(input);
 
+
+const conversationManager = new ConversationManager();
 let headquarters = createHeadquarters();
-const conversationManager = new Conversations();
+loadSavedConversations();

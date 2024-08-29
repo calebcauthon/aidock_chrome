@@ -612,3 +612,18 @@
   max-width: 600px;
   margin: 0 auto;
 }
+
+.delete-chat-btn {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 12px;
+  margin-left: 10px;
+}
+
+.delete-chat-btn:hover {
+  background-color: #d32f2f;
+}

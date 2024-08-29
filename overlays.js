@@ -70,6 +70,7 @@ function createInstructionsOverlay(conversation, conversationId) {
 
         const conversation = conversationManager.getConversation(conversationId);
         conversation.addMessage('question', followUpQuestion);
+        conversationManager.saveConversationsToStorage(); // Add this line
 
         trigger(chatDiv, "new-message", conversation);
         addQuestionHtml(chatDiv, followUpQuestion);
@@ -77,6 +78,7 @@ function createInstructionsOverlay(conversation, conversationId) {
         sendQuestionToBackend(followUpQuestion)
           .then(answer => {
             conversation.addMessage('answer', answer);
+            conversationManager.saveConversationsToStorage(); // Add this line
             replaceLoadingHtmlWithAnswer(chatDiv, followUpQuestion, answer);
             trigger(chatDiv, "new-answer", conversation);
           })
@@ -113,57 +115,4 @@ function updateInstructionsOverlay(overlay, content, question) {
   });
 
   return overlay; // Return the updated overlay
-}
-
-function createHeadquarters() {
-  const headquarters = document.createElement('div');
-  headquarters.id = 'headquarters';
-  headquarters.className = 'instructions-overlay';
-  
-  headquarters.innerHTML = headquartersTemplate();
-  maximizeOverlay(headquarters);
-  
-  document.body.appendChild(headquarters);
-  
-  const minimizeBtn = headquarters.querySelector('.minimize-btn');
-  minimizeBtn.addEventListener('click', () => toggleMinimize(headquarters));
-
-  const pencilBtn = headquarters.querySelector('.new-chat-btn');
-  pencilBtn.addEventListener('click', () => {
-    const conversation = conversationManager.createBlankConversation();
-    conversation.addMessage('answer', 'What do you need help with?');
-    const newOverlay = createInstructionsOverlay(conversation, conversation.id);
-    addEntryToHeadquarters("New Chat", null, newOverlay);
-    const newOverlayInput = newOverlay.querySelector('.continue-chat-input');
-    if (newOverlayInput) {
-      newOverlayInput.focus();
-    }
-  });
-  
-  const settingsBtn = headquarters.querySelector('.settings-btn');
-  settingsBtn.addEventListener('click', () => {
-    showSettingsOverlay();
-  });
-
-  return headquarters;
-}
-
-function addEntryToHeadquarters(question, answer, overlay) {
-  const questionList = headquarters.querySelector('#question-list');
-  const listItem = document.createElement('li');
-  const timestamp = new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
-  
-  listItem.innerHTML = headquartersEntryTemplate(timestamp, question, 0);
-  listItem.setAttribute('data-conversation-id', overlay.getAttribute('data-conversation-id'));
-  when(overlay, "new-message", (conversation) => {
-    const questionCount = conversation.messages.filter(message => message.type === 'question').length;
-    listItem.innerHTML = headquartersEntryTemplate(timestamp, question, questionCount);
-  });
-  
-  
-  listItem.addEventListener('click', () => {
-    showOverlay(overlay);
-  });
-  
-  questionList.insertBefore(listItem, questionList.firstChild);
 }
