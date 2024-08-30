@@ -53,11 +53,46 @@ function createInstructionsOverlay(conversation, conversationId) {
     }
   }
 
+  function setupDraggable(overlay) {
+    const handle = overlay.querySelector('.handle');
+    let isDragging = false;
+    let startX, startY, startLeft, startTop;
+
+    handle.addEventListener('mousedown', startDragging);
+    document.addEventListener('mousemove', drag);
+    document.addEventListener('mouseup', stopDragging);
+
+    function startDragging(e) {
+      isDragging = true;
+      startX = e.clientX;
+      startY = e.clientY;
+      startLeft = overlay.offsetLeft;
+      startTop = overlay.offsetTop;
+      overlay.style.transition = 'none';
+      overlay.style.bottom = 'auto';
+      overlay.style.right = 'auto';
+    }
+
+    function drag(e) {
+      if (!isDragging) return;
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+      overlay.style.left = `${startLeft + dx}px`;
+      overlay.style.top = `${startTop + dy}px`;
+    }
+
+    function stopDragging() {
+      isDragging = false;
+      overlay.style.transition = '';
+    }
+  }
+
   const chatDiv = document.createElement('div');
   addEmptyChatWindowHtml(chatDiv, conversation);
   repositionOverlays();
   setupCloseButton(chatDiv);
   setupMinimizeButton(chatDiv);
+  setupDraggable(chatDiv);
 
   const chatInput = chatDiv.querySelector('.continue-chat-input');
 
@@ -65,18 +100,18 @@ function createInstructionsOverlay(conversation, conversationId) {
     if (event.key === 'Enter') {
       const followUpQuestion = chatInput.value.trim();
       if (followUpQuestion) {
-
         const conversation = conversationManager.getConversation(conversationId);
         conversation.addMessage('question', followUpQuestion);
-        conversationManager.saveConversationsToStorage(); // Add this line
+        conversationManager.saveConversationsToStorage();
 
         trigger(chatDiv, "new-message", conversation);
         addQuestionHtml(chatDiv, followUpQuestion);
         
-        sendQuestionToBackend(followUpQuestion)
+        // Update this part to send the entire conversation
+        sendQuestionToBackend(followUpQuestion, conversation.messages)
           .then(answer => {
             conversation.addMessage('answer', answer);
-            conversationManager.saveConversationsToStorage(); // Add this line
+            conversationManager.saveConversationsToStorage();
             replaceLoadingHtmlWithAnswer(chatDiv, followUpQuestion, answer);
             trigger(chatDiv, "new-answer", conversation);
           })

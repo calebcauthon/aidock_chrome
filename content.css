@@ -48,10 +48,9 @@
 }
 
 #instructions-overlay {
-  margin-right: 10px;
   position: fixed;
   bottom: 0;
-  right: 0; /* Remove 'left: auto' */
+  right: 0;
   width: 300px;
   background-color: white;
   color: var(--text-color);
@@ -66,6 +65,13 @@
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  resize: both;
+  overflow: auto;
+}
+
+.handle {
+  cursor: move;
+  user-select: none;
 }
 
 #instructions-overlay.minimized {

@@ -7,7 +7,7 @@ function getLLMEndpoint() {
   return 'http://localhost:5000'; // Default fallback
 }
 
-function sendQuestionToBackend(question) {
+function sendQuestionToBackend(question, conversationMessages) {
   const url = window.location.href;
   const pageTitle = document.title;
   const selectedText = window.getSelection().toString();
@@ -20,7 +20,8 @@ function sendQuestionToBackend(question) {
     pageTitle: pageTitle,
     selectedText: selectedText,
     activeElement: activeElement,
-    scrollPosition: scrollPosition
+    scrollPosition: scrollPosition,
+    conversationMessages: conversationMessages
   };
 
   const llmEndpoint = getLLMEndpoint();
