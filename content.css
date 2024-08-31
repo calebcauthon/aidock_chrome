@@ -14,6 +14,11 @@
   --shadow-color-strong: rgba(0, 0, 0, 0.5);
 }
 
+.aidock-font, .aidock-font * {
+  font-family: 'Roboto', Arial, sans-serif !important;
+  font-size: 14px !important;
+}
+
 #extension-overlay {
   position: fixed;
   top: 0;

@@ -1,7 +1,7 @@
 function createInstructionsOverlayTemplate(conversation) {
   const title = conversation.title ? conversation.title : "New Chat";
   return `
-    <div class="instructions-content">
+    <div class="instructions-content aidock-font">
       <div class="handle">
         <div class="instructions-title">${title}</div>
       </div>
