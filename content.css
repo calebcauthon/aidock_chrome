@@ -84,6 +84,33 @@
 .handle {
   cursor: move;
   user-select: none;
+  border-bottom: 1px solid var(--shadow-color);
+  height: 20px;
+  padding: 10px;
+  background-color: var(--handle-bg-color);
+  flex-shrink: 0;
+  border-top-left-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.handle .instructions-title {
+  width: 50%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.handle .icons {
+  display: flex;
+  align-items: center;
+}
+
+.handle .icons > * {
+  margin-left: 10px;
 }
 
 #instructions-overlay.minimized {
@@ -94,16 +121,6 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-}
-
-.handle {
-  border-bottom: 1px solid var(--shadow-color);
-  height: 20px;
-  padding: 10px;
-  background-color: var(--handle-bg-color);
-  user-select: none;
-  flex-shrink: 0; /* Prevent handle from shrinking */
-  border-top-left-radius: 10px;
 }
 
 #instructions-overlay .handle {
