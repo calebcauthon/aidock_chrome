@@ -28,6 +28,9 @@ function createHeadquarters() {
     showSettingsOverlay();
   });
 
+  // Add this line to enable dragging
+  setupHeadquartersDragging(headquarters);
+
   return headquarters;
 }
 
@@ -68,4 +71,39 @@ function addEntryToHeadquarters(title, answer, overlay) {
   });
   
   questionList.insertBefore(listItem, questionList.firstChild);
+}
+
+function setupHeadquartersDragging(headquarters) {
+  const handle = headquarters.querySelector('.handle');
+  let isDragging = false;
+  let startX, startLeft;
+
+  handle.addEventListener('mousedown', startDragging);
+  document.addEventListener('mousemove', drag);
+  document.addEventListener('mouseup', stopDragging);
+
+  function startDragging(e) {
+    isDragging = true;
+    startX = e.clientX;
+    startLeft = headquarters.offsetLeft;
+    headquarters.style.transition = 'none';
+  }
+
+  function drag(e) {
+    if (!isDragging) return;
+    const dx = e.clientX - startX;
+    let newLeft = startLeft + dx;
+    
+    // Constrain the movement to the viewport width
+    const maxLeft = window.innerWidth - headquarters.offsetWidth;
+    newLeft = Math.max(0, Math.min(newLeft, maxLeft));
+    
+    headquarters.style.left = `${newLeft}px`;
+    headquarters.style.right = 'auto';
+  }
+
+  function stopDragging() {
+    isDragging = false;
+    headquarters.style.transition = '';
+  }
 }

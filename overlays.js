@@ -87,12 +87,44 @@ function createInstructionsOverlay(conversation, conversationId) {
     }
   }
 
+  function setupResizable(overlay) {
+    const resizeHandle = document.createElement('div');
+    resizeHandle.className = 'resize-handle';
+    overlay.appendChild(resizeHandle);
+
+    let isResizing = false;
+    let startX, startWidth;
+
+    resizeHandle.addEventListener('mousedown', startResizing);
+    document.addEventListener('mousemove', resize);
+    document.addEventListener('mouseup', stopResizing);
+
+    function startResizing(e) {
+      isResizing = true;
+      startX = e.clientX;
+      startWidth = parseInt(document.defaultView.getComputedStyle(overlay).width, 10);
+      overlay.style.transition = 'none';
+    }
+
+    function resize(e) {
+      if (!isResizing) return;
+      const width = startWidth + (e.clientX - startX);
+      overlay.style.width = `${width}px`;
+    }
+
+    function stopResizing() {
+      isResizing = false;
+      overlay.style.transition = '';
+    }
+  }
+
   const chatDiv = document.createElement('div');
   addEmptyChatWindowHtml(chatDiv, conversation);
   repositionOverlays();
   setupCloseButton(chatDiv);
   setupMinimizeButton(chatDiv);
   setupDraggable(chatDiv);
+  setupResizable(chatDiv);
 
   const chatInput = chatDiv.querySelector('.continue-chat-input');
 

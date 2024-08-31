@@ -67,6 +67,18 @@
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
   resize: both;
   overflow: auto;
+  min-width: 300px; /* Minimum width */
+  max-width: 80vw; /* Maximum width */
+}
+
+.resize-handle {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+  background-color: var(--shadow-color);
+  cursor: ew-resize;
 }
 
 .handle {
