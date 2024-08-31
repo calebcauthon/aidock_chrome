@@ -66,7 +66,7 @@ function updateInstructionsOverlayTemplate(question, content) {
 
 function headquartersTemplate() {
   return `
-    <div class="instructions-content">
+    <div class="instructions-content aidock-font">
       <div class="handle" style="cursor: ew-resize;">
         <div class="avatar-container">
           <div class="avatar-circle"></div>
@@ -88,7 +88,6 @@ function headquartersTemplate() {
 function headquartersEntryTemplate(timestamp, question, messageCount) {
   return `
     <div class="entry-header">
-      <span class="entry-message-count">(${messageCount})</span>
       <span class="entry-question">${question}</span>
     </div>
   `;
