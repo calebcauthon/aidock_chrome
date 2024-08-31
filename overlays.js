@@ -18,6 +18,7 @@ function createInstructionsOverlay(conversation, conversationId) {
     const closeBtn = chatDiv.querySelector('.close-btn');
     closeBtn.addEventListener('click', function() {
       overlay.style.display = 'none';
+      resetOverlayPosition(overlay); // Add this line
       repositionOverlays();
     });
   }
@@ -84,6 +85,7 @@ function createInstructionsOverlay(conversation, conversationId) {
     function stopDragging() {
       isDragging = false;
       overlay.style.transition = '';
+      overlay.setAttribute('data-custom-position', 'true'); // Add this line
     }
   }
 
@@ -180,4 +182,28 @@ function updateInstructionsOverlay(overlay, content, question) {
   });
 
   return overlay; // Return the updated overlay
+}
+
+// Add this new function
+function resetOverlayPosition(overlay) {
+  overlay.style.left = '';
+  overlay.style.top = '';
+  overlay.style.bottom = '0';
+  overlay.style.right = '0';
+  overlay.removeAttribute('data-custom-position');
+}
+
+// Modify the function that opens chats from headquarters
+function openChatFromHeadquarters(conversationId) {
+  const conversation = conversationManager.getConversation(conversationId);
+  let overlay = document.querySelector(`#instructions-overlay[data-conversation-id="${conversationId}"]`);
+
+  if (overlay) {
+    resetOverlayPosition(overlay); // Add this line
+    overlay.style.display = 'block';
+  } else {
+    overlay = createInstructionsOverlay(conversation, conversationId);
+  }
+
+  repositionOverlays();
 }

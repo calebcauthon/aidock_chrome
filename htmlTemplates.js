@@ -71,7 +71,7 @@ function updateInstructionsOverlayTemplate(question, content) {
 function headquartersTemplate() {
   return `
     <div class="instructions-content">
-      <div class="handle" style="cursor: ew-resize;">
+      <div class="handle">
         <div class="avatar-container">
           <div class="avatar-circle"></div>
         </div>
