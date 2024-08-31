@@ -4,10 +4,6 @@ function createInstructionsOverlayTemplate(conversation) {
     <div class="instructions-content">
       <div class="handle">
         <div class="instructions-title">${title}</div>
-        <div class="icons">
-          <span class="minimize-btn">🔽</span>
-          <span class="close-btn">&times;</span>
-        </div>
       </div>
       <span class="minimize-btn">🔽</span>
       <span class="close-btn">&times;</span>
