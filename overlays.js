@@ -190,6 +190,7 @@ function resetOverlayPosition(overlay) {
   overlay.style.top = '';
   overlay.style.bottom = '0';
   overlay.style.right = '0';
+  overlay.style.width = ''; // Reset the width
   overlay.removeAttribute('data-custom-position');
 }
 
