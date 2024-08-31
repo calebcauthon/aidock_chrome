@@ -9,17 +9,15 @@ function createInstructionsOverlayTemplate(conversation) {
       <span class="close-btn">&times;</span>
       <div class="instructions-body">
         ${conversation.messages.map(message => {
-          const timestamp = new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
           const isQuestion = message.type === 'question';
           return `
             <div class="chat-row ${isQuestion ? 'question-row' : 'answer-row'}">
               <div class="avatar-container">
-                <div class="avatar-circle"></div>
+                ${!isQuestion ? '' : '<div class="avatar-circle"></div>'}
               </div>
               <div class="message-content">
                 <div class="message-header">
                   <span class="avatar-name">${isQuestion ? 'You' : 'AI'}</span>
-                  <span class="timestamp">${timestamp}</span>
                 </div>
                 <div class="message-body">
                   <p>${isQuestion ? `<strong>${message.content}</strong>` : message.content}</p>
@@ -37,16 +35,13 @@ function createInstructionsOverlayTemplate(conversation) {
 }
 
 function updateInstructionsOverlayTemplate(question, content) {
-  const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   return `
     <div class="chat-row question-row">
       <div class="avatar-container">
-        <div class="avatar-circle"></div>
       </div>
       <div class="message-content">
         <div class="message-header">
           <span class="avatar-name">You</span>
-          <span class="timestamp">${timestamp}</span>
         </div>
         <div class="message-body">
           <p><strong>${question}</strong></p>
@@ -60,7 +55,6 @@ function updateInstructionsOverlayTemplate(question, content) {
       <div class="message-content">
         <div class="message-header">
           <span class="avatar-name">AI</span>
-          <span class="timestamp">${timestamp}</span>
         </div>
         <div class="message-body">
           <p>${content}</p>
@@ -95,14 +89,12 @@ function headquartersEntryTemplate(timestamp, question, messageCount) {
   return `
     <div class="entry-header">
       <span class="entry-message-count">(${messageCount})</span>
-      <span class="entry-timestamp">${timestamp}</span>
       <span class="entry-question">${question}</span>
     </div>
   `;
 }
 
 function followUpQuestionLoadingTemplate(question) {
-  const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   return `
     <div class="chat-row question-row">
       <div class="avatar-container">
@@ -111,7 +103,6 @@ function followUpQuestionLoadingTemplate(question) {
       <div class="message-content">
         <div class="message-header">
           <span class="avatar-name">You</span>
-          <span class="timestamp">${timestamp}</span>
         </div>
         <div class="message-body">
           <p><strong>${question}</strong></p>
@@ -125,7 +116,6 @@ function followUpQuestionLoadingTemplate(question) {
       <div class="message-content">
         <div class="message-header">
           <span class="avatar-name">AI</span>
-          <span class="timestamp">${timestamp}</span>
         </div>
         <div class="message-body">
           <p>Thinking...</p>
@@ -136,7 +126,6 @@ function followUpQuestionLoadingTemplate(question) {
 }
 
 function followUpQuestionAnswerTemplate(question, answer) {
-  const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   return `
     <div class="chat-row answer-row">
       <div class="avatar-container">
@@ -145,7 +134,6 @@ function followUpQuestionAnswerTemplate(question, answer) {
       <div class="message-content">
         <div class="message-header">
           <span class="avatar-name">AI</span>
-          <span class="timestamp">${timestamp}</span>
         </div>
         <div class="message-body">
           <p>${answer}</p>
