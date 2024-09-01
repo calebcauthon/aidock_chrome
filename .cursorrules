@@ -1,0 +1,15 @@
+## Project Purpose
+* User can get help via on-screen chatbot in the browser window
+* Open a chat conversation and ask question, then resize, drag, or close the window
+* Questions persist between browser sessions via localstorage
+* User's inquiries are sent to a backend API where LLM inference is executed, and answers are returned
+
+
+## Code struction
+* A 'headquarters' overlay is the messaging hub. There's only one of these.
+* A chat window or chat overlay is created for each conversation. There are many of these. They can be closed, dragged, or resized.
+* The HTML is all generated via javascript, currently in the htmlTemplates.js page
+* The 'initialization' of the entire extension starts in 'content.js'
+* Handling of the chat overlays is done in 'overlays.js'
+* Admins can open a settings overlay where backend administration is done. That's handled in settings_overlay.js
+* The data structure of the conversations are handled in 'conversationManager.js'
