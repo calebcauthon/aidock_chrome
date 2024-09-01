@@ -84,11 +84,10 @@ function headquartersTemplate() {
   `;
 }
 
-function headquartersEntryTemplate(timestamp, question, messageCount) {
+function headquartersEntryTemplate(title) {
   return `
-    <div class="entry-header">
-      <span class="entry-question">${question}</span>
-    </div>
+    <span class="entry-question">${title}</span>
+    <button class="delete-chat-btn" title="Delete chat">🗑️</button>
   `;
 }
 

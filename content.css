@@ -220,6 +220,9 @@
   cursor: pointer;
   padding: 10px 15px;
   transition: background-color 0.2s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 #headquarters #question-list li:nth-child(odd) {
@@ -656,19 +659,16 @@
 }
 
 .delete-chat-btn {
-  background-color: #f44336;
-  color: white;
+  background: none;
   border: none;
-  padding: 5px 10px;
   cursor: pointer;
-  border-radius: 4px;
-  font-size: 12px;
+  font-size: 16px;
+  padding: 0;
   margin-left: 10px;
-  float: right;
 }
 
 .delete-chat-btn:hover {
-  background-color: #d32f2f;
+  opacity: 0.7;
 }
 
 #instructions-overlay *, #headquarters * {
