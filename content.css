@@ -101,6 +101,7 @@
   justify-content: space-between;
   width: 100%;
   box-sizing: border-box;
+  padding: 20px 5px 20px 20px;
 }
 
 .handle .instructions-title {
@@ -244,7 +245,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px;
 }
 
 #headquarters .handle .avatar-container {
@@ -670,8 +670,4 @@
 
 .delete-chat-btn:hover {
   opacity: 0.7;
-}
-
-#instructions-overlay *, #headquarters * {
-  box-sizing: initial !important;
 }
