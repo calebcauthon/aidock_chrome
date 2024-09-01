@@ -40,8 +40,10 @@ function loadSavedConversations() {
     const overlay = createInstructionsOverlay(conversation, conversation.id);
     addEntryToHeadquarters(conversation.title, lastAnswer ? lastAnswer.content : null, overlay);
     
-    // Add this line to scroll to the bottom of the conversation
+    // Scroll to the bottom of the conversation
     scrollChatToBottom(overlay);
+    
+    overlay.style.display = 'none';
   });
 }
 
@@ -110,5 +112,20 @@ function scrollChatToBottom(chatOverlay) {
   const instructionsBody = chatOverlay.querySelector('.instructions-body');
   if (instructionsBody) {
     instructionsBody.scrollTop = instructionsBody.scrollHeight;
+  }
+}
+
+// Make sure this function is defined in your code
+function toggleMinimize(overlay) {
+  overlay.classList.toggle('minimized');
+  const instructionsBody = overlay.querySelector('.instructions-body');
+  const chatInput = overlay.querySelector('.chat-input');
+  
+  if (instructionsBody) instructionsBody.classList.toggle('minimized');
+  if (chatInput) chatInput.classList.toggle('minimized');
+  
+  const minimizeBtn = overlay.querySelector('.minimize-btn');
+  if (minimizeBtn) {
+    minimizeBtn.textContent = overlay.classList.contains('minimized') ? '🔼' : '🔽';
   }
 }
