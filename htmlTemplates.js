@@ -50,7 +50,6 @@ function updateInstructionsOverlayTemplate(question, content) {
     </div>
     <div class="chat-row answer-row">
       <div class="avatar-container">
-        <div class="avatar-circle"></div>
       </div>
       <div class="message-content">
         <div class="message-header">
@@ -110,7 +109,6 @@ function followUpQuestionLoadingTemplate(question) {
     </div>
     <div class="chat-row answer-row">
       <div class="avatar-container">
-        <div class="avatar-circle"></div>
       </div>
       <div class="message-content">
         <div class="message-header">
@@ -128,7 +126,6 @@ function followUpQuestionAnswerTemplate(question, answer) {
   return `
     <div class="chat-row answer-row">
       <div class="avatar-container">
-        <div class="avatar-circle"></div>
       </div>
       <div class="message-content">
         <div class="message-header">

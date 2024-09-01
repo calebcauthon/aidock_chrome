@@ -135,6 +135,19 @@ function createInstructionsOverlay(conversation, conversationId) {
       const followUpQuestion = chatInput.value.trim();
       if (followUpQuestion) {
         const conversation = conversationManager.getConversation(conversationId);
+
+        // Remove the first answer if it's the only entry
+        if (conversation.messages.length === 1 && conversation.messages[0].type === 'answer') {
+          conversation.messages.pop();
+
+          // Remove the answer entry from chatDiv
+          const instructionsBody = chatDiv.querySelector('.instructions-body');
+          const answerRow = instructionsBody.querySelector('.answer-row');
+          if (answerRow) {
+              answerRow.remove();
+          }
+        }
+
         conversation.addMessage('question', followUpQuestion);
         conversationManager.saveConversationsToStorage();
 
