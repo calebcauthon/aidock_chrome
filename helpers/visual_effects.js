@@ -1,14 +1,3 @@
-function toggleMinimize(overlay) {
-  const instructionsBody = overlay.querySelector('.instructions-body');
-  
-  overlay.classList.toggle('minimized');
-  instructionsBody.classList.toggle('minimized');
-  
-  if (overlay.id === 'headquarters') {
-    overlay.style.height = overlay.classList.contains('minimized') ? '40px' : '';
-  }
-}
-
 function maximizeOverlay(overlay) {
   const instructionsBody = overlay.querySelector('.instructions-body');
   instructionsBody.classList.remove('minimized');
@@ -39,4 +28,18 @@ function repositionOverlays() {
 function showOverlay(overlay) {
   overlay.style.display = 'flex';
   repositionOverlays();
+}
+
+function toggleMinimize(overlay) {
+  overlay.classList.toggle('minimized');
+  const instructionsBody = overlay.querySelector('.instructions-body');
+  const chatInput = overlay.querySelector('.chat-input');
+  
+  if (instructionsBody) instructionsBody.classList.toggle('minimized');
+  if (chatInput) chatInput.classList.toggle('minimized');
+  
+  const minimizeBtn = overlay.querySelector('.minimize-btn');
+  if (minimizeBtn) {
+    minimizeBtn.textContent = overlay.classList.contains('minimized') ? '🔼' : '🔽';
+  }
 }

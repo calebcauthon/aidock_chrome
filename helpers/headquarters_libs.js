@@ -114,18 +114,3 @@ function scrollChatToBottom(chatOverlay) {
     instructionsBody.scrollTop = instructionsBody.scrollHeight;
   }
 }
-
-// Make sure this function is defined in your code
-function toggleMinimize(overlay) {
-  overlay.classList.toggle('minimized');
-  const instructionsBody = overlay.querySelector('.instructions-body');
-  const chatInput = overlay.querySelector('.chat-input');
-  
-  if (instructionsBody) instructionsBody.classList.toggle('minimized');
-  if (chatInput) chatInput.classList.toggle('minimized');
-  
-  const minimizeBtn = overlay.querySelector('.minimize-btn');
-  if (minimizeBtn) {
-    minimizeBtn.textContent = overlay.classList.contains('minimized') ? '🔼' : '🔽';
-  }
-}
