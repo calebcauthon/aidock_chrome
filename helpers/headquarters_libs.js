@@ -39,6 +39,9 @@ function loadSavedConversations() {
     const lastAnswer = conversation.messages.filter(msg => msg.type === 'answer').pop();
     const overlay = createInstructionsOverlay(conversation, conversation.id);
     addEntryToHeadquarters(conversation.title, lastAnswer ? lastAnswer.content : null, overlay);
+    
+    // Add this line to scroll to the bottom of the conversation
+    scrollChatToBottom(overlay);
   });
 }
 
@@ -100,5 +103,12 @@ function setupHeadquartersDragging(headquarters) {
   function stopDragging() {
     isDragging = false;
     headquarters.style.transition = '';
+  }
+}
+
+function scrollChatToBottom(chatOverlay) {
+  const instructionsBody = chatOverlay.querySelector('.instructions-body');
+  if (instructionsBody) {
+    instructionsBody.scrollTop = instructionsBody.scrollHeight;
   }
 }
