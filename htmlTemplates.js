@@ -1,7 +1,7 @@
 function createInstructionsOverlayTemplate(conversation) {
   const title = conversation.title ? conversation.title : "New Chat";
   return `
-    <div class="instructions-content aidock-font">
+    <div class="instructions-content aidock-font aidock-element">
       <div class="handle">
         <div class="instructions-title">${title}</div>
       </div>
@@ -36,7 +36,7 @@ function createInstructionsOverlayTemplate(conversation) {
 
 function updateInstructionsOverlayTemplate(question, content) {
   return `
-    <div class="chat-row question-row">
+    <div class="chat-row question-row aidock-element">
       <div class="avatar-container">
       </div>
       <div class="message-content">
@@ -65,7 +65,7 @@ function updateInstructionsOverlayTemplate(question, content) {
 
 function headquartersTemplate() {
   return `
-    <div class="instructions-content aidock-font">
+    <div class="instructions-content aidock-font aidock-element">
       <div class="handle" style="cursor: ew-resize;">
         <div class="avatar-container">
           <div class="avatar-circle"></div>
@@ -89,14 +89,14 @@ function headquartersTemplate() {
 
 function headquartersEntryTemplate(title) {
   return `
-    <span class="entry-question">${title}</span>
-    <button class="delete-chat-btn" title="Delete chat">🗑️</button>
+    <span class="entry-question aidock-element">${title}</span>
+    <button class="delete-chat-btn aidock-element" title="Delete chat">🗑️</button>
   `;
 }
 
 function followUpQuestionLoadingTemplate(question) {
   return `
-    <div class="chat-row question-row">
+    <div class="chat-row question-row aidock-element">
       <div class="avatar-container">
         <div class="avatar-circle"></div>
       </div>
@@ -109,7 +109,7 @@ function followUpQuestionLoadingTemplate(question) {
         </div>
       </div>
     </div>
-    <div class="chat-row answer-row">
+    <div class="chat-row answer-row aidock-element">
       <div class="avatar-container">
       </div>
       <div class="message-content">
@@ -126,7 +126,7 @@ function followUpQuestionLoadingTemplate(question) {
 
 function followUpQuestionAnswerTemplate(question, answer) {
   return `
-    <div class="chat-row answer-row">
+    <div class="chat-row answer-row aidock-element">
       <div class="avatar-container">
       </div>
       <div class="message-content">
@@ -143,7 +143,7 @@ function followUpQuestionAnswerTemplate(question, answer) {
 
 function settingsOverlayTemplate() {
   return `
-    <div id="settings-overlay" class="settings-overlay">
+    <div id="settings-overlay" class="settings-overlay aidock-element">
       <div class="settings-content">
         <h2>Settings <span class="close-settings-btn">&times;</span></h2>
         <div class="setting-group">
@@ -166,7 +166,7 @@ function settingsOverlayTemplate() {
 
 function documentEditTemplate() {
   return `
-    <form id="document-edit-form" class="document-edit-form">
+    <form id="document-edit-form" class="document-edit-form aidock-element">
       <input type="hidden" id="edit-document-id">
       <div class="form-group">
         <label for="edit-document-name">Userguide Name</label>
@@ -208,7 +208,7 @@ function documentEditTemplate() {
 
 function documentTemplate(contextDocument) {
   return `
-    <tr class="document-item" data-id="${contextDocument.id}">
+    <tr class="document-item aidock-element" data-id="${contextDocument.id}">
       <td class="document-name">${contextDocument.document_name}</td>
       <td class="document-actions">
         <button class="edit-document-btn" data-id="${contextDocument.id}">
@@ -225,7 +225,7 @@ function loginOverlayTemplate() {
   const submitId = 'login-submit';
   const dismissId = 'login-dismiss';
   const html = `
-    <div id="login-overlay" class="overlay">
+    <div id="login-overlay" class="overlay aidock-element">
       <style>
         .overlay {
           position: fixed;
@@ -315,4 +315,11 @@ async function promptUserForLogin() {
   } catch (error) {
     return null;
   }
+}
+
+function removeDockElements() {
+  const dockElements = document.querySelectorAll('.aidock-element');
+  dockElements.forEach(element => {
+    element.remove();
+  });
 }

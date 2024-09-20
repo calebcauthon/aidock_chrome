@@ -51,10 +51,12 @@ function setupSettingsEvents(overlay) {
   });
 
   const logoutBtn = overlay.querySelector('#logout-btn');
-  logoutBtn.addEventListener('click', () => {
+  logoutBtn.addEventListener('click', (event) => {
+    event.stopPropagation();
+    event.preventDefault();
     userManager.logOut();
-    overlay.classList.remove('active');
-    window.location.reload();
+    removeDockElements();
+    initialize();
   });
 }
 
