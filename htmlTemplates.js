@@ -224,6 +224,7 @@ function loginOverlayTemplate() {
   const passwordId = 'login-password';
   const submitId = 'login-submit';
   const dismissId = 'login-dismiss';
+  const containerId = 'login-container';
   const html = `
     <div id="login-overlay" class="overlay aidock-element">
       <style>
@@ -272,12 +273,12 @@ function loginOverlayTemplate() {
       usernameId: usernameId,
       passwordId: passwordId,
       submitId: submitId,
-      dismissId: dismissId
+      dismissId: dismissId,
+      containerId: containerId
     }
   };
 }
 
-// Function to remove the login overlay
 function removeLoginOverlay(overlayElement) {
   if (overlayElement && overlayElement.parentNode) {
     overlayElement.parentNode.removeChild(overlayElement);
@@ -304,6 +305,7 @@ function displayLoginOverlayTemplate(element) {
       const username = document.getElementById(elementIds.usernameId).value;
       const password = document.getElementById(elementIds.passwordId).value;
       await userManager.authenticate(username, password);
+      removeLoginOverlay(loginOverlay);
       resolve(username);
     });
   });
