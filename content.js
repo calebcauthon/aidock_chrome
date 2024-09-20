@@ -8,6 +8,28 @@ input.placeholder = 'Ask away';
 overlay.appendChild(input);
 
 
+const userManager = new UserManager();
+
+if (userManager.getUsername() === null) {
+  console.log('User is not logged in');
+  const loginOverlay = document.createElement('div');
+  loginOverlay.innerHTML = loginOverlayTemplate();
+  document.body.appendChild(loginOverlay);
+}
+
 const conversationManager = new ConversationManager();
 let headquarters = createHeadquarters();
 loadSavedConversations();
+
+// Add this function to update the HQ with the username
+function updateHQWithUsername() {
+  chrome.storage.sync.get(['username'], function(result) {
+    const usernameElement = document.querySelector('#hq-username');
+    if (usernameElement) {
+      usernameElement.textContent = result.username || 'Not logged in';
+    }
+  });
+}
+
+// Call this function after creating the headquarters
+updateHQWithUsername();

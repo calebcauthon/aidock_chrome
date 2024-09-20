@@ -77,6 +77,9 @@ function headquartersTemplate() {
           <span class="settings-btn">⚙️</span>
         </div>
       </div>
+      <div class="user-info">
+        <span id="hq-username">User</span>
+      </div>
       <div class="instructions-body">
         <ul id="question-list" class="question-list"></ul>
       </div>
@@ -152,6 +155,9 @@ function settingsOverlayTemplate() {
           <table id="document-list"></table>
           <div id="document-edit-form" style="display: none;"></div>
         </div>
+        <div class="setting-group">
+          <button id="logout-btn" class="btn-danger">Logout</button>
+        </div>
       </div>
       <div class="resize-handle"></div>
     </div>
@@ -213,5 +219,47 @@ function documentTemplate(contextDocument) {
   `;
 }
 
-
+function loginOverlayTemplate() {
+  return `
+    <div id="login-overlay" class="overlay">
+      <style>
+        .overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.5);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          z-index: 9999;
+        }
+        .overlay-content {
+          background-color: white;
+          padding: 20px;
+          border-radius: 5px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+      </style>
+      <div class="overlay-content">
+        <h2>Login</h2>
+        <form id="login-form">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" placeholder="Enter your username" required>
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn-primary">Submit</button>
+            <button type="button" id="dismiss-login" class="btn-secondary">Dismiss</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  `;
+}
 
