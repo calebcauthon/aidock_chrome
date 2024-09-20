@@ -220,7 +220,11 @@ function documentTemplate(contextDocument) {
 }
 
 function loginOverlayTemplate() {
-  return `
+  const usernameId = 'login-username';
+  const passwordId = 'login-password';
+  const submitId = 'login-submit';
+  const dismissId = 'login-dismiss';
+  const html = `
     <div id="login-overlay" class="overlay">
       <style>
         .overlay {
@@ -246,25 +250,36 @@ function loginOverlayTemplate() {
         <h2>Login</h2>
         <form id="login-form">
           <div class="form-group">
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username" placeholder="Enter your username" required>
+            <label for="${usernameId}">Username</label>
+            <input type="text" id="${usernameId}" name="username" placeholder="Enter your username" required>
           </div>
           <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            <label for="${passwordId}">Password</label>
+            <input type="password" id="${passwordId}" name="password" placeholder="Enter your password" required>
           </div>
           <div class="form-actions">
-            <button type="submit" class="btn-primary">Submit</button>
-            <button type="button" id="dismiss-login" class="btn-secondary">Dismiss</button>
+            <button type="submit" id="${submitId}" class="btn-primary">Submit</button>
+            <button type="button" id="${dismissId}" class="btn-secondary">Dismiss</button>
           </div>
         </form>
       </div>
     </div>
   `;
+
+  return {
+    html: html,
+    elementIds: {
+      usernameId: usernameId,
+      passwordId: passwordId,
+      submitId: submitId,
+      dismissId: dismissId
+    }
+  };
 }
 
 function displayLoginOverlayTemplate(element) {
   const loginOverlay = document.createElement('div');
-  loginOverlay.innerHTML = loginOverlayTemplate();
+  const { html, elementIds } = loginOverlayTemplate();
+  loginOverlay.innerHTML = html;
   element.appendChild(loginOverlay);
 }
