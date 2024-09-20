@@ -176,21 +176,21 @@ function showDocumentList() {
   documentList.style.display = 'table';
 }
 
-function showSuccessMessage(message) {
-  showMessage(message, 'green');
+function showSuccessMessage(message, element) {
+  showMessage(message, 'green', element);
 }
 
-function showErrorMessage(message) {
-  showMessage(message, 'red');
+function showErrorMessage(message, element) {
+  showMessage(message, 'red', element);
 }
 
-function showMessage(message, color) {
+function showMessage(message, color, element) {
   const messageElement = document.createElement('div');
   messageElement.textContent = message;
   messageElement.style.color = color;
   messageElement.style.marginBottom = '10px';
-  const settingsOverlay = document.getElementById('settings-overlay');
-  settingsOverlay.insertBefore(messageElement, settingsOverlay.firstChild);
+  element = element || document.getElementById('settings-overlay');
+  element.insertBefore(messageElement, element.firstChild);
   
   setTimeout(() => {
     messageElement.remove();

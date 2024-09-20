@@ -35,4 +35,10 @@ class UserManager {
     chrome.storage.sync.remove('username');
     this.updateUsernameDisplay();
   }
+
+  async authenticate(username, password) {
+    await authenticateUser(username, password);
+    this.setUsername(username);
+    return username;
+  }
 }

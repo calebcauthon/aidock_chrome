@@ -166,3 +166,36 @@ async function deleteDocument(docId) {
     return false;
   }
 }
+
+async function authenticateUser(username, password) {
+  const llmEndpoint = getLLMEndpoint();
+
+  try {
+    const response = await fetch(`${llmEndpoint}/authenticate`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, password }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    if (data.status === 'success') {
+      userManager.setUsername(username);
+      showSuccessMessage('Authentication successful!', document.body);
+      return true;
+    } else {
+      showErrorMessage(data.error || 'Authentication failed', document.body);
+      return false;
+    }
+  } catch (error) {
+    console.error('Error during authentication:', error);
+    showErrorMessage('An error occurred during authentication. Please try again.', document.body);
+    return false;
+  }
+}

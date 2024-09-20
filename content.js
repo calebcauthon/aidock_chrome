@@ -9,25 +9,40 @@ overlay.appendChild(input);
 
 
 const userManager = new UserManager();
+let conversationManager = null;
+let headquarters = null;
 
-if (userManager.getUsername() === null) {
-  console.log('User is not logged in');
-  displayLoginOverlayTemplate(document.body);
-}
+when(userManager, 'login', (username) => {
+  console.log('User logged in:', username);
+  conversationManager = new ConversationManager();
+  headquarters = createHeadquarters();
+  loadSavedConversations();
 
-const conversationManager = new ConversationManager();
-let headquarters = createHeadquarters();
-loadSavedConversations();
+  // Add this function to update the HQ with the username
+  function updateHQWithUsername() {
+    chrome.storage.sync.get(['username'], function(result) {
+      const usernameElement = document.querySelector('#hq-username');
+      if (usernameElement) {
+        usernameElement.textContent = result.username || 'Not logged in';
+      }
+    });
+  }
 
-// Add this function to update the HQ with the username
-function updateHQWithUsername() {
-  chrome.storage.sync.get(['username'], function(result) {
-    const usernameElement = document.querySelector('#hq-username');
-    if (usernameElement) {
-      usernameElement.textContent = result.username || 'Not logged in';
+  updateHQWithUsername();
+});
+
+
+let username = userManager.getUsername();
+
+if (username == null) {
+  promptUserForLogin().then(username => {
+    console.debug('User logged in via prompt:', username);
+    if (username != null) {
+      trigger(userManager, 'login', username);
     }
   });
+} else {
+  console.debug('User logged in:', username);
+  trigger(userManager, 'login', username);
 }
 
-// Call this function after creating the headquarters
-updateHQWithUsername();

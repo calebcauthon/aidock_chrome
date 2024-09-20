@@ -277,9 +277,43 @@ function loginOverlayTemplate() {
   };
 }
 
+// Function to remove the login overlay
+function removeLoginOverlay(overlayElement) {
+  if (overlayElement && overlayElement.parentNode) {
+    overlayElement.parentNode.removeChild(overlayElement);
+  }
+}
+
 function displayLoginOverlayTemplate(element) {
-  const loginOverlay = document.createElement('div');
-  const { html, elementIds } = loginOverlayTemplate();
-  loginOverlay.innerHTML = html;
-  element.appendChild(loginOverlay);
+  return new Promise((resolve, reject) => {
+    const loginOverlay = document.createElement('div');
+    const { html, elementIds } = loginOverlayTemplate();
+    loginOverlay.innerHTML = html;
+    element.appendChild(loginOverlay);
+
+    const dismissButton = document.getElementById(elementIds.dismissId);
+    dismissButton.addEventListener('click', function() {
+      removeLoginOverlay(loginOverlay);
+      reject(new Error('Login dismissed'));
+    });
+
+    const loginButton = document.getElementById(elementIds.submitId);
+    loginButton.addEventListener('click', async function(event) {
+      event.preventDefault(); // Prevent form submission
+      event.stopPropagation(); // Stop event propagation
+      const username = document.getElementById(elementIds.usernameId).value;
+      const password = document.getElementById(elementIds.passwordId).value;
+      await userManager.authenticate(username, password);
+      resolve(username);
+    });
+  });
+}
+
+async function promptUserForLogin() {
+  try {
+    return await displayLoginOverlayTemplate(document.body);
+  } catch (error) {
+    console.error('Login dismissed', error);
+    return null;
+  }
 }
