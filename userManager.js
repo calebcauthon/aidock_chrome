@@ -4,11 +4,10 @@ class UserManager {
     this.loadUsername();
   }
 
-  loadUsername() {
-    chrome.storage.sync.get(['username'], (result) => {
-      this.username = result.username;
-      this.updateUsernameDisplay();
-    });
+  async loadUsername() {
+    const result = await chrome.storage.sync.get(['username']);
+    this.username = result.username;
+    this.updateUsernameDisplay();
   }
 
   setUsername(newUsername) {

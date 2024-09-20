@@ -7,39 +7,39 @@ input.placeholder = 'Ask away';
 
 overlay.appendChild(input);
 
-
-const userManager = new UserManager();
 let conversationManager = null;
 let headquarters = null;
+const userManager = new UserManager();
 
-when(userManager, 'login', (username) => {
-  conversationManager = new ConversationManager();
-  headquarters = createHeadquarters();
-  loadSavedConversations();
+async function initialize() {
+  await userManager.loadUsername();
 
-  // Add this function to update the HQ with the username
-  function updateHQWithUsername() {
-    chrome.storage.sync.get(['username'], function(result) {
+  when(userManager, 'login', (username) => {
+    conversationManager = new ConversationManager();
+    headquarters = createHeadquarters();
+    loadSavedConversations();
+
+    // Add this function to update the HQ with the username
+    function updateHQWithUsername() {
+      username = userManager.getUsername();
       const usernameElement = document.querySelector('#hq-username');
       if (usernameElement) {
-        usernameElement.textContent = result.username || 'Not logged in';
+        usernameElement.textContent = username || 'Not logged in';
       }
-    });
-  }
+    }
 
-  updateHQWithUsername();
-});
+    updateHQWithUsername();
+  });
 
 
-let username = userManager.getUsername();
-
-if (username == null) {
-  promptUserForLogin().then(username => {
+  if (!userManager.getUsername()) {
+    username = await promptUserForLogin();
     if (username != null) {
       trigger(userManager, 'login', username);
     }
-  });
-} else {
-  trigger(userManager, 'login', username);
+  } else {
+    trigger(userManager, 'login', userManager.getUsername());
+  }
 }
 
+initialize();
