@@ -299,12 +299,19 @@ function displayLoginOverlayTemplate(element) {
     });
 
     const loginButton = document.getElementById(elementIds.submitId);
-    loginButton.addEventListener('click', async function(event) {
+    loginButton.addEventListener('mousedown', async function(event) {
       event.preventDefault(); // Prevent form submission
       event.stopPropagation(); // Stop event propagation
       const username = document.getElementById(elementIds.usernameId).value;
       const password = document.getElementById(elementIds.passwordId).value;
+      // Disable buttons and show loading spinner
+      loginButton.disabled = true;
+      dismissButton.disabled = true;
+      const originalButtonText = loginButton.innerHTML;
+      loginButton.innerHTML = 'Authenticating...';
+      loginButton.style.background = 'gray';
       await userManager.authenticate(username, password);
+      loginButton.innerHTML = originalButtonText;
       removeLoginOverlay(loginOverlay);
       resolve(username);
     });
