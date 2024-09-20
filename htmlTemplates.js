@@ -313,7 +313,6 @@ async function promptUserForLogin() {
   try {
     return await displayLoginOverlayTemplate(document.body);
   } catch (error) {
-    console.error('Login dismissed', error);
     return null;
   }
 }

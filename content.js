@@ -13,7 +13,6 @@ let conversationManager = null;
 let headquarters = null;
 
 when(userManager, 'login', (username) => {
-  console.log('User logged in:', username);
   conversationManager = new ConversationManager();
   headquarters = createHeadquarters();
   loadSavedConversations();
@@ -36,13 +35,11 @@ let username = userManager.getUsername();
 
 if (username == null) {
   promptUserForLogin().then(username => {
-    console.debug('User logged in via prompt:', username);
     if (username != null) {
       trigger(userManager, 'login', username);
     }
   });
 } else {
-  console.debug('User logged in:', username);
   trigger(userManager, 'login', username);
 }
 

@@ -14,7 +14,6 @@ class UserManager {
   setUsername(newUsername) {
     this.username = newUsername;
     chrome.storage.sync.set({ 'username': newUsername }, () => {
-      console.log('Username is set to', newUsername);
       this.updateUsernameDisplay();
     });
   }
