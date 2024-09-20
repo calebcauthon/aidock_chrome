@@ -263,3 +263,8 @@ function loginOverlayTemplate() {
   `;
 }
 
+function displayLoginOverlayTemplate(element) {
+  const loginOverlay = document.createElement('div');
+  loginOverlay.innerHTML = loginOverlayTemplate();
+  element.appendChild(loginOverlay);
+}

@@ -54,7 +54,6 @@ function setupSettingsEvents(overlay) {
   logoutBtn.addEventListener('click', () => {
     userManager.logOut();
     overlay.classList.remove('active');
-    // You might want to refresh the page or update the UI after logout
     window.location.reload();
   });
 }

@@ -12,9 +12,7 @@ const userManager = new UserManager();
 
 if (userManager.getUsername() === null) {
   console.log('User is not logged in');
-  const loginOverlay = document.createElement('div');
-  loginOverlay.innerHTML = loginOverlayTemplate();
-  document.body.appendChild(loginOverlay);
+  displayLoginOverlayTemplate(document.body);
 }
 
 const conversationManager = new ConversationManager();
