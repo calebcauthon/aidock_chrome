@@ -10,6 +10,7 @@
       "js": [
         "helpers/visual_effects.js",
         "events.js",
+        "html_templates/login.js",
         "html_templates/htmlTemplates.js",
         "userManager.js",
         "conversationManager.js",
