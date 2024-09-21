@@ -109,21 +109,3 @@ function followUpQuestionAnswerTemplate(question, answer) {
     </div>
   `;
 }
-
-function settingsOverlayTemplate() {
-  return `
-    <div id="settings-overlay" class="settings-overlay aidock-element">
-      <div class="settings-content">
-        <h2>Settings <span class="close-settings-btn">&times;</span></h2>
-        <div class="setting-group">
-          <label for="llm-endpoint">LLM Server Endpoint:</label>
-          <input type="text" id="llm-endpoint" name="llm-endpoint">
-        </div>
-        <div class="setting-group">
-          <button id="logout-btn" class="btn-danger">Logout</button>
-        </div>
-      </div>
-      <div class="resize-handle"></div>
-    </div>
-  `;
-}
