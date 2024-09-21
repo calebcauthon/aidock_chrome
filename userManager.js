@@ -17,6 +17,23 @@ class UserManager {
     });
   }
 
+  setToken(newToken) {
+    chrome.storage.sync.set({ 'token': newToken });
+    this.token = newToken;
+  }
+
+  async getToken() {
+    if (!this.token) {
+      await this.loadToken();
+    }
+    return this.token;
+  }
+
+  async loadToken() {
+    const result = await chrome.storage.sync.get(['token']);
+    this.token = result.token;
+  }
+
   getUsername() {
     return this.username;
   }
@@ -37,9 +54,10 @@ class UserManager {
   }
 
   async authenticate(username, password) {
-    const isAuthenticated = await authenticateUser(username, password);
+    const { isAuthenticated, token } = await authenticateUser(username, password);
     if (isAuthenticated) {
       this.setUsername(username);
+      this.setToken(token);
     }
     return isAuthenticated;
   }

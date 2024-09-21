@@ -7,7 +7,7 @@ function getLLMEndpoint() {
   return 'http://localhost:5000'; // Default fallback
 }
 
-function sendQuestionToBackend(question, conversationMessages) {
+async function sendQuestionToBackend(question, conversationMessages) {
   const url = window.location.href;
   const pageTitle = document.title;
   const selectedText = window.getSelection().toString();
@@ -21,15 +21,17 @@ function sendQuestionToBackend(question, conversationMessages) {
     selectedText: selectedText,
     activeElement: activeElement,
     scrollPosition: scrollPosition,
-    conversationMessages: conversationMessages
+    conversationMessages: conversationMessages,
   };
 
   const llmEndpoint = getLLMEndpoint();
 
+  const loginToken = await userManager.getToken();
   return fetch(`${llmEndpoint}/ask`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      'Login-Token': loginToken
     },
     body: JSON.stringify(data)
   })
@@ -44,13 +46,14 @@ function sendQuestionToBackend(question, conversationMessages) {
 
 function callPromptEndpoint(question, answer) {
   const llmEndpoint = getLLMEndpoint();
+  const login_token = "fake-token";
 
   return fetch(`${llmEndpoint}/prompt`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ question, answer }),
+    body: JSON.stringify({ question, answer, login_token }),
   })
   .then(response => response.json())
   .then(data => data.title)
@@ -188,14 +191,14 @@ async function authenticateUser(username, password) {
     if (data.token) {
       userManager.setUsername(username);
       showSuccessMessage('Authentication successful!', document.body);
-      return true;
+      return { isAuthenticated: true, token: data.token };
     } else {
       showErrorMessage(data.error || 'Authentication failed', document.body);
-      return false;
+      return { isAuthenticated: false, token: null };
     }
   } catch (error) {
     console.error('Error during authentication:', error);
     showErrorMessage('An error occurred during authentication. Please try again.', document.body);
-    return false;
+    return { isAuthenticated: false, token: null };
   }
 }
