@@ -151,71 +151,11 @@ function settingsOverlayTemplate() {
           <input type="text" id="llm-endpoint" name="llm-endpoint">
         </div>
         <div class="setting-group">
-          <button id="add-document-btn">Add Userguide</button>
-          <table id="document-list"></table>
-          <div id="document-edit-form" style="display: none;"></div>
-        </div>
-        <div class="setting-group">
           <button id="logout-btn" class="btn-danger">Logout</button>
         </div>
       </div>
       <div class="resize-handle"></div>
     </div>
-  `;
-}
-
-function documentEditTemplate() {
-  return `
-    <form id="document-edit-form" class="document-edit-form aidock-element">
-      <input type="hidden" id="edit-document-id">
-      <div class="form-group">
-        <label for="edit-document-name">Userguide Name</label>
-        <input type="text" id="edit-document-name" placeholder="Enter userguide name">
-      </div>
-      <div class="form-group">
-        <label for="edit-document-content">Userguide Content</label>
-        <textarea id="edit-document-content" placeholder="Enter userguide content"></textarea>
-      </div>
-      <div class="form-group">
-        <label for="edit-document-scope">Scope</label>
-        <select id="edit-document-scope">
-          <option value="entire-domain">Entire Domain</option>
-          <option value="this-page">Just this page</option>
-          <option value="custom-url">Custom URL</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="edit-document-custom-url">Custom URL</label>
-        <input type="text" id="edit-document-custom-url" placeholder="Enter custom URL">
-      </div>
-      <div class="form-group">
-        <label>Roles</label>
-        <div class="role-checkboxes">
-          <label><input type="checkbox" class="edit-role-checkbox" id="edit-role-admin" value="admin"> Admin</label>
-          <label><input type="checkbox" class="edit-role-checkbox" id="edit-role-manager" value="manager"> Manager</label>
-          <label><input type="checkbox" class="edit-role-checkbox" id="edit-role-employee" value="employee"> Employee</label>
-          <label><input type="checkbox" class="edit-role-checkbox" id="edit-role-customer" value="customer"> Customer</label>
-        </div>
-      </div>
-      <div class="form-group">
-        <button id="save-document-btn" class="btn-primary">Save</button>
-        <button id="cancel-edit-btn" class="btn-secondary">Cancel</button>
-        <button id="delete-document-btn" class="btn-danger">Delete</button>
-      </div>
-    </form>
-  `;
-}
-
-function documentTemplate(contextDocument) {
-  return `
-    <tr class="document-item aidock-element" data-id="${contextDocument.id}">
-      <td class="document-name">${contextDocument.document_name}</td>
-      <td class="document-actions">
-        <button class="edit-document-btn" data-id="${contextDocument.id}">
-          <span class="pencil-btn"></span>
-        </button>
-      </td>
-    </tr>
   `;
 }
 

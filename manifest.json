@@ -7,7 +7,18 @@
   "content_scripts": [
     {
       "matches": ["*://*.pricefx.com/*", "*://*.pricefx.eu/*", "*://*.lavendelconsulting.com/*"],
-      "js": ["helpers/visual_effects.js", "events.js", "htmlTemplates.js", "userManager.js", "conversationManager.js", "helpers/headquarters_libs.js", "overlays.js", "settings_overlay.js", "helpers/outbound.js", "content.js"],
+      "js": [
+        "helpers/visual_effects.js",
+        "events.js",
+        "html_templates/htmlTemplates.js",
+        "userManager.js",
+        "conversationManager.js",
+        "helpers/headquarters_libs.js",
+        "overlays.js",
+        "settings_overlay.js",
+        "helpers/outbound.js",
+        "content.js"
+      ],
       "css": ["content.css"]
     }
   ]
