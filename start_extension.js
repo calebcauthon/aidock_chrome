@@ -11,7 +11,6 @@ async function initialize() {
   }
 
   cancelLoginEvent = when(userManager, 'login', (username) => {
-    console.log("login event triggered with username: " + username);
     conversationManager = new ConversationManager();
 
     headquarters = createHeadquarters();

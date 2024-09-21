@@ -17,7 +17,7 @@
         "entities/userManager.js",
         "entities/conversationManager.js",
         "entities/conversation.js",
-        "helpers/headquarters_libs.js",
+        "ui_interactions/dock.js",
         "ui_interactions/chat.js",
         "ui_interactions/settings.js",
         "helpers/outbound.js",

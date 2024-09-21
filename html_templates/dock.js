@@ -12,9 +12,6 @@ function headquartersTemplate() {
           <span class="settings-btn">⚙️</span>
         </div>
       </div>
-      <div class="user-info">
-        <span id="hq-username">User</span>
-      </div>
       <div class="instructions-body">
         <ul id="question-list" class="question-list"></ul>
       </div>
