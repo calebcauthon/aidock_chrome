@@ -9,19 +9,19 @@
       "matches": ["*://*.pricefx.com/*", "*://*.pricefx.eu/*", "*://*.lavendelconsulting.com/*"],
       "js": [
         "helpers/visual_effects.js",
-        "events.js",
+        "helpers/events.js",
         "html_templates/login.js",
         "html_templates/chat.js",
         "html_templates/dock.js",
         "html_templates/settings.js",
-        "userManager.js",
+        "entities/userManager.js",
         "entities/conversationManager.js",
         "entities/conversation.js",
         "helpers/headquarters_libs.js",
         "ui_interactions/chat.js",
         "ui_interactions/settings.js",
         "helpers/outbound.js",
-        "content.js"
+        "start_extension.js"
       ],
       "css": ["content.css"]
     }
