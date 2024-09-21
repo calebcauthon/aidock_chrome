@@ -16,17 +16,6 @@ async function initialize() {
 
     headquarters = createHeadquarters();
     loadSavedConversations();
-
-    // Add this function to update the HQ with the username
-    function updateHQWithUsername() {
-      let username = userManager.getUsername();
-      const usernameElement = document.querySelector('#hq-username');
-      if (usernameElement) {
-        usernameElement.textContent = username || 'Not logged in';
-      }
-    }
-
-    updateHQWithUsername();
   });
 
 
