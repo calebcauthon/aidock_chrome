@@ -171,7 +171,7 @@ async function authenticateUser(username, password) {
   const llmEndpoint = getLLMEndpoint();
 
   try {
-    const response = await fetch(`${llmEndpoint}/authenticate`, {
+    const response = await fetch(`${llmEndpoint}/users/authenticate`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -185,7 +185,7 @@ async function authenticateUser(username, password) {
 
     const data = await response.json();
 
-    if (data.status === 'success') {
+    if (data.token) {
       userManager.setUsername(username);
       showSuccessMessage('Authentication successful!', document.body);
       return true;
