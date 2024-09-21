@@ -225,6 +225,7 @@ function loginOverlayTemplate() {
   const submitId = 'login-submit';
   const dismissId = 'login-dismiss';
   const containerId = 'login-container';
+  const errorMessageId = 'login-error-message';
   const html = `
     <div id="login-overlay" class="overlay aidock-element">
       <style>
@@ -250,8 +251,10 @@ function loginOverlayTemplate() {
       <div class="overlay-content">
         <h2>Login</h2>
         <form id="login-form">
+          <div id="${errorMessageId}" class="error-message" style="display: none; color: red; margin-bottom: 10px;"></div>
           <div class="form-group">
             <label for="${usernameId}">Username</label>
+
             <input type="text" id="${usernameId}" name="username" placeholder="Enter your username" required>
           </div>
           <div class="form-group">
@@ -267,6 +270,8 @@ function loginOverlayTemplate() {
     </div>
   `;
 
+  let originalButtonColor = '';
+  let originalButtonText = '';
   return {
     html: html,
     elementIds: {
@@ -274,7 +279,41 @@ function loginOverlayTemplate() {
       passwordId: passwordId,
       submitId: submitId,
       dismissId: dismissId,
-      containerId: containerId
+      containerId: containerId,
+      errorMessageId: errorMessageId
+    }, 
+    actions: {
+      showErrorMessage: function(message) {
+        document.getElementById(errorMessageId).textContent = message;
+        document.getElementById(errorMessageId).style.display = 'block';
+      },
+      clearErrorMessage: function() {
+        document.getElementById(errorMessageId).textContent = '';
+        document.getElementById(errorMessageId).style.display = 'none';
+      },
+      showLoading: function() {
+        const loginButton = document.getElementById(submitId);
+        const dismissButton = document.getElementById(dismissId);
+        loginButton.disabled = true;
+        dismissButton.disabled = true;
+        originalButtonColor = loginButton.style.background;
+        originalButtonText = loginButton.innerHTML;
+        loginButton.innerHTML = 'Authenticating...';
+        loginButton.style.background = 'gray';
+      },
+      hideLoading: function() {
+        document.getElementById(submitId).disabled = false;
+        document.getElementById(dismissId).disabled = false;
+        document.getElementById(submitId).innerHTML = 'Login';
+        document.getElementById(submitId).style.background = originalButtonColor;
+        document.getElementById(submitId).innerHTML = originalButtonText;
+      },
+      removeLoginOverlay: function() {
+        const loginOverlay = document.getElementById('login-overlay');
+        if (loginOverlay && loginOverlay.parentNode) {
+          loginOverlay.parentNode.removeChild(loginOverlay);
+        }
+      }
     }
   };
 }
@@ -286,42 +325,73 @@ function removeLoginOverlay(overlayElement) {
 }
 
 function displayLoginOverlayTemplate(element) {
-  return new Promise((resolve, reject) => {
+  function collectCredentials(elementIds) {
+    const username = document.getElementById(elementIds.usernameId).value;
+    const password = document.getElementById(elementIds.passwordId).value;
+
+    return { username, password };
+  }
+  
+  function appendHtmlToBody(html) {
     const loginOverlay = document.createElement('div');
-    const { html, elementIds } = loginOverlayTemplate();
     loginOverlay.innerHTML = html;
     element.appendChild(loginOverlay);
+  }
 
+  function preventDefaultBehaviors(event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
+  async function updateUiWhileAuthenticating(actions, username, password) {
+      actions.showLoading();
+      const isAuthenticated = await userManager.authenticate(username, password);
+      actions.hideLoading();
+
+      return isAuthenticated;
+  }
+
+  function configureDismissButton(elementIds, actions, reject) {
     const dismissButton = document.getElementById(elementIds.dismissId);
     dismissButton.addEventListener('click', function() {
-      removeLoginOverlay(loginOverlay);
+      actions.removeLoginOverlay();
       reject(new Error('Login dismissed'));
     });
+  }
+
+  return new Promise((resolve, reject) => {
+    const { html, elementIds, actions } = loginOverlayTemplate();
+
+    appendHtmlToBody(html);
+    configureDismissButton(elementIds, actions, reject);
 
     const loginButton = document.getElementById(elementIds.submitId);
     loginButton.addEventListener('mousedown', async function(event) {
-      event.preventDefault(); // Prevent form submission
-      event.stopPropagation(); // Stop event propagation
-      const username = document.getElementById(elementIds.usernameId).value;
-      const password = document.getElementById(elementIds.passwordId).value;
-      // Disable buttons and show loading spinner
-      loginButton.disabled = true;
-      dismissButton.disabled = true;
-      const originalButtonText = loginButton.innerHTML;
-      loginButton.innerHTML = 'Authenticating...';
-      loginButton.style.background = 'gray';
-      await userManager.authenticate(username, password);
-      loginButton.innerHTML = originalButtonText;
-      removeLoginOverlay(loginOverlay);
-      resolve(username);
+      preventDefaultBehaviors(event);
+      actions.clearErrorMessage();
+
+      const { username, password } = collectCredentials(elementIds);
+
+      const isAuthenticated = await updateUiWhileAuthenticating(actions, username, password);
+
+      if (isAuthenticated) {
+        actions.removeLoginOverlay();
+        resolve(username);
+      } else {
+        actions.showErrorMessage('Login failed!');
+        reject('Login failed!');
+      }
     });
   });
 }
 
 async function promptUserForLogin() {
   try {
-    return await displayLoginOverlayTemplate(document.body);
+    const overlayResult = await displayLoginOverlayTemplate(document.body);
+    console.log("overlayResult: " + overlayResult);
+    return overlayResult;
   } catch (error) {
+    console.log("promptUserForLogin error: " + error);
     return null;
   }
 }

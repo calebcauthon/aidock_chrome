@@ -35,8 +35,10 @@ class UserManager {
   }
 
   async authenticate(username, password) {
-    await authenticateUser(username, password);
-    this.setUsername(username);
-    return username;
+    const isAuthenticated = await authenticateUser(username, password);
+    if (isAuthenticated) {
+      this.setUsername(username);
+    }
+    return isAuthenticated;
   }
 }
