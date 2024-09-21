@@ -12,6 +12,7 @@
         "events.js",
         "html_templates/login.js",
         "html_templates/htmlTemplates.js",
+        "html_templates/dock.js",
         "userManager.js",
         "conversationManager.js",
         "helpers/headquarters_libs.js",
