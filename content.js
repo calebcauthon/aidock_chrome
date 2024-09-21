@@ -2,12 +2,18 @@ let conversationManager = null;
 let headquarters = null;
 const userManager = new UserManager();
 
+let cancelLoginEvent = null;
 async function initialize() {
   await userManager.loadUsername();
 
-  when(userManager, 'login', (username) => {
+  if (cancelLoginEvent != null) { 
+    cancelLoginEvent();
+  }
+
+  cancelLoginEvent = when(userManager, 'login', (username) => {
     console.log("login event triggered with username: " + username);
     conversationManager = new ConversationManager();
+
     headquarters = createHeadquarters();
     loadSavedConversations();
 
@@ -29,7 +35,6 @@ async function initialize() {
     username = await promptUserForLogin();
 
     if (username != null) {
-      console.log("uname aint login event triggered with username: " + username);
       trigger(userManager, 'login', username);
     }
   } else {

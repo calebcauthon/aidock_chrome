@@ -24,8 +24,10 @@ class UserManager {
   updateUsernameDisplay() {
     const usernameElement = document.querySelector('#hq-username');
     if (usernameElement) {
-      usernameElement.textContent = this.username;
+      console.log("updating username display to: " + this.getUsername());
+      usernameElement.textContent = this.getUsername();
     }
+
   }
 
   logOut() {

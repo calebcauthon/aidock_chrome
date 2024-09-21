@@ -9,7 +9,14 @@ function when(object, eventName, callback) {
     events.set(eventName, []);
   }
   events.get(eventName).push(callback);
+
+  const cancelEvent = () => {
+    events.get(eventName).splice(events.get(eventName).indexOf(callback), 1);
+  }
+
+  return cancelEvent;
 }
+
 
 function trigger(object, eventName, eventObject) {
   if (eventRegistry.has(object)) {
