@@ -3,11 +3,26 @@
   "name": "Ai Dock",
   "version": "1.0",
   "description": "Ai Dock",
-  "permissions": ["activeTab"],
+  "permissions": ["activeTab", "storage"],
   "content_scripts": [
     {
       "matches": ["*://*.pricefx.com/*", "*://*.pricefx.eu/*", "*://*.lavendelconsulting.com/*"],
-      "js": ["helpers/visual_effects.js", "events.js", "htmlTemplates.js", "conversationManager.js", "helpers/headquarters_libs.js", "overlays.js", "settings_overlay.js", "helpers/outbound.js", "content.js"],
+      "js": [
+        "helpers/visual_effects.js",
+        "helpers/events.js",
+        "html_templates/login.js",
+        "html_templates/chat.js",
+        "html_templates/dock.js",
+        "html_templates/settings.js",
+        "entities/userManager.js",
+        "entities/conversationManager.js",
+        "entities/conversation.js",
+        "ui_interactions/dock.js",
+        "ui_interactions/chat.js",
+        "ui_interactions/settings.js",
+        "helpers/outbound.js",
+        "start_extension.js"
+      ],
       "css": ["content.css"]
     }
   ]

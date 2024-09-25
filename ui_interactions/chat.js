@@ -131,6 +131,8 @@ function createInstructionsOverlay(conversation, conversationId) {
   const chatInput = chatDiv.querySelector('.continue-chat-input');
 
   chatInput.addEventListener('keypress', function(event) {
+
+    const instructionsBody = chatDiv.querySelector('.instructions-body');
     if (event.key === 'Enter') {
       const followUpQuestion = chatInput.value.trim();
       if (followUpQuestion) {
@@ -141,7 +143,6 @@ function createInstructionsOverlay(conversation, conversationId) {
           conversation.messages.pop();
 
           // Remove the answer entry from chatDiv
-          const instructionsBody = chatDiv.querySelector('.instructions-body');
           const answerRow = instructionsBody.querySelector('.answer-row');
           if (answerRow) {
               answerRow.remove();

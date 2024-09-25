@@ -2,12 +2,12 @@ function getLLMEndpoint() {
   const savedSettings = localStorage.getItem('lavendalChatbotSettings');
   if (savedSettings) {
     const settings = JSON.parse(savedSettings);
-    return settings.llmEndpoint || 'http://localhost:5000';
+    return settings.llmEndpoint || 'https://aidock-backend.onrender.com';
   }
-  return 'http://localhost:5000'; // Default fallback
+  return 'https://aidock-backend.onrender.com';
 }
 
-function sendQuestionToBackend(question, conversationMessages) {
+async function sendQuestionToBackend(question, conversationMessages) {
   const url = window.location.href;
   const pageTitle = document.title;
   const selectedText = window.getSelection().toString();
@@ -21,15 +21,17 @@ function sendQuestionToBackend(question, conversationMessages) {
     selectedText: selectedText,
     activeElement: activeElement,
     scrollPosition: scrollPosition,
-    conversationMessages: conversationMessages
+    conversationMessages: conversationMessages,
   };
 
   const llmEndpoint = getLLMEndpoint();
 
+  const loginToken = await userManager.getToken();
   return fetch(`${llmEndpoint}/ask`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      'Login-Token': loginToken
     },
     body: JSON.stringify(data)
   })
@@ -44,13 +46,14 @@ function sendQuestionToBackend(question, conversationMessages) {
 
 function callPromptEndpoint(question, answer) {
   const llmEndpoint = getLLMEndpoint();
+  const login_token = "fake-token";
 
   return fetch(`${llmEndpoint}/prompt`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ question, answer }),
+    body: JSON.stringify({ question, answer, login_token }),
   })
   .then(response => response.json())
   .then(data => data.title)
@@ -164,5 +167,38 @@ async function deleteDocument(docId) {
     console.error('Error deleting document:', error);
     showErrorMessage('An error occurred while deleting the document. Please try again.');
     return false;
+  }
+}
+
+async function authenticateUser(username, password) {
+  const llmEndpoint = getLLMEndpoint();
+
+  try {
+    const response = await fetch(`${llmEndpoint}/users/authenticate`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, password }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    if (data.token) {
+      userManager.setUsername(username);
+      showSuccessMessage('Authentication successful!', document.body);
+      return { isAuthenticated: true, token: data.token };
+    } else {
+      showErrorMessage(data.error || 'Authentication failed', document.body);
+      return { isAuthenticated: false, token: null };
+    }
+  } catch (error) {
+    console.error('Error during authentication:', error);
+    showErrorMessage('An error occurred during authentication. Please try again.', document.body);
+    return { isAuthenticated: false, token: null };
   }
 }
