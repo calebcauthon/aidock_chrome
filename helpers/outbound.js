@@ -2,9 +2,9 @@ function getLLMEndpoint() {
   const savedSettings = localStorage.getItem('lavendalChatbotSettings');
   if (savedSettings) {
     const settings = JSON.parse(savedSettings);
-    return settings.llmEndpoint || 'https://aidock-backend.onrender.com/';
+    return settings.llmEndpoint || 'https://aidock-backend.onrender.com';
   }
-  return 'https://aidock-backend.onrender.com/';
+  return 'https://aidock-backend.onrender.com';
 }
 
 async function sendQuestionToBackend(question, conversationMessages) {
