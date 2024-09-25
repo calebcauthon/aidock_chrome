@@ -166,7 +166,7 @@
 }
 
 .instructions-body.minimized {
-  max-height: 0;
+  max-height: 0 !important;
   padding: 0 25px;
   overflow: hiddenwhite;
   opacity: 0;

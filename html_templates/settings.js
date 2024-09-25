@@ -8,6 +8,9 @@ function settingsOverlayTemplate() {
           <input type="text" id="llm-endpoint" name="llm-endpoint">
         </div>
         <div class="setting-group">
+          <a id="librarian-link" href="" class="btn-primary" target="_blank">⚙️ Configure KT Dock</a>
+        </div>
+        <div class="setting-group">
           <button id="logout-btn" class="btn-danger">Logout</button>
         </div>
       </div>

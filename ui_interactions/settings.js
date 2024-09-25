@@ -22,6 +22,9 @@ function setupSettingsEvents(overlay) {
     overlay.classList.remove('active');
   });
 
+  const librarianLink = overlay.querySelector('#librarian-link');
+  librarianLink.href = `${getLLMEndpoint()}/librarian`;
+
   const resizeHandle = overlay.querySelector('.resize-handle');
   let isResizing = false;
   let lastDownX = 0;
