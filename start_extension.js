@@ -67,10 +67,22 @@ async function fetchAndLogSessionUserInfo() {
   }
 }
 
+async function verifyAndInitialize() {
+  const token = await userManager.getToken();
+  if (token) {
+    const isValid = await verifyToken(token);
+    if (isValid) {
+      await initialize();
+    } else {
+      userManager.logOut();
+    }
+  }
+}
+
 userManager.loadUsername().then(async username => {
   if (username == null) {
     await fetchAndLogSessionUserInfo();
   } else {
-    await initialize();
+    await verifyAndInitialize();
   }
 });

@@ -230,6 +230,30 @@ async function checkIfOrganizationWebsite(url) {
   }
 }
 
+async function verifyToken(token) {
+  const llmEndpoint = getLLMEndpoint();
+
+  try {
+    const response = await fetch(`${llmEndpoint}/verify`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ token })
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data.isValid;
+  } catch (error) {
+    console.error('Error verifying token:', error);
+    return false;
+  }
+}
+
 fetch(chrome.runtime.getURL('config.json'))
 .then(response => response.json())
 .then(config => {
