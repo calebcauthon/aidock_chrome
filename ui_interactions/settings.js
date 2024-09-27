@@ -17,6 +17,9 @@ function setupSettingsEvents(overlay) {
   // Load saved settings
   loadSettings();
 
+  // Populate user information
+  populateUserInfo();
+
   const closeBtn = overlay.querySelector('.close-settings-btn');
   closeBtn.addEventListener('click', () => {
     overlay.classList.remove('active');
@@ -58,6 +61,19 @@ function setupSettingsEvents(overlay) {
 
   const resetBtn = document.getElementById('reset-btn');
   resetBtn.addEventListener('click', handleResetClick);
+}
+
+function populateUserInfo() {
+  const userNameElement = document.getElementById('settings-user-name');
+  const userRoleElement = document.getElementById('settings-user-role');
+
+  if (userManager.getUsername()) {
+    userNameElement.textContent = userManager.getUsername() || 'Unknown';
+    userRoleElement.textContent = userManager.getRole() || 'Unknown';
+  } else {
+    userNameElement.textContent = 'Not logged in';
+    userRoleElement.textContent = 'N/A';
+  }
 }
 
 async function handleResetClick() {

@@ -3,6 +3,9 @@ function settingsOverlayTemplate() {
     <div id="settings-overlay" class="settings-overlay aidock-element">
       <div class="settings-content">
         <h2>Settings <span class="close-settings-btn">&times;</span></h2>
+        <div class="user-info">
+          <p><span id="settings-user-name"></span> | <span id="settings-user-role"></span></p>
+        </div>
         <div class="setting-group">
           <label for="llm-endpoint">LLM Server Endpoint:</label>
           <input type="text" id="llm-endpoint" name="llm-endpoint" placeholder="Leave this blank">

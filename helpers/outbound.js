@@ -191,7 +191,7 @@ async function authenticateUser(username, password) {
 
     if (data.token) {
       userManager.setUsername(username);
-      return { isAuthenticated: true, token: data.token };
+      return { isAuthenticated: true, token: data.token, role: data.role, organization_name: data.organization_name };
     } else {
       showErrorMessage(data.error || 'Authentication failed', document.body);
       return { isAuthenticated: false, token: null };
