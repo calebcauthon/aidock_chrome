@@ -65,7 +65,7 @@ function setupSettingsEvents(overlay) {
 
 async function updateLibrarianLink(librarianLink) {
   const token = await userManager.getToken();
-  const baseUrl = `${getLLMEndpoint()}/librarian`;
+  const baseUrl = userManager.getRole() === 'librarian' ? `${getLLMEndpoint()}/librarian` : `${getLLMEndpoint()}/profile`;
   librarianLink.href = token ? `${baseUrl}?login_token=${token}` : baseUrl;
 }
 
