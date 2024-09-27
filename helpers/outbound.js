@@ -1,10 +1,11 @@
 function getLLMEndpoint() {
+  const serverEndpointDefault = 'https://aidock-backend-1.onrender.com';
   const savedSettings = localStorage.getItem('lavendalChatbotSettings');
   if (savedSettings) {
     const settings = JSON.parse(savedSettings);
-    return settings.llmEndpoint || 'https://aidock-backend.onrender.com';
+    return settings.llmEndpoint || serverEndpointDefault;
   }
-  return 'https://aidock-backend.onrender.com';
+  return serverEndpointDefault;
 }
 
 async function sendQuestionToBackend(question, conversationMessages) {
