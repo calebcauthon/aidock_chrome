@@ -186,7 +186,7 @@ async function authenticateUser(username, password) {
 
     if (data.token) {
       userManager.setUsername(username);
-      return { isAuthenticated: true, token: data.token, role: data.role, organization_name: data.organization_name };
+      return { isAuthenticated: true, token: data.token, role: data.role, organization_name: data.organization_name, organization_id: data.organization_id };
     } else {
       showErrorMessage(data.error || 'Authentication failed', document.body);
       return { isAuthenticated: false, token: null };
@@ -201,8 +201,11 @@ async function checkIfOrganizationWebsite(url) {
   const llmEndpoint = getLLMEndpoint();
   const loginToken = await userManager.getToken();
 
+  await userManager.loadOrganizationId();
+  const organizationId = await userManager.getOrganizationId();
+
   try {
-    const response = await fetch(`${llmEndpoint}/api/websites?url=${encodeURIComponent(url)}`, {
+    const response = await fetch(`${llmEndpoint}/api/websites?organization_id=${organizationId}&url=${encodeURIComponent(url)}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

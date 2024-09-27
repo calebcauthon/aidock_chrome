@@ -49,6 +49,20 @@ class UserManager {
     return this.role;
   }
 
+  setOrganizationId(newOrganizationId) {
+    this.organizationId = newOrganizationId;
+    setChromeStorageItem('organizationId', newOrganizationId);
+  }
+
+  getOrganizationId() {
+    return this.organizationId;
+  } 
+
+  async loadOrganizationId() {
+    const organizationId = await getChromeStorageItem('organizationId');
+    this.organizationId = organizationId;
+  }
+
   getUsername() {
     return this.username;
   }
@@ -67,15 +81,17 @@ class UserManager {
     removeChromeStorageItem('username');
     removeChromeStorageItem('role');
     removeChromeStorageItem('token');
+    removeChromeStorageItem('organizationId');
     this.updateUsernameDisplay();
   }
 
   async authenticate(username, password) {
-    const { isAuthenticated, token, role, organization_name } = await authenticateUser(username, password);
+    const { isAuthenticated, token, role, organization_id } = await authenticateUser(username, password);
     if (isAuthenticated) {
       this.setUsername(username);
       this.setToken(token);
       this.setRole(role);
+      this.setOrganizationId(organization_id);
     }
     return isAuthenticated;
   }
