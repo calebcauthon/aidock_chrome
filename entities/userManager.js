@@ -9,6 +9,7 @@ class UserManager {
     const username = await getChromeStorageItem('username');
     this.username = username;
     this.updateUsernameDisplay();
+    return username;
   }
 
   setUsername(newUsername) {

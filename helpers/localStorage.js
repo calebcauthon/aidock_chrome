@@ -6,10 +6,12 @@ const keys = {
 
 async function getChromeStorageItem(key) {
   const data = await chrome.storage.sync.get(key);
+  console.log('getting chrome storage item', key, data);
   return data[key];
 }
 
 async function setChromeStorageItem(key, value) {
+  console.log('setting chrome storage item', key, value);
   await chrome.storage.sync.set({ [key]: value });
 }
 
