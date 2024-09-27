@@ -10,13 +10,17 @@ async function initialize() {
     cancelLoginEvent();
   }
 
-  cancelLoginEvent = when(userManager, 'login', (username) => {
-    conversationManager = new ConversationManager();
+  cancelLoginEvent = when(userManager, 'login', async (username) => { 
+    const currentUrl = window.location.hostname;
+    const isOrganizationWebsite = await checkIfOrganizationWebsite(currentUrl);
+    if (isOrganizationWebsite.is_organization_website) {
+      console.log(`This is an organization website. Organization ID: ${isOrganizationWebsite.organization_id}`);
 
-    headquarters = createHeadquarters();
-    loadSavedConversations();
+      conversationManager = new ConversationManager();
+      headquarters = createHeadquarters();
+      loadSavedConversations();
+    }
   });
-
 
   let username = null;
   if (!userManager.getUsername()) {

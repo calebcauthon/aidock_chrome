@@ -202,6 +202,34 @@ async function authenticateUser(username, password) {
   }
 }
 
+async function checkIfOrganizationWebsite(url) {
+  const llmEndpoint = getLLMEndpoint();
+  const loginToken = await userManager.getToken();
+
+  try {
+    const response = await fetch(`${llmEndpoint}/api/websites?url=${encodeURIComponent(url)}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Login-Token': loginToken
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return {
+      is_organization_website: data.is_organization_website,
+      organization_id: data.organization_id
+    };
+  } catch (error) {
+    console.error('Error checking if organization website:', error);
+    return { is_organization_website: false, organization_id: null };
+  }
+}
+
 fetch(chrome.runtime.getURL('config.json'))
 .then(response => response.json())
 .then(config => {
