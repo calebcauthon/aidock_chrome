@@ -1,10 +1,5 @@
 let DEFAULT_LLM_ENDPOINT = '';
 function getLLMEndpoint() {
-  const savedSettings = getLocalStorageItem('settings');
-  if (savedSettings) {
-    const settings = JSON.parse(savedSettings);
-    return settings.llmEndpoint || DEFAULT_LLM_ENDPOINT;
-  }
   return DEFAULT_LLM_ENDPOINT;
 }
 
