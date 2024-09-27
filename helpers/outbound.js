@@ -175,7 +175,7 @@ async function authenticateUser(username, password) {
   const llmEndpoint = getLLMEndpoint();
 
   try {
-    const response = await fetch(`${llmEndpoint}/users/authenticate`, {
+    const response = await fetch(`${llmEndpoint}/authenticate`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

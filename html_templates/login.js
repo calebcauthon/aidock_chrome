@@ -167,10 +167,8 @@ function displayLoginOverlayTemplate(element) {
 async function promptUserForLogin() {
   try {
     const overlayResult = await displayLoginOverlayTemplate(document.body);
-    console.log("overlayResult: " + overlayResult);
     return overlayResult;
   } catch (error) {
-    console.log("promptUserForLogin error: " + error);
     return null;
   }
 }
