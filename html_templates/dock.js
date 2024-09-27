@@ -9,7 +9,7 @@ function headquartersTemplate() {
         <div class="icons">
           <span class="minimize-btn">🔽</span>
           <span class="new-chat-btn">✏️</span>
-          <span class="settings-btn">⚙️</span>
+          <a href="#" class="settings-btn">⚙️</a>
         </div>
       </div>
       <div class="instructions-body">
