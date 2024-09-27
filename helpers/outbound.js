@@ -248,9 +248,3 @@ async function verifyToken(token) {
     return false;
   }
 }
-
-fetch(chrome.runtime.getURL('config.json'))
-.then(response => response.json())
-.then(config => {
-  DEFAULT_LLM_ENDPOINT = config.llmEndpoint;
-});

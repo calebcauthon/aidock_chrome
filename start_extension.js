@@ -79,10 +79,18 @@ async function verifyAndInitialize() {
   }
 }
 
-userManager.loadUsername().then(async username => {
-  if (username == null) {
-    await fetchAndLogSessionUserInfo();
-  } else {
-    await verifyAndInitialize();
-  }
+
+fetch(chrome.runtime.getURL('config.json'))
+.then(response => response.json())
+.then(config => {
+  DEFAULT_LLM_ENDPOINT = config.llmEndpoint;
+})
+.then(() => {
+  userManager.loadUsername().then(async username => {
+    if (username == null) {
+      await fetchAndLogSessionUserInfo();
+    } else {
+      await verifyAndInitialize();
+    }
+  });
 });
