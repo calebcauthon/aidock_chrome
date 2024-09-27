@@ -1,10 +1,11 @@
+let DEFAULT_LLM_ENDPOINT = '';
 function getLLMEndpoint() {
-  const savedSettings = localStorage.getItem('lavendalChatbotSettings');
+  const savedSettings = getLocalStorageItem('settings');
   if (savedSettings) {
     const settings = JSON.parse(savedSettings);
-    return settings.llmEndpoint || 'https://aidock-backend.onrender.com';
+    return settings.llmEndpoint || DEFAULT_LLM_ENDPOINT;
   }
-  return 'https://aidock-backend.onrender.com';
+  return DEFAULT_LLM_ENDPOINT;
 }
 
 async function sendQuestionToBackend(question, conversationMessages) {
@@ -190,7 +191,6 @@ async function authenticateUser(username, password) {
 
     if (data.token) {
       userManager.setUsername(username);
-      showSuccessMessage('Authentication successful!', document.body);
       return { isAuthenticated: true, token: data.token };
     } else {
       showErrorMessage(data.error || 'Authentication failed', document.body);
@@ -202,3 +202,9 @@ async function authenticateUser(username, password) {
     return { isAuthenticated: false, token: null };
   }
 }
+
+fetch(chrome.runtime.getURL('config.json'))
+.then(response => response.json())
+.then(config => {
+  DEFAULT_LLM_ENDPOINT = config.llmEndpoint;
+});

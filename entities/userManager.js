@@ -5,20 +5,19 @@ class UserManager {
   }
 
   async loadUsername() {
-    const result = await chrome.storage.sync.get(['username']);
-    this.username = result.username;
+    const username = await getChromeStorageItem('username');
+    this.username = username;
     this.updateUsernameDisplay();
   }
 
   setUsername(newUsername) {
     this.username = newUsername;
-    chrome.storage.sync.set({ 'username': newUsername }, () => {
-      this.updateUsernameDisplay();
-    });
+    setChromeStorageItem('username', newUsername);
+    this.updateUsernameDisplay();
   }
 
   setToken(newToken) {
-    chrome.storage.sync.set({ 'token': newToken });
+    setChromeStorageItem('token', newToken);
     this.token = newToken;
   }
 
@@ -30,8 +29,8 @@ class UserManager {
   }
 
   async loadToken() {
-    const result = await chrome.storage.sync.get(['token']);
-    this.token = result.token;
+    const token = await getChromeStorageItem('token');
+    this.token = token;
   }
 
   getUsername() {
@@ -49,7 +48,7 @@ class UserManager {
 
   logOut() {
     this.username = null;
-    chrome.storage.sync.remove('username');
+    removeChromeStorageItem('username');
     this.updateUsernameDisplay();
   }
 

@@ -34,11 +34,11 @@ class ConversationManager {
       title: conv.title,
       messages: conv.messages
     }));
-    localStorage.setItem('lavendalChatbotConversations', JSON.stringify(conversationsArray));
+    setLocalStorageItem('conversations', JSON.stringify(conversationsArray));
   }
 
   loadConversationsFromStorage() {
-    const savedConversations = localStorage.getItem('lavendalChatbotConversations');
+    const savedConversations = getLocalStorageItem('conversations');
     if (savedConversations) {
       const conversationsArray = JSON.parse(savedConversations);
       conversationsArray.forEach(conv => {

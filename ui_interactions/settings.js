@@ -55,6 +55,15 @@ function setupSettingsEvents(overlay) {
     removeDockElements();
     initialize();
   });
+
+  const resetBtn = document.getElementById('reset-btn');
+  resetBtn.addEventListener('click', handleResetClick);
+}
+
+async function handleResetClick() {
+  if (confirm('Are you sure you want to reset? This will clear all local data and refresh the page.')) {
+    await resetAndRefresh();
+  }
 }
 
 function showSuccessMessage(message, element) {
@@ -96,11 +105,11 @@ function saveSettings() {
     });
   });
 
-  localStorage.setItem('lavendalChatbotSettings', JSON.stringify(settings));
+  setLocalStorageItem('settings', JSON.stringify(settings));
 }
 
 function loadSettings() {
-  const savedSettings = localStorage.getItem('lavendalChatbotSettings');
+  const savedSettings = getLocalStorageItem('settings');
   if (savedSettings) {
     const settings = JSON.parse(savedSettings);
     document.getElementById('llm-endpoint').value = settings.llmEndpoint || 'http://localhost:5000';
