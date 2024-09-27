@@ -13,6 +13,9 @@ function settingsOverlayTemplate() {
         <div class="setting-group">
           <button id="logout-btn" class="btn-danger">Logout</button>
         </div>
+        <div class="setting-group">
+          <button id="reset-btn" class="btn-danger">🔄 Reset</button>
+        </div>
       </div>
       <div class="resize-handle"></div>
     </div>

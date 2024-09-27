@@ -1,11 +1,11 @@
+let DEFAULT_LLM_ENDPOINT = '';
 function getLLMEndpoint() {
-  const serverEndpointDefault = 'https://aidock-backend-1.onrender.com';
-  const savedSettings = localStorage.getItem('lavendalChatbotSettings');
+  const savedSettings = getLocalStorageItem('settings');
   if (savedSettings) {
     const settings = JSON.parse(savedSettings);
-    return settings.llmEndpoint || serverEndpointDefault;
+    return settings.llmEndpoint || DEFAULT_LLM_ENDPOINT;
   }
-  return serverEndpointDefault;
+  return DEFAULT_LLM_ENDPOINT;
 }
 
 async function sendQuestionToBackend(question, conversationMessages) {
@@ -203,3 +203,9 @@ async function authenticateUser(username, password) {
     return { isAuthenticated: false, token: null };
   }
 }
+
+fetch(chrome.runtime.getURL('config.json'))
+.then(response => response.json())
+.then(config => {
+  DEFAULT_LLM_ENDPOINT = config.llmEndpoint;
+});

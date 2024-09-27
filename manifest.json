@@ -9,6 +9,7 @@
       "matches": ["*://*.pricefx.com/*", "*://*.pricefx.eu/*", "*://*.lavendelconsulting.com/*"],
       "js": [
         "helpers/visual_effects.js",
+        "helpers/localStorage.js",
         "helpers/events.js",
         "html_templates/login.js",
         "html_templates/chat.js",
@@ -24,6 +25,12 @@
         "start_extension.js"
       ],
       "css": ["content.css"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["config.json"],
+      "matches": ["<all_urls>"]
     }
   ]
 }
