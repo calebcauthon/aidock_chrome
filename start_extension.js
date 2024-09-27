@@ -61,6 +61,7 @@ async function fetchAndLogSessionUserInfo() {
       userManager.setToken(data.login_token);
       userManager.setUsername(username);
       userManager.setRole(role);
+      userManager.setOrganizationId(data.organization_id);
     }
   } catch (error) {
     console.error('Error fetching session user info:', error);
@@ -85,12 +86,12 @@ fetch(chrome.runtime.getURL('config.json'))
 .then(config => {
   DEFAULT_LLM_ENDPOINT = config.llmEndpoint;
 })
-.then(() => {
-  userManager.loadUsername().then(async username => {
-    if (username == null) {
-      await fetchAndLogSessionUserInfo();
-    } else {
-      await verifyAndInitialize();
-    }
-  });
+.then(async () => {
+  await userManager.loadOrganizationId();
+  const username = await userManager.getUsername();
+  if (username == null) {
+    await fetchAndLogSessionUserInfo();
+  } else {
+    await verifyAndInitialize();
+  }
 });
