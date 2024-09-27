@@ -65,6 +65,8 @@ class UserManager {
   logOut() {
     this.username = null;
     removeChromeStorageItem('username');
+    removeChromeStorageItem('role');
+    removeChromeStorageItem('token');
     this.updateUsernameDisplay();
   }
 

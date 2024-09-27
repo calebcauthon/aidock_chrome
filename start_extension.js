@@ -50,6 +50,7 @@ async function fetchAndLogSessionUserInfo() {
     });
 
     if (!response.ok) {
+      userManager.logOut();
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
