@@ -2,12 +2,14 @@ class UserManager {
   constructor() {
     this.username = null;
     this.loadUsername();
+    this.loadRole();
   }
 
   async loadUsername() {
     const username = await getChromeStorageItem('username');
     this.username = username;
     this.updateUsernameDisplay();
+    return username;
   }
 
   setUsername(newUsername) {
@@ -33,6 +35,20 @@ class UserManager {
     this.token = token;
   }
 
+  setRole(newRole) {
+    this.role = newRole;
+    setChromeStorageItem('role', newRole);
+  }
+
+  async loadRole() {
+    const role = await getChromeStorageItem('role');
+    this.role = role;
+  }
+
+  getRole() {
+    return this.role;
+  }
+
   getUsername() {
     return this.username;
   }
@@ -49,14 +65,17 @@ class UserManager {
   logOut() {
     this.username = null;
     removeChromeStorageItem('username');
+    removeChromeStorageItem('role');
+    removeChromeStorageItem('token');
     this.updateUsernameDisplay();
   }
 
   async authenticate(username, password) {
-    const { isAuthenticated, token } = await authenticateUser(username, password);
+    const { isAuthenticated, token, role, organization_name } = await authenticateUser(username, password);
     if (isAuthenticated) {
       this.setUsername(username);
       this.setToken(token);
+      this.setRole(role);
     }
     return isAuthenticated;
   }

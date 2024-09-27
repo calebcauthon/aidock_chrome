@@ -1,10 +1,5 @@
 let DEFAULT_LLM_ENDPOINT = '';
 function getLLMEndpoint() {
-  const savedSettings = getLocalStorageItem('settings');
-  if (savedSettings) {
-    const settings = JSON.parse(savedSettings);
-    return settings.llmEndpoint || DEFAULT_LLM_ENDPOINT;
-  }
   return DEFAULT_LLM_ENDPOINT;
 }
 
@@ -175,7 +170,7 @@ async function authenticateUser(username, password) {
   const llmEndpoint = getLLMEndpoint();
 
   try {
-    const response = await fetch(`${llmEndpoint}/users/authenticate`, {
+    const response = await fetch(`${llmEndpoint}/authenticate`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -191,20 +186,65 @@ async function authenticateUser(username, password) {
 
     if (data.token) {
       userManager.setUsername(username);
-      return { isAuthenticated: true, token: data.token };
+      return { isAuthenticated: true, token: data.token, role: data.role, organization_name: data.organization_name };
     } else {
       showErrorMessage(data.error || 'Authentication failed', document.body);
       return { isAuthenticated: false, token: null };
     }
   } catch (error) {
     console.error('Error during authentication:', error);
-    showErrorMessage('An error occurred during authentication. Please try again.', document.body);
     return { isAuthenticated: false, token: null };
   }
 }
 
-fetch(chrome.runtime.getURL('config.json'))
-.then(response => response.json())
-.then(config => {
-  DEFAULT_LLM_ENDPOINT = config.llmEndpoint;
-});
+async function checkIfOrganizationWebsite(url) {
+  const llmEndpoint = getLLMEndpoint();
+  const loginToken = await userManager.getToken();
+
+  try {
+    const response = await fetch(`${llmEndpoint}/api/websites?url=${encodeURIComponent(url)}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Login-Token': loginToken
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return {
+      is_organization_website: data.is_organization_website,
+      organization_id: data.organization_id
+    };
+  } catch (error) {
+    console.error('Error checking if organization website:', error);
+    return { is_organization_website: false, organization_id: null };
+  }
+}
+
+async function verifyToken(token) {
+  const llmEndpoint = getLLMEndpoint();
+
+  try {
+    const response = await fetch(`${llmEndpoint}/verify`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ token })
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data.isValid;
+  } catch (error) {
+    console.error('Error verifying token:', error);
+    return false;
+  }
+}
