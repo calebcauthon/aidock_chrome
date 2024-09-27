@@ -13,3 +13,7 @@
 * Handling of the chat overlays is done in 'overlays.js'
 * Admins can open a settings overlay where backend administration is done. That's handled in settings_overlay.js
 * The data structure of the conversations are handled in 'conversationManager.js'
+
+
+## Tech Stack
+* Vanilla JS (no import or export statements in javascript)

@@ -26,7 +26,7 @@ function setupSettingsEvents(overlay) {
   });
 
   const librarianLink = overlay.querySelector('#librarian-link');
-  librarianLink.href = `${getLLMEndpoint()}/librarian`;
+  updateLibrarianLink(librarianLink);
 
   const resizeHandle = overlay.querySelector('.resize-handle');
   let isResizing = false;
@@ -61,6 +61,12 @@ function setupSettingsEvents(overlay) {
 
   const resetBtn = document.getElementById('reset-btn');
   resetBtn.addEventListener('click', handleResetClick);
+}
+
+async function updateLibrarianLink(librarianLink) {
+  const token = await userManager.getToken();
+  const baseUrl = `${getLLMEndpoint()}/librarian`;
+  librarianLink.href = token ? `${baseUrl}?login_token=${token}` : baseUrl;
 }
 
 function populateUserInfo() {
