@@ -158,7 +158,6 @@ function displayLoginOverlayTemplate(element) {
         resolve(username);
       } else {
         actions.showErrorMessage('Login failed!');
-        reject('Login failed!');
       }
     });
   });

@@ -198,7 +198,6 @@ async function authenticateUser(username, password) {
     }
   } catch (error) {
     console.error('Error during authentication:', error);
-    showErrorMessage('An error occurred during authentication. Please try again.', document.body);
     return { isAuthenticated: false, token: null };
   }
 }
