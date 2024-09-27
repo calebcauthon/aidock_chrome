@@ -29,7 +29,7 @@ function loginOverlayTemplate() {
       </style>
       <div class="overlay-content">
         <h2>Login</h2>
-        <form id="login-form">
+        <form id="login-form" onsubmit="return false;">
           <div id="${errorMessageId}" class="error-message" style="display: none; color: red; margin-bottom: 10px;"></div>
           <div class="form-group">
             <label for="${usernameId}">Username</label>
@@ -141,12 +141,7 @@ function displayLoginOverlayTemplate(element) {
   return new Promise((resolve, reject) => {
     const { html, elementIds, actions } = loginOverlayTemplate();
 
-    appendHtmlToBody(html);
-    configureDismissButton(elementIds, actions, reject);
-
-    const loginButton = document.getElementById(elementIds.submitId);
-    loginButton.addEventListener('mousedown', async function(event) {
-      preventDefaultBehaviors(event);
+    async function submitLogin() {
       actions.clearErrorMessage();
 
       const { username, password } = collectCredentials(elementIds);
@@ -159,6 +154,21 @@ function displayLoginOverlayTemplate(element) {
       } else {
         actions.showErrorMessage('Login failed!');
       }
+    }
+
+    appendHtmlToBody(html);
+    configureDismissButton(elementIds, actions, reject);
+
+    const loginForm = document.getElementById('login-form');
+    loginForm.addEventListener('submit', async function(event) {
+      preventDefaultBehaviors(event);
+      submitLogin();
+    });
+
+    const loginButton = document.getElementById(elementIds.submitId);
+    loginButton.addEventListener('mousedown', async function(event) {
+      preventDefaultBehaviors(event);
+      submitLogin();
     });
   });
 }
