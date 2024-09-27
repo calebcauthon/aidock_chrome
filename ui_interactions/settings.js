@@ -17,13 +17,16 @@ function setupSettingsEvents(overlay) {
   // Load saved settings
   loadSettings();
 
+  // Populate user information
+  populateUserInfo();
+
   const closeBtn = overlay.querySelector('.close-settings-btn');
   closeBtn.addEventListener('click', () => {
     overlay.classList.remove('active');
   });
 
   const librarianLink = overlay.querySelector('#librarian-link');
-  librarianLink.href = `${getLLMEndpoint()}/librarian`;
+  updateLibrarianLink(librarianLink);
 
   const resizeHandle = overlay.querySelector('.resize-handle');
   let isResizing = false;
@@ -58,6 +61,25 @@ function setupSettingsEvents(overlay) {
 
   const resetBtn = document.getElementById('reset-btn');
   resetBtn.addEventListener('click', handleResetClick);
+}
+
+async function updateLibrarianLink(librarianLink) {
+  const token = await userManager.getToken();
+  const baseUrl = userManager.getRole() === 'librarian' ? `${getLLMEndpoint()}/librarian` : `${getLLMEndpoint()}/profile`;
+  librarianLink.href = token ? `${baseUrl}?login_token=${token}` : baseUrl;
+}
+
+function populateUserInfo() {
+  const userNameElement = document.getElementById('settings-user-name');
+  const userRoleElement = document.getElementById('settings-user-role');
+
+  if (userManager.getUsername()) {
+    userNameElement.textContent = userManager.getUsername() || 'Unknown';
+    userRoleElement.textContent = userManager.getRole() || 'Unknown';
+  } else {
+    userNameElement.textContent = 'Not logged in';
+    userRoleElement.textContent = 'N/A';
+  }
 }
 
 async function handleResetClick() {

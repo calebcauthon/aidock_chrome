@@ -6,7 +6,7 @@
   "permissions": ["activeTab", "storage"],
   "content_scripts": [
     {
-      "matches": ["*://*.pricefx.com/*", "*://*.pricefx.eu/*", "*://*.lavendelconsulting.com/*"],
+      "matches": ["<all_urls>"],
       "js": [
         "helpers/visual_effects.js",
         "helpers/localStorage.js",

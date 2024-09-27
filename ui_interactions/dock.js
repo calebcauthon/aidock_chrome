@@ -23,15 +23,27 @@ function createHeadquarters() {
     }
   });
   
-  const settingsBtn = headquarters.querySelector('.settings-btn');
-  settingsBtn.addEventListener('click', () => {
-    showSettingsOverlay();
-  });
+  // Replace the settings button with a link
+  const settingsLink = headquarters.querySelector('.settings-btn');
+  updateSettingsLink(settingsLink);
 
   // Add this line to enable dragging
   setupHeadquartersDragging(headquarters);
 
   return headquarters;
+}
+
+// Add this new function to update the settings link
+async function updateSettingsLink(settingsLink) {
+  const token = await userManager.getToken();
+  const baseUrl = userManager.getRole() === 'librarian' ? `${getLLMEndpoint()}/librarian` : `${getLLMEndpoint()}/profile`;
+  const url = token ? `${baseUrl}?login_token=${token}` : baseUrl;
+  
+  settingsLink.href = url;
+  settingsLink.target = '_blank';
+  settingsLink.title = 'Open settings in a new tab';
+  settingsLink.style.textDecoration = 'none';
+  settingsLink.style.color = 'inherit';
 }
 
 function loadSavedConversations() {
