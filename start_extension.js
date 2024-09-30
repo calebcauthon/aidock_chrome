@@ -24,13 +24,7 @@ async function initialize() {
   });
 
   let username = null;
-  if (!userManager.getUsername()) {
-    username = await promptUserForLogin();
-
-    if (username != null) {
-      trigger(userManager, 'login', username);
-    }
-  } else {
+  if (userManager.getUsername()) {
     trigger(userManager, 'login', userManager.getUsername());
   }
 }
@@ -88,6 +82,7 @@ fetch(chrome.runtime.getURL('config.json'))
 })
 .then(async () => {
   await userManager.loadOrganizationId();
+  await userManager.loadOrganizationSettings();
   const username = await userManager.getUsername();
   if (username == null) {
     await fetchAndLogSessionUserInfo();

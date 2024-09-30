@@ -6,12 +6,10 @@ const keys = {
 
 async function getChromeStorageItem(key) {
   const data = await chrome.storage.sync.get(key);
-  console.log('getting chrome storage item', key, data);
   return data[key];
 }
 
 async function setChromeStorageItem(key, value) {
-  console.log('setting chrome storage item', key, value);
   await chrome.storage.sync.set({ [key]: value });
 }
 
@@ -30,7 +28,6 @@ function setLocalStorageItem(key, value) {
 async function clearAllLocalStorage() {
   localStorage.clear();
   await chrome.storage.sync.clear(() => {
-    console.log('Chrome storage cleared successfully');
   });
 }
 

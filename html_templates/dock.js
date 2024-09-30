@@ -1,11 +1,14 @@
 function headquartersTemplate() {
+  const titleText = userManager.getOrganizationSetting('title_text', 'Messaging');
+  const titleColor = userManager.getOrganizationSetting('title_color', '#007bff');
+
   return `
     <div class="instructions-content aidock-font aidock-element">
       <div class="handle" style="cursor: ew-resize;">
         <div class="avatar-container">
-          <div class="avatar-circle"></div>
+          <div class="avatar-circle" style="background-color: ${titleColor};"></div>
         </div>
-        <span class="title">Messaging</span>
+        <span class="title">${titleText}</span>
         <div class="icons">
           <span class="minimize-btn">🔽</span>
           <span class="new-chat-btn">✏️</span>
