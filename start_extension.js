@@ -24,13 +24,7 @@ async function initialize() {
   });
 
   let username = null;
-  if (!userManager.getUsername()) {
-    username = await promptUserForLogin();
-
-    if (username != null) {
-      trigger(userManager, 'login', username);
-    }
-  } else {
+  if (userManager.getUsername()) {
     trigger(userManager, 'login', userManager.getUsername());
   }
 }

@@ -94,12 +94,13 @@ async function authenticateUser(username, password) {
 async function checkIfOrganizationWebsite(url) {
   const llmEndpoint = getLLMEndpoint();
   const loginToken = await userManager.getToken();
+  const username = await userManager.getUsername();
 
   await userManager.loadOrganizationId();
   const organizationId = await userManager.getOrganizationId();
 
   try {
-    const response = await fetch(`${llmEndpoint}/api/websites?organization_id=${organizationId}&url=${encodeURIComponent(url)}`, {
+    const response = await fetch(`${llmEndpoint}/api/websites?username=${username}&organization_id=${organizationId}&url=${encodeURIComponent(url)}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

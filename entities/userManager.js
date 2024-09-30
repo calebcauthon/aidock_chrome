@@ -81,7 +81,6 @@ class UserManager {
   updateUsernameDisplay() {
     const usernameElement = document.querySelector('#hq-username');
     if (usernameElement) {
-      console.log("updating username display to: " + this.getUsername());
       usernameElement.textContent = this.getUsername();
     }
 
@@ -89,6 +88,7 @@ class UserManager {
 
   logOut() {
     this.username = null;
+  clearAllLocalStorage();
     removeChromeStorageItem('username');
     removeChromeStorageItem('role');
     removeChromeStorageItem('token');

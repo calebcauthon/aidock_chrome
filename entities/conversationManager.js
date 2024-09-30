@@ -29,19 +29,32 @@ class ConversationManager {
   }
 
   saveConversationsToStorage() {
+    const username = userManager.getUsername();
     const conversationsArray = Array.from(this.conversations.values()).map(conv => ({
       id: conv.id,
       title: conv.title,
-      messages: conv.messages
+      messages: conv.messages,
+      username: username // Add username to each conversation
     }));
-    setLocalStorageItem('conversations', JSON.stringify(conversationsArray));
+    setLocalStorageItem('conversations', JSON.stringify({
+      username: username,
+      conversations: conversationsArray
+    }));
   }
 
   loadConversationsFromStorage() {
-    const savedConversations = getLocalStorageItem('conversations');
-    if (savedConversations) {
-      const conversationsArray = JSON.parse(savedConversations);
-      conversationsArray.forEach(conv => {
+    const savedData = getLocalStorageItem('conversations');
+    if (savedData) {
+      const parsedData = JSON.parse(savedData);
+      const currentUsername = userManager.getUsername();
+      
+      if (parsedData.username !== currentUsername) {
+        // Clear conversations if username doesn't match
+        this.clearConversations();
+        return;
+      }
+      
+      parsedData.conversations.forEach(conv => {
         const conversation = new Conversation(conv.id, null, conv.title);
         conv.messages.forEach(msg => {
           conversation.addMessage(msg.type, msg.content);
@@ -49,6 +62,14 @@ class ConversationManager {
         this.conversations.set(conv.id, conversation);
       });
     }
+  }
+
+  clearConversations() {
+    this.conversations.clear();
+    setLocalStorageItem('conversations', JSON.stringify({
+      username: userManager.getUsername(),
+      conversations: []
+    }));
   }
 
   deleteConversation(id) {
