@@ -3,7 +3,9 @@ function createHeadquarters() {
   headquarters.id = 'headquarters';
   headquarters.className = 'instructions-overlay';
   
-  headquarters.innerHTML = headquartersTemplate();
+  const titleText = userManager.getOrganizationSettings()?.title_text || "Messaging";
+  
+  headquarters.innerHTML = headquartersTemplate(titleText);
   maximizeOverlay(headquarters);
   
   document.body.appendChild(headquarters);

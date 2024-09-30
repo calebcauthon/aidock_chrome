@@ -88,6 +88,7 @@ fetch(chrome.runtime.getURL('config.json'))
 })
 .then(async () => {
   await userManager.loadOrganizationId();
+  await userManager.loadOrganizationSettings();
   const username = await userManager.getUsername();
   if (username == null) {
     await fetchAndLogSessionUserInfo();

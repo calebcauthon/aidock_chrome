@@ -3,6 +3,7 @@ class UserManager {
     this.username = null;
     this.loadUsername();
     this.loadRole();
+    this.organizationSettings = null;
   }
 
   async loadUsername() {
@@ -61,6 +62,16 @@ class UserManager {
   async loadOrganizationId() {
     const organizationId = await getChromeStorageItem('organizationId');
     this.organizationId = organizationId;
+  }
+
+  async loadOrganizationSettings() {
+    const settings = await fetchOrganizationSettings();
+    this.organizationSettings = settings;
+    return settings;
+  }
+
+  getOrganizationSettings() {
+    return this.organizationSettings;
   }
 
   getUsername() {

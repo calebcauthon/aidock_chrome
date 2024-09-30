@@ -1,11 +1,11 @@
-function headquartersTemplate() {
+function headquartersTemplate(titleText) {
   return `
     <div class="instructions-content aidock-font aidock-element">
       <div class="handle" style="cursor: ew-resize;">
         <div class="avatar-container">
           <div class="avatar-circle"></div>
         </div>
-        <span class="title">Messaging</span>
+        <span class="title">${titleText}</span>
         <div class="icons">
           <span class="minimize-btn">🔽</span>
           <span class="new-chat-btn">✏️</span>

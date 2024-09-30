@@ -145,3 +145,28 @@ async function verifyToken(token) {
     return false;
   }
 }
+
+async function fetchOrganizationSettings() {
+  const llmEndpoint = getLLMEndpoint();
+  const loginToken = await userManager.getToken();
+  const organizationId = await userManager.getOrganizationId();
+
+  try {
+    const response = await fetch(`${llmEndpoint}/api/organization_settings?organization_id=${organizationId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Login-Token': loginToken
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching organization settings:', error);
+    return null;
+  }
+}
