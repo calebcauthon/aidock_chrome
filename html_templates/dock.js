@@ -1,4 +1,7 @@
-function headquartersTemplate(titleText, titleColor) {
+function headquartersTemplate() {
+  const titleText = userManager.getOrganizationSetting('title_text', 'Messaging');
+  const titleColor = userManager.getOrganizationSetting('title_color', '#007bff');
+
   return `
     <div class="instructions-content aidock-font aidock-element">
       <div class="handle" style="cursor: ew-resize;">

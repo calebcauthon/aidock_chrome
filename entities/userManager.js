@@ -106,4 +106,11 @@ class UserManager {
     }
     return isAuthenticated;
   }
+
+  getOrganizationSetting(settingName, defaultValue = null) {
+    if (this.organizationSettings && this.organizationSettings.hasOwnProperty(settingName)) {
+      return this.organizationSettings[settingName];
+    }
+    return defaultValue;
+  }
 }
