@@ -3,9 +3,11 @@ function createHeadquarters() {
   headquarters.id = 'headquarters';
   headquarters.className = 'instructions-overlay';
   
-  const titleText = userManager.getOrganizationSettings()?.title_text || "Messaging";
+  const organizationSettings = userManager.getOrganizationSettings() || {};
+  const titleText = organizationSettings.title_text || "Messaging";
+  const titleColor = organizationSettings.title_color || "#007bff"; // Default blue color if not set
   
-  headquarters.innerHTML = headquartersTemplate(titleText);
+  headquarters.innerHTML = headquartersTemplate(titleText, titleColor);
   maximizeOverlay(headquarters);
   
   document.body.appendChild(headquarters);

@@ -1,9 +1,9 @@
-function headquartersTemplate(titleText) {
+function headquartersTemplate(titleText, titleColor) {
   return `
     <div class="instructions-content aidock-font aidock-element">
       <div class="handle" style="cursor: ew-resize;">
         <div class="avatar-container">
-          <div class="avatar-circle"></div>
+          <div class="avatar-circle" style="background-color: ${titleColor};"></div>
         </div>
         <span class="title">${titleText}</span>
         <div class="icons">
