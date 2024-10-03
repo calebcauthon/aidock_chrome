@@ -58,9 +58,6 @@ function setupSettingsEvents(overlay) {
     removeDockElements();
     initialize();
   });
-
-  const resetBtn = document.getElementById('reset-btn');
-  resetBtn.addEventListener('click', handleResetClick);
 }
 
 async function updateLibrarianLink(librarianLink) {
@@ -79,12 +76,6 @@ function populateUserInfo() {
   } else {
     userNameElement.textContent = 'Not logged in';
     userRoleElement.textContent = 'N/A';
-  }
-}
-
-async function handleResetClick() {
-  if (confirm('Are you sure you want to reset? This will clear all local data and refresh the page.')) {
-    await resetAndRefresh();
   }
 }
 

@@ -59,112 +59,6 @@ function callPromptEndpoint(question, answer) {
   });
 }
 
-async function getContextDocuments() {
-  const llmEndpoint = getLLMEndpoint();
-
-  const response = await fetch(`${llmEndpoint}/context_docs/`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-
-  const data = await response.json();
-
-  if (data.error) {
-    throw new Error(data.error);
-  }
-
-  return data;
-}
-
-async function getContextDocument(docId) {
-  const llmEndpoint = getLLMEndpoint();
-
-  const response = await fetch(`${llmEndpoint}/context_docs/${docId}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-
-  const data = await response.json();
-
-  if (data.error) {
-    throw new Error(data.error);
-  }
-
-  return data;
-}
-
-async function saveDocument(contextDocument) {
-  const llmEndpoint = getLLMEndpoint();
-  const isUpdate = !!contextDocument.id;
-  const endpoint = isUpdate ? `/context_docs/${contextDocument.id}` : '/context_docs/';
-
-  try {
-    const response = await fetch(`${llmEndpoint}${endpoint}`, {
-      method: isUpdate ? 'PUT' : 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(contextDocument)
-    });
-
-    const data = await response.json();
-
-    if (data.id || (isUpdate && data.message)) {
-      await loadDocuments();
-      showSuccessMessage('Document saved successfully!');
-      return true; // Indicate success
-    } else {
-      console.error('Error saving document:', data.error);
-      showErrorMessage('Error saving document. Please try again.');
-      return false; // Indicate failure
-    }
-  } catch (error) {
-    console.error('Error:', error);
-    showErrorMessage('An error occurred. Please try again.');
-    return false; // Indicate failure
-  }
-}
-
-async function deleteDocument(docId) {
-  const llmEndpoint = getLLMEndpoint();
-
-  try {
-    const response = await fetch(`${llmEndpoint}/context_docs/${docId}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-
-    if (data.message && data.message.toLowerCase().includes('success')) {
-      showSuccessMessage('Document deleted successfully');
-      return true;
-    } else {
-      showErrorMessage(data.error || 'Error deleting document');
-      return false;
-    }
-  } catch (error) {
-    console.error('Error deleting document:', error);
-    showErrorMessage('An error occurred while deleting the document. Please try again.');
-    return false;
-  }
-}
 
 async function authenticateUser(username, password) {
   const llmEndpoint = getLLMEndpoint();
@@ -186,7 +80,7 @@ async function authenticateUser(username, password) {
 
     if (data.token) {
       userManager.setUsername(username);
-      return { isAuthenticated: true, token: data.token, role: data.role, organization_name: data.organization_name };
+      return { isAuthenticated: true, token: data.token, role: data.role, organization_name: data.organization_name, organization_id: data.organization_id };
     } else {
       showErrorMessage(data.error || 'Authentication failed', document.body);
       return { isAuthenticated: false, token: null };
@@ -200,9 +94,13 @@ async function authenticateUser(username, password) {
 async function checkIfOrganizationWebsite(url) {
   const llmEndpoint = getLLMEndpoint();
   const loginToken = await userManager.getToken();
+  const username = await userManager.getUsername();
+
+  await userManager.loadOrganizationId();
+  const organizationId = await userManager.getOrganizationId();
 
   try {
-    const response = await fetch(`${llmEndpoint}/api/websites?url=${encodeURIComponent(url)}`, {
+    const response = await fetch(`${llmEndpoint}/api/websites?username=${username}&organization_id=${organizationId}&url=${encodeURIComponent(url)}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -246,5 +144,30 @@ async function verifyToken(token) {
   } catch (error) {
     console.error('Error verifying token:', error);
     return false;
+  }
+}
+
+async function fetchOrganizationSettings() {
+  const llmEndpoint = getLLMEndpoint();
+  const loginToken = await userManager.getToken();
+  const organizationId = await userManager.getOrganizationId();
+
+  try {
+    const response = await fetch(`${llmEndpoint}/api/organization_settings?organization_id=${organizationId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Login-Token': loginToken
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching organization settings:', error);
+    return null;
   }
 }

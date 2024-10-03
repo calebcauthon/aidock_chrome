@@ -3,6 +3,7 @@ class UserManager {
     this.username = null;
     this.loadUsername();
     this.loadRole();
+    this.organizationSettings = null;
   }
 
   async loadUsername() {
@@ -49,6 +50,30 @@ class UserManager {
     return this.role;
   }
 
+  setOrganizationId(newOrganizationId) {
+    this.organizationId = newOrganizationId;
+    setChromeStorageItem('organizationId', newOrganizationId);
+  }
+
+  getOrganizationId() {
+    return this.organizationId;
+  } 
+
+  async loadOrganizationId() {
+    const organizationId = await getChromeStorageItem('organizationId');
+    this.organizationId = organizationId;
+  }
+
+  async loadOrganizationSettings() {
+    const settings = await fetchOrganizationSettings();
+    this.organizationSettings = settings;
+    return settings;
+  }
+
+  getOrganizationSettings() {
+    return this.organizationSettings;
+  }
+
   getUsername() {
     return this.username;
   }
@@ -56,7 +81,6 @@ class UserManager {
   updateUsernameDisplay() {
     const usernameElement = document.querySelector('#hq-username');
     if (usernameElement) {
-      console.log("updating username display to: " + this.getUsername());
       usernameElement.textContent = this.getUsername();
     }
 
@@ -64,19 +88,29 @@ class UserManager {
 
   logOut() {
     this.username = null;
+  clearAllLocalStorage();
     removeChromeStorageItem('username');
     removeChromeStorageItem('role');
     removeChromeStorageItem('token');
+    removeChromeStorageItem('organizationId');
     this.updateUsernameDisplay();
   }
 
   async authenticate(username, password) {
-    const { isAuthenticated, token, role, organization_name } = await authenticateUser(username, password);
+    const { isAuthenticated, token, role, organization_id } = await authenticateUser(username, password);
     if (isAuthenticated) {
       this.setUsername(username);
       this.setToken(token);
       this.setRole(role);
+      this.setOrganizationId(organization_id);
     }
     return isAuthenticated;
+  }
+
+  getOrganizationSetting(settingName, defaultValue = null) {
+    if (this.organizationSettings && this.organizationSettings.hasOwnProperty(settingName)) {
+      return this.organizationSettings[settingName];
+    }
+    return defaultValue;
   }
 }
